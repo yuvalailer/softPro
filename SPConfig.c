@@ -31,7 +31,27 @@ struct sp_config_t{
 
 };
 
+/*
+ * a utill function. made to avoid code copying in all the next
+ * functions.
+ * is an internal tool, makes asserts act.
+ */
 
+int configUtills (int filed, const SPConfig config, SP_CONFIG_MSG* msg){
+	assert(msg != NULL);
+	int ans; // used in configutills only.
+		if (config == NULL){ // bad input;
+			ans = 0;
+			*msg = SP_CONFIG_INVALID_ARGUMENT;
+		} else { // config is good.
+			ans = filed;
+			if(filed == 0){ // what is the EXtract mode?
+				*msg = SP_CONFIG_INVALID_ARGUMENT; //TODO un-specified anser in this case.. send an email to moab.
+			} else {
+				*msg = SP_CONFIG_SUCCESS;
+			}
+		return ans; // retrun an int. to be change if needed in the function.
+}
 
 SPConfig spConfigCreate(const char* filename, SP_CONFIG_MSG* msg){
 
@@ -83,15 +103,23 @@ SPConfig spConfigCreate(const char* filename, SP_CONFIG_MSG* msg){
 }
 
 bool spConfigIsExtractionMode(const SPConfig config, SP_CONFIG_MSG* msg){
-
+	int filed = (int)(config->spExtractionMode); // enter the exc_mode as int.
+	return (bool)configUtills(filed,config,msg);
 }
 
 bool spConfigMinimalGui(const SPConfig config, SP_CONFIG_MSG* msg){
+	int filed = (int)(config->spMinimalGUI); // enter the MinimalGUI_mode as int.
+	return (bool)configUtills(filed,config,msg);
 
+}
+int spConfigGetNumOfImages(const SPConfig config, SP_CONFIG_MSG* msg){
+	int filed = (config->spNumOfImages); // enter the NumOfImages_mode as int.
+	return configUtills(filed,config,msg);
 }
 
 int spConfigGetNumOfFeatures(const SPConfig config, SP_CONFIG_MSG* msg){
-
+	int filed = (config->spNumOfFeatures); // enter the NumOfFeatures_mode as int.
+	return configUtills(filed,config,msg);
 }
 
 int spConfigGetPCADim(const SPConfig config, SP_CONFIG_MSG* msg){
