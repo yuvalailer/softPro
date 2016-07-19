@@ -24,8 +24,7 @@ private:
 	bool minimalGui;
 	void initFromConfig(const SPConfig);
 	void getImagesMat(std::vector<cv::Mat>&, const SPConfig);
-	void getFeatures(std::vector<cv::Mat>&,
-			cv::Mat&);
+	void getFeatures(std::vector<cv::Mat>&,cv::Mat&);
 	void preprocess(const SPConfig config);
 	void initPCAFromFile(const SPConfig config);
 public:
