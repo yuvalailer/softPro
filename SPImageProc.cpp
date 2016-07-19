@@ -1,11 +1,11 @@
 #include <cstdlib>
 #include <cassert>
 #include <cstring>
-#include <opencv2/xfeatures2d.hpp>
-#include <opencv2/core.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/highgui.hpp>
+#include <C:\opencv\build\include\opencv2/xfeatures2d.hpp>
+#include <C:\opencv\build\include\opencv2/core.hpp>
+#include <C:\opencv\build\include\opencv2/imgproc.hpp>
+#include <C:\opencv\build\include\opencv2/imgcodecs.hpp>
+#include <C:\opencv\build\include\opencv2/highgui.hpp>
 #include <cstdio>
 #include "SPImageProc.h"
 extern "C" {

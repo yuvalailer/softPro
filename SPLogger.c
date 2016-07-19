@@ -1,17 +1,9 @@
-/*
-
- * SPLogger.c
- *
- *  Created on: 19 αιεμι 2016
- *      Author: michael
- */
-
 
 #include "SPLogger.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <assert.h>
+
 //File open mode
 #define SP_LOGGER_OPEN_MODE "w"
 

@@ -1,7 +1,7 @@
 #ifndef SPIMAGEPROC_H_
 #define SPIMAGEPROC_H_
-#include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
+#include <C:\opencv\build\include\opencv2/core.hpp>
+#include <C:\opencv\build\include\opencv2/imgcodecs.hpp>
 #include <vector>
 
 extern "C" {
