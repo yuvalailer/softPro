@@ -19,7 +19,7 @@ struct sp_config_t{
 	string spImagesPrefix;
 	string spImagesSuffix;
 	int spNumOfImages;
-	int spPCADimension = 20;
+	int spPCADimension;
 	string spPCAFilename = "pca.yml";
 	int spNumOfFeatures = 100;
 	bool spExtractionMode = true;
@@ -29,6 +29,7 @@ struct sp_config_t{
 	bool spMinimalGUI = false;
 	int spLoggerLevel;
 	string spLoggerFilename;
+	spPCADimension = 20;
 };
 
 
