@@ -15,21 +15,20 @@
 
 struct sp_config_t{
 
-	string spImagesDirectory;
-	string spImagesPrefix;
-	string spImagesSuffix;
+	char* spImagesDirectory;
+	char* spImagesPrefix;
+	char* spImagesSuffix;
 	int spNumOfImages;
 	int spPCADimension;
-	string spPCAFilename = "pca.yml";
-	int spNumOfFeatures = 100;
-	bool spExtractionMode = true;
-	int spNumOfSimilarImages = 1;
+	char* spPCAFilename;
+	int spNumOfFeatures;
+	bool spExtractionMode;
+	int spNumOfSimilarImages;
 	enum spKDTreeSplitMethod;
-	int spKNN = 1;
-	bool spMinimalGUI = false;
+	int spKNN;
+	bool spMinimalGUI;
 	int spLoggerLevel;
-	string spLoggerFilename;
-	spPCADimension = 20;
+
 };
 
 
