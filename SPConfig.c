@@ -8,6 +8,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "SPConfig.h"
+#include <stdbool.h>
+#include <string.h>
+
+
+struct sp_config_t{
+	string spImagesDirectory;
+	string spImagesPrefix;
+	string spImagesSuffix;
+	int spNumOfImages;
+	int spPCADimension = 20;
+	string spPCAFilename = "pca.yml";
+	int spNumOfFeatures = 100;
+	bool spExtractionMode = true;
+	int spNumOfSimilarImages = 1;
+	enum spKDTreeSplitMethod;
+	int spKNN = 1;
+	bool spMinimalGUI = false;
+	int spLoggerLevel;
+	string spLoggerFilename;
+};
 
 
 
