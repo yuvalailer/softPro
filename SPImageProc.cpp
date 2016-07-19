@@ -9,7 +9,7 @@
 #include <cstdio>
 #include "SPImageProc.h"
 extern "C" {
-#include "SPLogger.h"
+#include "SPLogger.h" // hello
 }
 
 using namespace cv;
