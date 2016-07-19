@@ -12,7 +12,9 @@
 #include <string.h>
 
 
+
 struct sp_config_t{
+
 	string spImagesDirectory;
 	string spImagesPrefix;
 	string spImagesSuffix;
@@ -32,6 +34,9 @@ struct sp_config_t{
 
 
 SPConfig spConfigCreate(const char* filename, SP_CONFIG_MSG* msg){
+	assert(msg != NULL);
+
+
 
 }
 
