@@ -10,7 +10,7 @@
 #include "SPConfig.h"
 #include <stdbool.h>
 #include <string.h>
-
+#include <assert.h>
 
 
 struct sp_config_t{
@@ -51,8 +51,8 @@ int configUtills (int filed, const SPConfig config, SP_CONFIG_MSG* msg){
 				*msg = SP_CONFIG_SUCCESS;
 			}
 		return ans; // retrun an int. to be change if needed in the function.
+		}
 }
-
 SPConfig spConfigCreate(const char* filename, SP_CONFIG_MSG* msg){
 
 	assert(msg != NULL);
@@ -123,33 +123,48 @@ int spConfigGetNumOfFeatures(const SPConfig config, SP_CONFIG_MSG* msg){
 }
 
 int spConfigGetPCADim(const SPConfig config, SP_CONFIG_MSG* msg){
-
+	int ans;
+	int filed = (config->spPCADimension); // enter the spPCADimension as int.
+	ans = configUtills(filed,config,msg); // return value needs to be negative int. thus the additional if loop.
+	if (ans == 0){
+		return -1;
+	} else {
+		return ans; // TODO free ans?
+	}
 }
-
 SP_CONFIG_MSG spConfigGetImagePath(char* imagePath, const SPConfig config,int index){
-	char* path;
+	//char* path;
 	if(imagePath == NULL || config == NULL){
 		return SP_CONFIG_INVALID_ARGUMENT;
 	} else if (index>=config->spNumOfImages) {
 		return SP_CONFIG_INDEX_OUT_OF_RANGE;
 	} else {
-		sprintf(path, "%s%s%d%s",config->spImagesDirectory,config->spImagesPrefix,index,config->spImagesSuffix);
-		if(sizeof(imagePath) >= sizeof(path )) { //TODO is the imagepath as big as the image?
-			*imagePath = *path; //TODO add returns and act.
+		sprintf(imagePath, "%s%s%d%s",config->spImagesDirectory,config->spImagesPrefix,index,config->spImagesSuffix);
+		//*imagePath = *path;
+		return SP_CONFIG_SUCCESS;
+		//TODO do we need to check the size of the file in this point?
 		}
 	}
 
 
-}
-
-}
-
 SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config){
-
+	//char* path;
+	if(pcaPath == NULL || config == NULL){
+		return SP_CONFIG_INVALID_ARGUMENT;
+	} else {
+		sprintf(pcaPath, "%s%s",config->spImagesDirectory, config->spPCAFilename);
+		//*pcaPath = *path;
+		return SP_CONFIG_SUCCESS;
+		//TODO do we need to check the size of the file in this point?
+		}
 }
 
 void spConfigDestroy(SPConfig config){
-
+	if (config != NULL) {
+		free (config);
+		// TODO - is this enugth? michael, what addishional filleds do you set in make?
+	}
 }
+
 
 
