@@ -127,6 +127,20 @@ int spConfigGetPCADim(const SPConfig config, SP_CONFIG_MSG* msg){
 }
 
 SP_CONFIG_MSG spConfigGetImagePath(char* imagePath, const SPConfig config,int index){
+	char* path;
+	if(imagePath == NULL || config == NULL){
+		return SP_CONFIG_INVALID_ARGUMENT;
+	} else if (index>=config->spNumOfImages) {
+		return SP_CONFIG_INDEX_OUT_OF_RANGE;
+	} else {
+		sprintf(path, "%s%s%d%s",config->spImagesDirectory,config->spImagesPrefix,index,config->spImagesSuffix);
+		if(sizeof(imagePath) >= sizeof(path )) { //TODO is the imagepath as big as the image?
+			*imagePath = *path; //TODO add returns and act.
+		}
+	}
+
+
+}
 
 }
 
