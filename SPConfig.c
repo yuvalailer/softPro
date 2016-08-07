@@ -81,7 +81,7 @@ void trim(char*s){ //TODO add description and check if it is o.k. changes string
 			i++;
 		}
 	}
-	*(s+len-cnt) = '\0'; //trim from the right
+	*(s+len-cnt) = '\0';
 }
 
 bool contains(char* s,char c){ // TODO func description?
@@ -97,40 +97,43 @@ bool contains(char* s,char c){ // TODO func description?
 
 void splitmid(char* s,char* left,char* right){ // return  left and right strings after trimming
 	int i=0;
-	while(*(s+i) != '#'){ //fill left
+	while(*(s+i) != '='){ //fill left
 		*(left+i) = *(s+i);
 		i++;
 	}
-	*(left+i+1) = '\0'; //end left
+	*(left+i) = '\0'; //end left
 	trim(left);
 	i++; //skip # to fill right
 	int j = 0;
 	while (*(s+i)!='\0'){
+		if((*(s+i)=='\n')){
+			break;
+		}
 		*(right+j) = *(s+i);
 		i++;
 		j++;
 	}
-	*(right+j+1) = '\0'; //end right
+	*(right+j) = '\0'; //end right
 	trim(right);
 }
 
 bool insertconfig(SPConfig config,char* param,char* val){
-	if(strcmp(param,"spImagesDirectory")){
-		config->spImagesDirectory = val; //TODO how to check that image directory is ok?
+	if(strcmp(param,"spImagesDirectory")==0){
+		strcpy(config->spImagesDirectory,val); //TODO how to check that image directory is ok?
 		return true;
 	}
-	else if(strcmp(param,"spImagesPrefix")){
-		config->spImagesPrefix = val;
+	if(strcmp(param,"spImagesPrefix")==0){
+		strcpy(config->spImagesPrefix,val);
 		return true;
 	}
-	else if(strcmp(param,"spImagesSuffix")){
+	if(strcmp(param,"spImagesSuffix")==0){
 		if ((!strcmp(val,".jpg"))&&(!strcmp(val,".png"))&&(!strcmp(val,".bmp"))&&(!strcmp(val,".gif"))){
 			return false;
 		}
-		config->spImagesSuffix = val;
+		strcpy(config->spImagesSuffix,val);
 		return true;
 	}
-	else if(strcmp(param,"spNumOfImages")){
+	if(strcmp(param,"spNumOfImages")==0){
 		int num = atoi(val);//TODO check if needed to check suffix of "556asd" because would result in 556.
 		if (num>0){
 			config->spNumOfImages = num;
@@ -138,7 +141,7 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	else if(strcmp(param,"spPCADimension")){
+	if(strcmp(param,"spPCADimension")==0){
 		int num = atoi(val);//TODO check if needed to check suffix of "556asd" because would result in 556.
 		if ((10<=num)&&(num<=128)){
 			config->spPCADimension = num;
@@ -146,11 +149,11 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	else if(strcmp(param,"spPCAFilename")){
-		config->spPCAFilename = val;
+	if(strcmp(param,"spPCAFilename")==0){
+		strcpy(config->spPCAFilename,val);
 		return true;
 	}
-	else if(strcmp(param,"spNumOfFeatures")){
+	if(strcmp(param,"spNumOfFeatures")==0){
 		int num = atoi(val);//TODO check if needed to check suffix of "556asd" because would result in 556.
 		if (0<num){
 			config->spNumOfFeatures = num;
@@ -158,18 +161,18 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	else if(strcmp(param,"spExtractionMode")){
-		if(strcmp(val,"true")){
+	if(strcmp(param,"spExtractionMode")==0){
+		if(strcmp(val,"true")==0){
 			config->spExtractionMode = true;
 			return true;
 		}
-		else if(strcmp(val,"false")){
+		else if(strcmp(val,"false")==0){
 			config->spExtractionMode = false;
 			return true;
 		}
 		return false;
 	}
-	else if(strcmp(param,"spNumOfSimilarImages")){
+	if(strcmp(param,"spNumOfSimilarImages")==0){
 		int num = atoi(val);//TODO check if needed to check suffix of "556asd" because would result in 556.
 		if (0<num){
 			config->spNumOfSimilarImages = num;
@@ -177,22 +180,22 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	else if(strcmp(param,"spKDTreeSplitMethod")){
-		if(strcmp(val,"RANDOM")){
+	if(strcmp(param,"spKDTreeSplitMethod")==0){
+		if(strcmp(val,"RANDOM")==0){
 			config->spKDTreeSplitMethod = RANDOM;
 			return true;
 		}
-		else if(strcmp(val,"MAX_SPREAD")){
+		else if(strcmp(val,"MAX_SPREAD")==0){
 			config->spKDTreeSplitMethod = MAX_SPREAD;
 			return true;
 		}
-		else if(strcmp(val,"INCREMENTAL")){
+		else if(strcmp(val,"INCREMENTAL")==0){
 			config->spKDTreeSplitMethod = INCREMENTAL;
 			return true;
 		}
 		return false;
 	}
-	else if(strcmp(param,"spKNN")){
+	if(strcmp(param,"spKNN")==0){
 		int num = atoi(val);//TODO check if needed to check suffix of "556asd" because would result in 556.
 		if (0<num){
 			config->spKNN = num;
@@ -200,18 +203,18 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	else if(strcmp(param,"spMinimalGUI")){
-		if(strcmp(val,"true")){
+	if(strcmp(param,"spMinimalGUI")==0){
+		if(strcmp(val,"true")==0){
 			config->spMinimalGUI = true;
 			return true;
 		}
-		else if(strcmp(val,"false")){
+		else if(strcmp(val,"false")==0){
 			config->spMinimalGUI = false;
 			return true;
 		}
 		return false;
 	}
-	else if(strcmp(param,"spLoggerLevel")){
+	if(strcmp(param,"spLoggerLevel")==0){
 		int num = atoi(val);//TODO check if needed to check suffix of "556asd" because would result in 556.
 		if ((0<num)&&(num<5)){
 			config->spLoggerLevel = num;
@@ -219,13 +222,13 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	else if(strcmp(param,"spLoggerFilename")){
-		if(strcmp(val,"stdout")){
-			config->spLoggerFilename = val;
+	if(strcmp(param,"spLoggerFilename")==0){
+		if(strcmp(val,"stdout")==0){
+			strcpy(config->spLoggerFilename,val);
 			return true;
 		}
 		else{
-			config->spLoggerFilename = "notstdout"; //TODO check meaning of what happens if value is not stdout.
+			strcpy(config->spLoggerFilename,"notstdout"); //TODO check meaning of what happens if value is not stdout.
 			return true;
 		}
 	}
@@ -233,18 +236,21 @@ bool insertconfig(SPConfig config,char* param,char* val){
 }
 
 
-SPConfig spConfigCreate(const char* filename, SP_CONFIG_MSG* msg){
+SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 
-	assert(msg != NULL);
 	bool in;
 	FILE* fp = fopen(filename,"r");
 	SPConfig config = (SPConfig)malloc(sizeof(SPConfig)); //allocating memory and setting default values
-	config->spImagesDirectory = "notset";
-	config->spImagesPrefix = "notset";
-	config->spImagesSuffix = "notset";
+	config->spImagesDirectory = (char*)malloc(sizeof(char)*1024);
+	strcpy(config->spImagesDirectory,"notset");
+	config->spImagesPrefix = (char*)malloc(sizeof(char)*1024);
+	strcpy(config->spImagesPrefix,"notset");
+	config->spImagesSuffix = (char*)malloc(sizeof(char)*1024);
+	strcpy(config->spImagesSuffix,"notset");
 	config->spNumOfImages = 0;
 	config->spPCADimension = 20;
-	config->spPCAFilename = "pca.yml";
+	config->spPCAFilename = (char*)malloc(sizeof(char)*1024);
+	strcpy(config->spPCAFilename,"pca.yml");
 	config->spNumOfFeatures = 100;
 	config->spExtractionMode = true;
 	config->spMinimalGUI = false;
@@ -252,10 +258,11 @@ SPConfig spConfigCreate(const char* filename, SP_CONFIG_MSG* msg){
 	config->spKNN = 1;
 	config->spKDTreeSplitMethod = MAX_SPREAD;
 	config->spLoggerLevel = 3;
-	config->spLoggerFilename = "stdout";
+	config->spLoggerFilename = (char*)malloc(sizeof(char)*1024);
+	strcpy(config->spLoggerFilename,"stdout");
 	char* line = (char*)malloc(sizeof(char)*1024);
-	char param[1024];
-	char val[1024];
+	char* param = (char*)malloc(sizeof(char)*1024);
+	char* val = (char*)malloc(sizeof(char)*1024);
 	while(fgets(line,1024,fp)!= NULL){ //each time read a line only each line is at most 1024 (moab)
 		trim(line);
 		if(*line == '#'){ // if a comment than continue to next line
@@ -267,16 +274,19 @@ SPConfig spConfigCreate(const char* filename, SP_CONFIG_MSG* msg){
 			return NULL;
 		}
 		if(!(in = insertconfig(config,param,val))){
-			//TODO complete error messege config fail
+			//TODO complete error message config fail
 			return NULL;
 		}
 	}
 	fclose(fp);
-	if((strcmp(config->spImagesDirectory,"notset"))
-			||(strcmp(config->spImagesPrefix,"notset"))
-			||(strcmp(config->spImagesSuffix,"notset"))
+	free(line);
+	free(param);
+	free(val);
+	if((strcmp(config->spImagesDirectory,"notset")==0)
+			||(strcmp(config->spImagesPrefix,"notset")==0)
+			||(strcmp(config->spImagesSuffix,"notset")==0)
 			||(config->spNumOfImages == 0)){
-		//TODO change mesege
+		//TODO change messages
 		return NULL;
 	}
 	return config;
