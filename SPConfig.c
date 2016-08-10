@@ -5,12 +5,13 @@
  *      Author: michael ozeri & yuval ailer
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include "SPConfig.h"
-#include <stdbool.h>
-#include <string.h>
 #include <assert.h>
+#include <ctype.h>
+
+//TODO check if okay that all oxilary functions only in source file and without any description
+//TODO check if includes should be oly on header file. (not sopposed to be changed) meantime all not in header are in source
 
 typedef enum {RANDOM, MAX_SPREAD,INCREMENTAL} method;
 
@@ -55,7 +56,7 @@ int configUtills (int filed, const SPConfig config, SP_CONFIG_MSG* msg){
 	}
 }
 
-void trim(char*s){ //TODO add description and check if it is o.k. changes string in-place
+void trim(char*s){
 	int len = strlen(s);
 	int i=0;
 	int cnt = 0;
@@ -84,7 +85,7 @@ void trim(char*s){ //TODO add description and check if it is o.k. changes string
 	*(s+len-cnt) = '\0';
 }
 
-bool contains(char* s,char c){ // TODO func description?
+bool contains(char* s,char c){
 	int len = strlen(s);
 	int i=0;
 	for (i=0;i<len;i++){
@@ -117,9 +118,22 @@ void splitmid(char* s,char* left,char* right){ // return  left and right strings
 	trim(right);
 }
 
+bool allnum(char* s){
+	int i=0;
+	int len = strlen(s);
+	char tmp;
+	for(i=0;i<len;i++){
+		tmp = *(s+i);
+		if(!isdigit(tmp)){
+			return false;
+		}
+	}
+	return true;
+}
+
 bool insertconfig(SPConfig config,char* param,char* val){
 	if(strcmp(param,"spImagesDirectory")==0){
-		strcpy(config->spImagesDirectory,val); //TODO how to check that image directory is ok?
+		strcpy(config->spImagesDirectory,val);
 		return true;
 	}
 	if(strcmp(param,"spImagesPrefix")==0){
@@ -134,7 +148,10 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		return true;
 	}
 	if(strcmp(param,"spNumOfImages")==0){
-		int num = atoi(val);//TODO check if needed to check suffix of "556asd" because would result in 556.
+		if(!allnum(val)){//if val is not a string containing only numbers
+			return false;
+		}
+		int num = atoi(val);
 		if (num>0){
 			config->spNumOfImages = num;
 			return true;
@@ -142,7 +159,10 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		return false;
 	}
 	if(strcmp(param,"spPCADimension")==0){
-		int num = atoi(val);//TODO check if needed to check suffix of "556asd" because would result in 556.
+		if(!allnum(val)){//if val is not a string containing only numbers
+			return false;
+		}
+		int num = atoi(val);
 		if ((10<=num)&&(num<=128)){
 			config->spPCADimension = num;
 			return true;
@@ -154,7 +174,10 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		return true;
 	}
 	if(strcmp(param,"spNumOfFeatures")==0){
-		int num = atoi(val);//TODO check if needed to check suffix of "556asd" because would result in 556.
+		if(!allnum(val)){//if val is not a string containing only numbers
+			return false;
+		}
+		int num = atoi(val);
 		if (0<num){
 			config->spNumOfFeatures = num;
 			return true;
@@ -173,7 +196,10 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		return false;
 	}
 	if(strcmp(param,"spNumOfSimilarImages")==0){
-		int num = atoi(val);//TODO check if needed to check suffix of "556asd" because would result in 556.
+		if(!allnum(val)){//if val is not a string containing only numbers
+			return false;
+		}
+		int num = atoi(val);
 		if (0<num){
 			config->spNumOfSimilarImages = num;
 			return true;
@@ -196,7 +222,10 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		return false;
 	}
 	if(strcmp(param,"spKNN")==0){
-		int num = atoi(val);//TODO check if needed to check suffix of "556asd" because would result in 556.
+		if(!allnum(val)){//if val is not a string containing only numbers
+			return false;
+		}
+		int num = atoi(val);
 		if (0<num){
 			config->spKNN = num;
 			return true;
@@ -215,7 +244,10 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		return false;
 	}
 	if(strcmp(param,"spLoggerLevel")==0){
-		int num = atoi(val);//TODO check if needed to check suffix of "556asd" because would result in 556.
+		if(!allnum(val)){//if val is not a string containing only numbers
+			return false;
+		}
+		int num = atoi(val);
 		if ((0<num)&&(num<5)){
 			config->spLoggerLevel = num;
 			return true;
@@ -238,9 +270,24 @@ bool insertconfig(SPConfig config,char* param,char* val){
 
 SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 
+	//TODO add [R] error messeges SP_CONFIG_INVALID_STRING \ INTEGER and check how to
+
 	bool in;
+	if(filename == NULL){
+		*msg = SP_CONFIG_INVALID_ARGUMENT;
+		return NULL;
+	}
 	FILE* fp = fopen(filename,"r");
+	if(fp == NULL){
+		*msg = SP_CONFIG_CANNOT_OPEN_FILE;
+		return NULL;
+	}
 	SPConfig config = (SPConfig)malloc(sizeof(SPConfig)); //allocating memory and setting default values
+	if(config == NULL){
+		*msg = SP_CONFIG_ALLOC_FAIL;
+		return NULL;
+	}
+	//TODO check if needed so much mallocs here and add bad malloc check
 	config->spImagesDirectory = (char*)malloc(sizeof(char)*1024);
 	strcpy(config->spImagesDirectory,"notset");
 	config->spImagesPrefix = (char*)malloc(sizeof(char)*1024);
@@ -261,34 +308,63 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 	config->spLoggerFilename = (char*)malloc(sizeof(char)*1024);
 	strcpy(config->spLoggerFilename,"stdout");
 	char* line = (char*)malloc(sizeof(char)*1024);
+	if(line == NULL){
+		*msg = SP_CONFIG_ALLOC_FAIL;
+		return NULL;
+	}
 	char* param = (char*)malloc(sizeof(char)*1024);
+	if(param == NULL){
+		*msg = SP_CONFIG_ALLOC_FAIL;
+		return NULL;
+	}
 	char* val = (char*)malloc(sizeof(char)*1024);
+	if(val == NULL){
+		*msg = SP_CONFIG_ALLOC_FAIL;
+		return NULL;
+	}
+	int linenumber = 1;
 	while(fgets(line,1024,fp)!= NULL){ //each time read a line only each line is at most 1024 (moab)
 		trim(line);
 		if(*line == '#'){ // if a comment than continue to next line
+			linenumber++;
 			continue;
 		}
 		splitmid(line,param,val);
 		if ((contains(param,' '))||(contains(val,' '))){
-			//TODO complete error message
+			printf("File: %s\nLine: %d\nMessage: Invalid configuration line",filename,linenumber);
 			return NULL;
 		}
 		if(!(in = insertconfig(config,param,val))){
-			//TODO complete error message config fail
+			printf("File: %s\nLine: %d\nMessage: Invalid value - constraint not met",filename,linenumber);
 			return NULL;
 		}
+		linenumber++;
 	}
 	fclose(fp);
 	free(line);
 	free(param);
 	free(val);
-	if((strcmp(config->spImagesDirectory,"notset")==0)
-			||(strcmp(config->spImagesPrefix,"notset")==0)
-			||(strcmp(config->spImagesSuffix,"notset")==0)
-			||(config->spNumOfImages == 0)){
-		//TODO change messages
+	if((strcmp(config->spImagesDirectory,"notset")==0)){
+		printf("File: %s\nLine: %d\nMessage: Parameter %s is not set",filename,linenumber,"spImagesDirectory");
+		*msg = SP_CONFIG_MISSING_DIR;
 		return NULL;
 	}
+	if(strcmp(config->spImagesPrefix,"notset")==0){
+		printf("File: %s\nLine: %d\nMessage: Parameter %s is not set",filename,linenumber,"spImagesPrefix");
+		*msg = SP_CONFIG_MISSING_PREFIX;
+		return NULL;
+	}
+	if(strcmp(config->spImagesSuffix,"notset")==0){
+		printf("File: %s\nLine: %d\nMessage: Parameter %s is not set",filename,linenumber,"spImagesSuffix");
+		*msg = SP_CONFIG_MISSING_SUFFIX;
+		return NULL;
+	}
+	if(config->spNumOfImages == 0){
+		printf("File: %s\nLine: %d\nMessage: Parameter %s is not set",filename,linenumber,"spNumOfImages");
+		*msg = SP_CONFIG_MISSING_NUM_IMAGES;
+		return NULL;
+	}
+	*msg = SP_CONFIG_SUCCESS;
 	return config;
 }
 
@@ -352,7 +428,7 @@ SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config){
 void spConfigDestroy(SPConfig config){
 	if (config != NULL) {
 		free (config);
-		// TODO - is this enugth? michael, what addishional filleds do you set in make?
+		// TODO - is this enough? michael, what additional filleds do you set in make?
 	}
 }
 
