@@ -1,1 +1,5 @@
 בCONFIG האם צריך לוודא גי הכתובת של התמונות גדול מספיק?
+//TODO check if includes should be oly on header file. (not sopposed to be changed) meantime all not in header are in source
+3 איפה נמצא ההפנייה לקובץ הגדרות לפי הצורה שניסחו בתרגיל (לא דיפולטי)
+4 במהלך יצירת הקונפיג האם צריך להדפיס לוגר
+מה הכוונה שהלוגרפיילניים יהיה אסטידיאאוט זה אומר שלא עוישים לוגר בכלל?

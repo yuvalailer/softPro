@@ -29,6 +29,8 @@ int main(int argc,char* argv[]){ //TODO finish insert [R] error messeges page 6 
 
 
 
+
+
 	printf("all good");
 	return 1;
 }

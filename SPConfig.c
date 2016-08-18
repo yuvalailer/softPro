@@ -10,7 +10,7 @@
 #include <assert.h>
 #include <ctype.h>
 
-//TODO check if okay that all oxilary functions only in source file and without any description
+//TODO add description to all oxilary functions above each one.
 //TODO check if includes should be oly on header file. (not sopposed to be changed) meantime all not in header are in source
 
 typedef enum {RANDOM, MAX_SPREAD,INCREMENTAL} method;
@@ -49,6 +49,7 @@ int configUtills (int filed, const SPConfig config, SP_CONFIG_MSG* msg){
 		ans = filed;
 		if(filed == 0){ // what is the EXtract mode?
 			*msg = SP_CONFIG_INVALID_ARGUMENT; //TODO un-specified answer in this case.. send an email to moab.
+			//TODO change this part of the function according to the main function
 		} else {
 			*msg = SP_CONFIG_SUCCESS;
 		}
@@ -395,33 +396,36 @@ int spConfigGetPCADim(const SPConfig config, SP_CONFIG_MSG* msg){
 	if (ans == 0){
 		return -1;
 	} else {
-		return ans; // TODO free ans?
+		return ans;
 	}
 }
 SP_CONFIG_MSG spConfigGetImagePath(char* imagePath, const SPConfig config,int index){
-	//char* path;
+	char* tmp;
+	sprintf("%d",tmp,index);
+
+	if(strlen(imagePath)<(strlen(tmp)+strlen(config->spImagesDirectory)+strlen(config->spImagesPrefix)+strlen(config->spImagesSuffix))){
+		return SP_CONFIG_ALLOC_FAIL;
+	}
 	if(imagePath == NULL || config == NULL){
 		return SP_CONFIG_INVALID_ARGUMENT;
 	} else if (index>=config->spNumOfImages) {
 		return SP_CONFIG_INDEX_OUT_OF_RANGE;
 	} else {
 		sprintf(imagePath, "%s%s%d%s",config->spImagesDirectory,config->spImagesPrefix,index,config->spImagesSuffix);
-		//*imagePath = *path;
 		return SP_CONFIG_SUCCESS;
-		//TODO do we need to check the size of the file in this point?
 	}
 }
 
 
 SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config){
-	//char* path;
+	if(strlen(pcaPath)<(strlen(config->spImagesDirectory)+strlen(config->spPCAFilename))){
+		return SP_CONFIG_ALLOC_FAIL;
+	}
 	if(pcaPath == NULL || config == NULL){
 		return SP_CONFIG_INVALID_ARGUMENT;
 	} else {
 		sprintf(pcaPath, "%s%s",config->spImagesDirectory, config->spPCAFilename);
-		//*pcaPath = *path;
 		return SP_CONFIG_SUCCESS;
-		//TODO do we need to check the size of the file in this point?
 	}
 }
 
