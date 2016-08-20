@@ -16,16 +16,15 @@ struct sp_kdarray_t {
 	int** mat; // the array of sorted indexes referring to P array;
 };
 
-//TODO comperator;
-int spcompare(const void * a,const void * b){
-	a = (const double**) a ;b = (const double**) b;
-	return (a[0][num]-b[0][num]);
+int spcompare(const void * x,const void * y){
+	double** a = (double**)x; double ** b = (double**)y;
+	return ( a[0][num]-b[0][num]);
 }
 
 void matrixBuild (int ** mat,int col,int rows,double*** temp) {
 	int i;
 	num=0;
-	for (i=0;i<rows;i++){
+	for (i=0;i<rows;i++) {
 		qsort(temp,col,sizeof(temp[0]),spcompare);
 		num++;
 	}
