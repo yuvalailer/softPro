@@ -10,8 +10,8 @@
 #include <assert.h>
 #include <ctype.h>
 
-//TODO add description to all oxilary functions above each one.
-//TODO check if includes should be oly on header file. (not sopposed to be changed) meantime all not in header are in source
+//TODO add description to all auxiliary functions above each one.
+//TODO check if includes should be only on header file. (not supposed to be changed) meantime all not in header are in source
 
 typedef enum {RANDOM, MAX_SPREAD,INCREMENTAL} method;
 
@@ -53,8 +53,8 @@ int configUtills (int filed, const SPConfig config, SP_CONFIG_MSG* msg){
 		} else {
 			*msg = SP_CONFIG_SUCCESS;
 		}
-		return ans; // retrun an int. to be change if needed in the function.
 	}
+	return ans; // Return an int. to be change if needed in the function.
 }
 
 void trim(char*s){
