@@ -30,7 +30,6 @@ void matrixBuild (int ** mat,int col,int rows,double*** temp) {
 	}
 }
 
-
 SPKDArray Init(SPPoint* arr, int size){
 	int i;
 	int j;
@@ -45,6 +44,7 @@ SPKDArray Init(SPPoint* arr, int size){
 	for(i = 0; i < size ; i++){ // fill the temp arry;
 		temp[i][1] = spPointGetIndex(arr[i]);
 		temp[i][0] = arr[i]->data; //TODO how to copy the data to the new array? do we need a new "geter"?
+		memcpy(arr[i]->data, temp[i][0], sizeof(arr[i]->data));
 	}
 
 	SPKDArray ans = (SPKDArray)malloc(sizeof(SPKDArray));
