@@ -431,8 +431,12 @@ SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config){
 
 void spConfigDestroy(SPConfig config){
 	if (config != NULL) {
+		free(config->spImagesDirectory);
+		free(config->spImagesPrefix);
+		free(config->spImagesSuffix);
+		free(config->spPCAFilename);
+		free(config->spLoggerFilename);
 		free (config);
-		// TODO - is this enough? michael, what additional filleds do you set in make?
 	}
 }
 
