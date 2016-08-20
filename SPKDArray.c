@@ -18,15 +18,15 @@ struct sp_kdarray_t {
 
 int spcompare(const void * x,const void * y){
 	double** a = (double**)x; double ** b = (double**)y;
-	return ( a[0][num]-b[0][num]);
+	return ( a[0][num]-b[0][num]);// compering two points by their data.
 }
 
 void matrixBuild (int ** mat,int col,int rows,double*** temp) {
 	int i;
 	num=0;
 	for (i=0;i<rows;i++) {
-		qsort(temp,col,sizeof(temp[0]),spcompare);
-		num++;
+		qsort(temp,col,sizeof(temp[0]),spcompare); //sorting by data, and representing by index of each point.
+		num++; // sorting by first data value, then second etc..
 	}
 }
 
@@ -43,8 +43,8 @@ SPKDArray Init(SPPoint* arr, int size){
 
 	for(i = 0; i < size ; i++){ // fill the temp arry;
 		temp[i][1] = spPointGetIndex(arr[i]);
-		temp[i][0] = arr[i]->data; //TODO how to copy the data to the new array? do we need a new "geter"?
-		memcpy(arr[i]->data, temp[i][0], sizeof(arr[i]->data));
+		temp[i][0] = (double*)arr[i]->data; //TODO how to copy the data to the new array? do we need a new "geter"?
+		//memcpy( arr[i]->data, temp[i][0], sizeof(arr[i]->data) );
 	}
 
 	SPKDArray ans = (SPKDArray)malloc(sizeof(SPKDArray));
