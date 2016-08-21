@@ -20,7 +20,6 @@ typedef struct tuple{
 
 int tuplesort(const void * x,const void * y){
 	Tuple* a = (Tuple*)x; Tuple* b = (Tuple*)y;
-
 	return ((spPointGetAxisCoor(a->point,a->sortingindex)) - (spPointGetAxisCoor(b->point,b->sortingindex)));
 }
 
@@ -34,11 +33,10 @@ SPKDArray Init(SPPoint* arr, int size){
 		temp[i].point = spPointCopy(arr[i]);
 		temp[i].sortingindex = 0;
 	}
-	ans->mat = (int**)malloc(sizeof(int*)*size); //initialize matrix of indexes
-	for (i = 0; i < size; ++i) {
-		ans->mat[i] = (int*)malloc(sizeof(int)*dim);
+	ans->mat = (int**)malloc(sizeof(int*)*dim); //initialize matrix of indexes
+	for (i = 0; i < dim; ++i) {
+		ans->mat[i] = (int*)malloc(sizeof(int)*size);
 	}
-
 	for (i = 0; i < dim; ++i) { //fill matrix of indexes
 		for(j=0;j<size;j++){
 			temp[j].sortingindex = i;
@@ -54,6 +52,52 @@ SPKDArray Init(SPPoint* arr, int size){
 		ans->pointsarr[i] = (SPPoint)malloc(sizeof(SPPoint));
 		ans->pointsarr[i] = spPointCopy(arr[i]);
 	}
+	free (temp);
+	return ans;
+}
+
+SPKDArray* Split(SPKDArray kdArr, int coor){
+	int size = kdArr->col;
+	int dim = kdArr->rows;
+	int i,j;
+	int sizeR = (int)size/2;
+	int sizeL = size - sizeR;
+	int* map1 = (int*)malloc(sizeof(int)*size);
+	int* map2 = (int*)malloc(sizeof(int)*size);
+
+	SPKDArray* ans = (SPKDArray*)malloc(sizeof(SPKDArray)*2);
+
+	SPKDArray left = (SPKDArray)malloc(sizeof(SPKDArray));
+	SPKDArray right = (SPKDArray)malloc(sizeof(SPKDArray));
+	for(j = 0;j < dim ; j++ ) {
+
+		for (i = 0; i < size; i++) {
+			map1[i] = -1; map2[i] = -1; // fill map1 and 2 to be all -1;
+		}
+
+		for(i=0;i<sizeL;i++){
+			map1[kdArr->mat[coor][i]] =  i;
+		}
+		for(i=0;i<sizeR;i++){
+			map2[kdArr->mat[coor][i+sizeL]] =  i;
+		}
+	}
+	// make the P's;
+	for(i=0;i<sizeL;i++){ // fill left
+		left->pointsarr[i] = kdArr->pointsarr[kdArr->mat[coor][i]];
+	}
+
+	for(i=0;i<sizeR;i++){ //fill right
+		right->pointsarr[i] = kdArr->pointsarr[kdArr->mat[coor][i+sizeL]]; // TODO is sizeL the correcrt?
+	}
+
+	//	left->col = sizeL;
+	//	right->col = sizeR;
+	//	left->rows = kdArr->rows;
+	//	right->rows = kdArr->rows;
+
+	ans[0] = left;
+	ans[1] = right;
 	return ans;
 }
 
@@ -79,10 +123,19 @@ int main(){
 
 	SPKDArray kdarr = Init(arr,size);
 
+	int i,j;
+
+	for (i = 0; i < kdarr->rows; i++) {
+		for (j = 0; j < kdarr->col;j++) {
+			printf("%d ",kdarr->mat[i][j]);
+		}
+		printf("\n");
+	}
+
 	return 0;
 }
-*/
 
+ */
 
 
 
