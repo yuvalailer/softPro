@@ -8,11 +8,9 @@
  *///     Author: NMR
 
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "SPKDArray.h"
-#include "SPPoint.h"
+#include <stdlib.h>
+#define _GNU_SOURCE
 
 struct sp_kdarray_t {
 	SPPoint* pointsarr;
@@ -28,8 +26,7 @@ typedef struct tuple{
 
 int tuplesort(const void * x,const void * y, const void * arg){
 	Tuple* a = (Tuple*)x; Tuple* b = (Tuple*)y; int* sortingindex = (int*)arg;
-	printf("returns %d - %d\n",spPointGetAxisCoor(a->point,sortingindex),spPointGetAxisCoor(b->point,sortingindex));
-	return ((spPointGetAxisCoor(a->point,sortingindex)) - (spPointGetAxisCoor(b->point,sortingindex)));
+	return ((spPointGetAxisCoor(a->point,a->sortingindex)) - (spPointGetAxisCoor(b->point,b->sortingindex)));
 }
 
 SPKDArray Init(SPPoint* arr, int size){
@@ -64,6 +61,7 @@ SPKDArray Init(SPPoint* arr, int size){
 	for (i = 0; i < dim; ++i) { //fill matrix of indexes
 		printf("the %d-th row is: ",i);
 		qsort_r(temp,size,sizeof(Tuple),tuplesort,&sortingindex); // sort the array
+
 		for(j=0;j<size;j++){
 			ans->mat[i][j] = temp[j].dex;
 			printf("%d ",temp[j].dex);
