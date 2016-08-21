@@ -1,16 +1,10 @@
-
-
-
-
- /* SPKDArray.c
+/* SPKDArray.c
  *
  *  Created on: 15 баев„ 2016
- *///     Author: NMR
+ *///     Author: yuval ailer & michael ozeri
 
 
 #include "SPKDArray.h"
-#include <stdlib.h>
-#define _GNU_SOURCE
 
 struct sp_kdarray_t {
 	SPPoint* pointsarr;
@@ -22,11 +16,14 @@ struct sp_kdarray_t {
 typedef struct tuple{
 	SPPoint point;
 	int dex;
+	int sortingindex;
 }Tuple;
 
 int tuplesort(const void * x,const void * y, const void * arg){
 	Tuple* a = (Tuple*)x; Tuple* b = (Tuple*)y; int* sortingindex = (int*)arg;
+
 	return ((spPointGetAxisCoor(a->point,a->sortingindex)) - (spPointGetAxisCoor(b->point,b->sortingindex)));
+
 }
 
 SPKDArray Init(SPPoint* arr, int size){
@@ -59,15 +56,19 @@ SPKDArray Init(SPPoint* arr, int size){
 	}
 
 	for (i = 0; i < dim; ++i) { //fill matrix of indexes
+
+		for(j=0;j<size;j++){
+			temp[i].sortingindex = i;
+		}
 		printf("the %d-th row is: ",i);
-		qsort_r(temp,size,sizeof(Tuple),tuplesort,&sortingindex); // sort the array
+		qsort(temp,size,sizeof(Tuple),tuplesort); // sort the array
 
 		for(j=0;j<size;j++){
 			ans->mat[i][j] = temp[j].dex;
 			printf("%d ",temp[j].dex);
 		}
 		sortingindex++;
-		printf("sorting by index number %d\n");
+		printf("sorting by index number %d\n",i);
 	}
 	ans->rows = dim;
 	ans->col = size;
@@ -80,6 +81,7 @@ SPKDArray Init(SPPoint* arr, int size){
 	return ans;
 }
 
+/*
 int main(){
 
 	int j;
@@ -113,6 +115,7 @@ int main(){
 
 	return 0;
 }
+*/
 
 
 

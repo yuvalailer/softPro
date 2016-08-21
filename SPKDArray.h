@@ -9,7 +9,9 @@
 #define SOFTPRO_SPKDARRAY_H_
 
 #include<stdio.h>
+
 #include<stdlib.h>
+
 #include "SPPoint.h"
 
 typedef struct sp_kdarray_t* SPKDArray;
