@@ -70,8 +70,20 @@ SPKDArray* Split(SPKDArray kdArr, int coor){
 	SPKDArray* ans = (SPKDArray*)malloc(sizeof(SPKDArray)*2);
 	SPKDArray left = (SPKDArray)malloc(sizeof(SPKDArray));
 	SPKDArray right = (SPKDArray)malloc(sizeof(SPKDArray));
+	right->pointsarr = (SPPoint*)malloc(sizeof(SPPoint)*sizeR);
+	left->pointsarr = (SPPoint*)malloc(sizeof(SPPoint)*sizeL);
 
-	for(i=0;i<sizeR;i++){ // fill all left in x;
+	right->mat = (int**)malloc(sizeof(int*)*dim); //initialize matrix of indexes
+	for (i = 0; i < dim; ++i) {
+		right->mat[i] = (int*)malloc(sizeof(int)*sizeR);
+	}
+
+	left->mat = (int**)malloc(sizeof(int*)*dim); //initialize matrix of indexes
+		for (i = 0; i < dim; ++i) {
+			left->mat[i] = (int*)malloc(sizeof(int)*sizeL);
+		}
+
+	for(i=0;i<sizeL;i++){ // fill all left in x;
 		X[kdArr->mat[coor][i]] = 0;
 	}
 	for(i=0;i<sizeR;i++){ // fill all the right in X;
@@ -81,7 +93,7 @@ SPKDArray* Split(SPKDArray kdArr, int coor){
 
 	// make the P's;
 		for(i=0;i<sizeL;i++){ // fill left
-			left->pointsarr[i] = kdArr->pointsarr[kdArr->mat[i][coor]];
+			left->pointsarr[i] = kdArr->pointsarr[kdArr->mat[coor][i]];
 		}
 
 		for(i=0;i<sizeR;i++){ //fill right
@@ -151,12 +163,12 @@ int main(){
 
 	int i,j;
 
-	for (i = 0; i < kdarr->rows; i++) {
+	/*for (i = 0; i < kdarr->rows; i++) {
 		for (j = 0; j < kdarr->col;j++) {
 			printf("%d ",kdarr->mat[i][j]);
 		}
 		printf("\n");
-	}
+	}*/
 	SPKDArray* sparr = Split(kdarr,0);
 	SPKDArray ail1 = sparr[0];
 	SPKDArray ail2 = sparr[1];
