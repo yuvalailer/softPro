@@ -4,7 +4,7 @@
 
 #include "SPConfig.h"
 
-int main(int argc,char* argv[]){ //TODO finish insert [R] error messeges page 6 in the end.
+/*int main(int argc,char* argv[]){ //TODO finish insert [R] error messeges page 6 in the end.
 
 	SPConfig config = (SPConfig)malloc(sizeof(SPConfig));
 	if (config == NULL){//TODO check what happens in bad allocation what does main return?
@@ -26,5 +26,5 @@ int main(int argc,char* argv[]){ //TODO finish insert [R] error messeges page 6 
 
 	printf("all good");
 	return 1;
-}
+}*/
 
