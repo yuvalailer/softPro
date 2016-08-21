@@ -19,8 +19,8 @@ typedef struct tuple{
 	int sortingindex;
 }Tuple;
 
-int tuplesort(const void * x,const void * y, const void * arg){
-	Tuple* a = (Tuple*)x; Tuple* b = (Tuple*)y; int* sortingindex = (int*)arg;
+int tuplesort(const void * x,const void * y){
+	Tuple* a = (Tuple*)x; Tuple* b = (Tuple*)y;
 
 	return ((spPointGetAxisCoor(a->point,a->sortingindex)) - (spPointGetAxisCoor(b->point,b->sortingindex)));
 
@@ -81,7 +81,6 @@ SPKDArray Init(SPPoint* arr, int size){
 	return ans;
 }
 
-/*
 int main(){
 
 	int j;
@@ -115,7 +114,6 @@ int main(){
 
 	return 0;
 }
-*/
 
 
 
