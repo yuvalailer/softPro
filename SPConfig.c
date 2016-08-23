@@ -430,7 +430,8 @@ SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config){
 }
 
 int spConfigGetMethud(const SPConfig config){
-	return config->spKDTreeSplitMethod;
+	bool a = config->spExtractionMode;
+	return  config->spKDTreeSplitMethod;
 }
 
 bool spConfigGetExtractionMode(const SPConfig config){
