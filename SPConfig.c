@@ -26,7 +26,7 @@ struct sp_config_t{ //already a pointer!!!! SPConfig
 	int spNumOfFeatures;
 	bool spExtractionMode;
 	int spNumOfSimilarImages;
-	method spKDTreeSplitMethod;
+	method spKDTreeSplitMethod; // ?
 	int spKNN;
 	bool spMinimalGUI;
 	int spLoggerLevel;
@@ -427,6 +427,10 @@ SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config){
 		sprintf(pcaPath, "%s%s",config->spImagesDirectory, config->spPCAFilename);
 		return SP_CONFIG_SUCCESS;
 	}
+}
+
+int spConfigGetMethud(const SPConfig config){
+	return config->spKDTreeSplitMethod;
 }
 
 void spConfigDestroy(SPConfig config){

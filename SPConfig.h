@@ -164,10 +164,20 @@ SP_CONFIG_MSG spConfigGetImagePath(char* imagePath, const SPConfig config,int in
  */
 SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config);
 
+/*
+Returns the split method as an int. were:
+1. MAX_SPREAD = 0
+2. RANDOM = 1
+3. INCREMENTAL = 2
+*/
+
+int spConfigGetMethud(const SPConfig config);
+
 /**
  * Frees all memory resources associate with config. 
  * If config == NULL nothig is done.
  */
+
 void spConfigDestroy(SPConfig config);
 
 #endif /* SPCONFIG_H_ */

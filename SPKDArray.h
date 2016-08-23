@@ -45,4 +45,10 @@ SPKDArray Init(SPPoint* arr, int size);
 
 SPKDArray* Split(SPKDArray kdArr, int coor);
 
+int Getcol(SPKDArray kdArr);
+
+int Getrows(SPKDArray kdArr);
+
+SPPoint* Getpoints(SPKDArray kdArr);
+
 #endif /* SOFTPRO_SPKDARRAY_H_ */

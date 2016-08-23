@@ -89,9 +89,9 @@ SPKDArray* Split(SPKDArray kdArr, int coor){
 	}
 
 	left->mat = (int**)malloc(sizeof(int*)*dim); //initialize matrix of indexes
-		for (i = 0; i < dim; ++i) {
-			left->mat[i] = (int*)malloc(sizeof(int)*sizeL);
-		}
+	for (i = 0; i < dim; ++i) {
+		left->mat[i] = (int*)malloc(sizeof(int)*sizeL);
+	}
 
 	for(i=0;i<sizeL;i++){ // fill all left in x;
 		X[kdArr->mat[coor][i]] = 0;
@@ -102,55 +102,68 @@ SPKDArray* Split(SPKDArray kdArr, int coor){
 	// now we have x[1,0,...]
 
 	// make the P's;
-		for(i=0;i<sizeL;i++){ // fill left
-			left->pointsarr[i] = kdArr->pointsarr[kdArr->mat[coor][i]];
-		}
+	for(i=0;i<sizeL;i++){ // fill left
+		left->pointsarr[i] = kdArr->pointsarr[kdArr->mat[coor][i]];
+	}
 
-		for(i=0;i<sizeR;i++){ //fill right
-			right->pointsarr[i] = kdArr->pointsarr[kdArr->mat[coor][i+sizeL]]; // TODO is sizeL the correcrt?
-		}
+	for(i=0;i<sizeR;i++){ //fill right
+		right->pointsarr[i] = kdArr->pointsarr[kdArr->mat[coor][i+sizeL]]; // TODO is sizeL the correcrt?
+	}
 	// maping 1 and 2.
 
-		for (i = 0; i < size; i++) {
-			map1[i] = -1; map2[i] = -1; // fill map1 and 2 to be all -1;
-		}
+	for (i = 0; i < size; i++) {
+		map1[i] = -1; map2[i] = -1; // fill map1 and 2 to be all -1;
+	}
 
-		for(i=0;i<sizeL;i++){
-			map1[kdArr->mat[coor][i]] =  i;
-		}
-		for(i=0;i<sizeR;i++){
-			map2[kdArr->mat[coor][i+sizeL]] =  i;
-		}
+	for(i=0;i<sizeL;i++){
+		map1[kdArr->mat[coor][i]] =  i;
+	}
+	for(i=0;i<sizeR;i++){
+		map2[kdArr->mat[coor][i+sizeL]] =  i;
+	}
 
-		// scanning all the original matrix to fill right and left matrix.
+	// scanning all the original matrix to fill right and left matrix.
 
-		for(i=0;i<dim;i++){ // move on col
-			t = 0; p = 0;
-			for(j=0;j<size;j++){ // move on row
-				num = kdArr->mat[i][j]; //TODO first row or col? in i and j?
-				if(X[num] == 0){ // if the cell is in p1
-					left->mat[i][t] = map1[num]; // a1 in place t is the new cordinate in p1;
-					t++;
-				} else { // if the cell is in p2
-					right->mat[i][p] = map2[num];// a2 in place p is the new cordinate in p2;
-					p++;
-				}
+	for(i=0;i<dim;i++){ // move on col
+		t = 0; p = 0;
+		for(j=0;j<size;j++){ // move on row
+			num = kdArr->mat[i][j]; //TODO first row or col? in i and j?
+			if(X[num] == 0){ // if the cell is in p1
+				left->mat[i][t] = map1[num]; // a1 in place t is the new cordinate in p1;
+				t++;
+			} else { // if the cell is in p2
+				right->mat[i][p] = map2[num];// a2 in place p is the new cordinate in p2;
+				p++;
 			}
 		}
+	}
 
 
-		left->col = sizeL;
-		right->col = sizeR;
-		left->rows = kdArr->rows;
-		right->rows = kdArr->rows;
+	left->col = sizeL;
+	right->col = sizeR;
+	left->rows = kdArr->rows;
+	right->rows = kdArr->rows;
 
-		ans[0] = left;
-		ans[1] = right;
-		return ans;
+	ans[0] = left;
+	ans[1] = right;
+	return ans;
 }
 
+int Getcol(SPKDArray kdArr){
+	int a = kdArr->col;
+	return a;
+}
 
-/*
+int Getrows(SPKDArray kdArr){
+	int a = kdArr->rows;
+	return a;
+}
+
+SPPoint* Getpoints(SPKDArray kdArr){
+	SPPoint* a = kdArr->pointsarr;
+	return a;
+}
+
 int main(){
 
 	int size = 5;
@@ -193,15 +206,15 @@ int main(){
 	}
 
 	for (i = 0; i < 2; ++i) {
-			for (j = 0; j < 2; ++j) {
-				printf("%d ",ail2->mat[i][j]);
-			}
-			printf("\n");
+		for (j = 0; j < 2; ++j) {
+			printf("%d ",ail2->mat[i][j]);
 		}
+		printf("\n");
+	}
 
 	return 0;
 }
-*/
+
 
 
 

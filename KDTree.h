@@ -8,10 +8,8 @@
 #ifndef SOFTPRO_KDTREE_H_
 #define SOFTPRO_KDTREE_H_
 
-#include <stdbool.h>
-#include <stdio.h>
-#include <string.h>
-#include "SPLogger.h"
+#include "SPPoint.h"
+#include "SPKDArray.h"
 #include "SPConfig.h"
 
 /*A Kd-tree struct. used for sorting and matching the picturs to one
@@ -27,8 +25,9 @@
  based on the lecture on kd-trees.
  */
 
-typedef struct spKdTreeNode spKdTreeNode;
+typedef struct spTreeNode* KDTreeNode;
 
+KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config);
 
 #endif /* SOFTPRO_KDTREE_H_ */
 
