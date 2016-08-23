@@ -14,13 +14,25 @@
 #include "SPPoint.h"
 
 /*
- * the functions gets SPPoint and a file writer and writes the img5.feats file from the feats.
+ * the functions gets SPPoint array and a file writer and writes the img5.feats file from the feats.
  * relevant only to extraction mode in main function
- * @param  fw - a file writer, temppoint - a SPPoint containing the feats to be written into fw.
+ * @param  fw - a file writer, temppoint - a SPPoint array containing the feats to be written into fw.
  *
  */
 
-void writefeats(FILE* fw,SPPoint temppoint);
+void writefeats(FILE* fw,SPPoint* temppoint,int numOfFeats);
+
+/*
+ * the function reads *.feats file given by fr and returns the feats (SPPoint array)
+ * that the file represents.
+ * relevant only to non - extraction mode in main function
+ * @param  fr - a file reader, size - number of feats to extract
+ * @return - SPPoint* - the array of features for the image
+ *
+ */
+
+SPPoint* getfeats(FILE* fr,int size);
+
 
 
 #endif /* SOFTPRO_AUXILIARYFUNC_H_ */

@@ -57,6 +57,11 @@ int configUtills (int filed, const SPConfig config, SP_CONFIG_MSG* msg){
 	return ans; // Return an int. to be change if needed in the function.
 }
 
+/*
+ * the function trims whitespaces from both ends of the string s accepted.
+ * @param - s the string to be changed in-place
+ */
+
 void trim(char*s){
 	int len = strlen(s);
 	int i=0;
@@ -85,6 +90,13 @@ void trim(char*s){
 	}
 	*(s+len-cnt) = '\0';
 }
+
+/*
+ * the function checks if string s contains char c
+ * @param - s the string to check
+ * c - the char checking if s contains
+ * @return true if contains else false
+ */
 
 bool contains(char* s,char c){
 	int len = strlen(s);
@@ -429,7 +441,7 @@ SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config){
 	}
 }
 
-int spConfigGetMethud(const SPConfig config){
+int spConfigGetMethod(const SPConfig config){
 	bool a = config->spExtractionMode;
 	return  config->spKDTreeSplitMethod;
 }

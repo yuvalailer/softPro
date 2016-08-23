@@ -97,6 +97,7 @@ KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initing a Tree 
 	return ans;
 }
 
+/*
 int main(){
 
 	int size = 5;
@@ -138,6 +139,7 @@ int main(){
 	printer(source);
 	return 0;
 }
+*/
 
 
 

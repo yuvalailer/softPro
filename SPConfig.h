@@ -171,7 +171,7 @@ Returns the split method as an int. were:
 3. INCREMENTAL = 2
  */
 
-int spConfigGetMethud(const SPConfig config);
+int spConfigGetMethod(const SPConfig config);
 
 /**
  * Frees all memory resources associate with config. 
