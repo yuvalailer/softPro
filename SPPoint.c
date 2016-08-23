@@ -79,4 +79,9 @@ double spPointL2SquaredDistance(SPPoint p, SPPoint q){
 	return sum;
 }
 
+double* getDat(SPPoint point) { //TODO yuval: deacler header
+	double* dat = point->data;
+	return dat;
+}
+
 

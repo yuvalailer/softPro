@@ -158,6 +158,10 @@ int Getrows(SPKDArray kdArr){
 	int a = kdArr->rows;
 	return a;
 }
+int** GetMat(SPKDArray kdArr){ // TODO yuval: all needs to be declared in header.
+	int** a = kdArr->mat;
+	return a;
+}
 
 SPPoint* Getpoints(SPKDArray kdArr){
 	SPPoint* a = kdArr->pointsarr;
