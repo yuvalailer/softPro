@@ -5,6 +5,7 @@
 
 #include "SPConfig.h"
 #include "SPPoint.h"
+#include "auxiliaryfunc.h"
 
 using namespace sp;
 
@@ -54,14 +55,18 @@ int main(int argc,char* argv[]){
 		char* temppath;
 		int tempnfeats = spConfigGetNumOfFeatures(config,&msg); //TODO check messege
 		int tempnofimages = spConfigGetNumOfImages(config,&msg);//TODO where to store messages SPLogger
+		FILE* fw;
 
-		for (i = 0; i < tempnofimages; i++) {
+		for (i = 0; i < tempnofimages; i++) { //for each image in image directory
 			msg = spConfigGetImagePath (temppath,config,i); //TODO mssg to where
 			temppoint = getImageFeatures(temppath,i,tempnfeats);
+			msg = spConfigGetImagePathfeats(temppath,config,i); //get the file to write to
+			fw = fopen(temppath,"w");//open file for writing
+
 
 
 		}
-
+		fclose(fw);
 	}
 	else{ // non - extraction mode
 

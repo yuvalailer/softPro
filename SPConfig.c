@@ -437,6 +437,24 @@ bool spConfigGetExtractionMode(const SPConfig config){
 	return config->spExtractionMode;
 }
 
+SP_CONFIG_MSG spConfigGetImagePathfeats(char* imagePath, const SPConfig config,int index){
+	char* tmp;
+	sprintf("%d",tmp,index);
+
+	if(strlen(imagePath)<(strlen(tmp)+strlen(config->spImagesDirectory)+strlen(config->spImagesPrefix)+6)){
+		return SP_CONFIG_ALLOC_FAIL;
+	}
+	if(imagePath == NULL || config == NULL){
+		return SP_CONFIG_INVALID_ARGUMENT;
+	} else if (index>=config->spNumOfImages) {
+		return SP_CONFIG_INDEX_OUT_OF_RANGE;
+	} else {
+		sprintf(imagePath, "%s%s%d%s",config->spImagesDirectory,config->spImagesPrefix,index,".feats");
+		return SP_CONFIG_SUCCESS;
+	}
+}
+
+
 void spConfigDestroy(SPConfig config){
 	if (config != NULL) {
 		free(config->spImagesDirectory);

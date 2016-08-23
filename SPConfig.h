@@ -187,4 +187,29 @@ void spConfigDestroy(SPConfig config);
 
 bool spConfigGetExtractionMode(const SPConfig config);
 
+/**
+ * Given an index 'index' the function stores in imagePath the full path of the feats file of the
+ * ith image.
+ *
+ * For example:
+ * Given that the value of:
+ *  spImagesDirectory = "./images/"
+ *  spImagesPrefix = "img"
+ *  spNumOfImages = 17
+ *  index = 10
+ *
+ * The functions stores "./images/img10.feats" to the address given by imagePath.
+
+ *
+ * @param imagePath - an address to store the result in, it must contain enough space.
+ * @param config - the configuration structure
+ * @param index - the index of the image.
+ *
+ * @return
+ * - SP_CONFIG_INVALID_ARGUMENT - if imagePath == NULL or config == NULL
+ * - SP_CONFIG_INDEX_OUT_OF_RANGE - if index >= spNumOfImages
+ * - SP_CONFIG_SUCCESS - in case of success
+ */
+SP_CONFIG_MSG spConfigGetImagePathfeats(char* imagePath, const SPConfig config,int index);
+
 #endif /* SPCONFIG_H_ */
