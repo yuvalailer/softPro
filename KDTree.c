@@ -8,7 +8,6 @@
 #include "KDTree.h"
 #include <time.h>
 #include <stdlib.h>
-
 #define INVALID -1;
 // making a Tree Node struct
 
@@ -94,6 +93,41 @@ KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initing a Tree 
 	ans = RecTree(array,mune,cord);
 	return ans;
 }
+
+int main(){
+
+	int size = 5;
+	int dim = 2;
+
+	SPPoint* arr = (SPPoint*)malloc(sizeof(SPPoint)*size);
+
+	double a1[2]= {1,2};
+	double b1[2] = {123,70};
+	double c1[2] = {2,7};
+	double d1[2] = {9,11};
+	double e1[2]= {3,4};
+
+	arr[0] = (spPointCreate(a1,dim,0));
+	arr[1] = (spPointCreate(b1,dim,1));
+	arr[2] = (spPointCreate(c1,dim,2));
+	arr[3] = (spPointCreate(d1,dim,3));
+	arr[4] = (spPointCreate(e1,dim,4));
+	SPConfig config = Init();
+	SPKDArray kdarr = Init(arr,size);
+	KDTreeNode source = InitTree(arr,5,config);
+	printf(" a - ok !! ");
+
+	void printer(KDTreeNode node){
+		if(node == NULL){
+
+		} else {
+			printf("");
+		}
+	}
+}
+
+
+
 
 
 

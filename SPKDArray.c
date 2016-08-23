@@ -168,59 +168,59 @@ SPPoint* Getpoints(SPKDArray kdArr){
 	return a;
 }
 
-int main(){
-
-	int size = 5;
-	int dim = 2;
-
-	SPPoint* arr = (SPPoint*)malloc(sizeof(SPPoint)*size);
-
-	double a1[2]= {1,2};
-	double b1[2] = {123,70};
-	double c1[2] = {2,7};
-	double d1[2] = {9,11};
-	double e1[2]= {3,4};
-
-	arr[0] = (spPointCreate(a1,dim,0));
-	arr[1] = (spPointCreate(b1,dim,1));
-	arr[2] = (spPointCreate(c1,dim,2));
-	arr[3] = (spPointCreate(d1,dim,3));
-	arr[4] = (spPointCreate(e1,dim,4));
-
-	SPKDArray kdarr = Init(arr,size);
-
-	int i,j;
-
-	for (i = 0; i < kdarr->rows; i++) {
-		for (j = 0; j < kdarr->col;j++) {
-			printf("%d ",kdarr->mat[i][j]);
-		}
-		printf("\n");
-	}
-
-	SPKDArray* sparr = Split(kdarr,0);
-	SPKDArray ail1 = sparr[0];
-	SPKDArray ail2 = sparr[1];
-
-	for (i = 0; i < 2; ++i) {
-		for (j = 0; j < 3; ++j) {
-			printf("%d ",ail1->mat[i][j]);
-		}
-		printf("\n");
-	}
-
-	for (i = 0; i < 2; ++i) {
-		for (j = 0; j < 2; ++j) {
-			printf("%d ",ail2->mat[i][j]);
-		}
-		printf("\n");
-	}
-
-	return 0;
-}
-
-
-
+//int main(){
+//
+//	int size = 5;
+//	int dim = 2;
+//
+//	SPPoint* arr = (SPPoint*)malloc(sizeof(SPPoint)*size);
+//
+//	double a1[2]= {1,2};
+//	double b1[2] = {123,70};
+//	double c1[2] = {2,7};
+//	double d1[2] = {9,11};
+//	double e1[2]= {3,4};
+//
+//	arr[0] = (spPointCreate(a1,dim,0));
+//	arr[1] = (spPointCreate(b1,dim,1));
+//	arr[2] = (spPointCreate(c1,dim,2));
+//	arr[3] = (spPointCreate(d1,dim,3));
+//	arr[4] = (spPointCreate(e1,dim,4));
+//
+//	SPKDArray kdarr = Init(arr,size);
+//
+//	int i,j;
+//
+//	for (i = 0; i < kdarr->rows; i++) {
+//		for (j = 0; j < kdarr->col;j++) {
+//			printf("%d ",kdarr->mat[i][j]);
+//		}
+//		printf("\n");
+//	}
+//
+//	SPKDArray* sparr = Split(kdarr,0);
+//	SPKDArray ail1 = sparr[0];
+//	SPKDArray ail2 = sparr[1];
+//
+//	for (i = 0; i < 2; ++i) {
+//		for (j = 0; j < 3; ++j) {
+//			printf("%d ",ail1->mat[i][j]);
+//		}
+//		printf("\n");
+//	}
+//
+//	for (i = 0; i < 2; ++i) {
+//		for (j = 0; j < 2; ++j) {
+//			printf("%d ",ail2->mat[i][j]);
+//		}
+//		printf("\n");
+//	}
+//
+//	return 0;
+//}
+//
+//
+//
 
 
 
