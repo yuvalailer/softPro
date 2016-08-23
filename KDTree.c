@@ -112,18 +112,25 @@ int main(){
 	arr[2] = (spPointCreate(c1,dim,2));
 	arr[3] = (spPointCreate(d1,dim,3));
 	arr[4] = (spPointCreate(e1,dim,4));
-	SPConfig config = Init();
-	SPKDArray kdarr = Init(arr,size);
+	SP_CONFIG_MSG msg;
+	SPConfig config = spConfigCreate("config.config",&msg);
+	//SPKDArray kdarr = Init(arr,size);
 	KDTreeNode source = InitTree(arr,5,config);
 	printf(" a - ok !! ");
 
-	void printer(KDTreeNode node){
+	int printer(KDTreeNode node){
 		if(node == NULL){
-
+			printf("--null--");
+			return 0;
 		} else {
-			printf("");
+			printf("node is: %d\n",getDat(node->data));
+			printf("--left node is: %d\n",printer(node->left));
+			printf("--right node is: %d\n",printer(node->right));
+			return -1;
 		}
 	}
+
+	printer(source);
 }
 
 
