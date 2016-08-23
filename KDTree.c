@@ -18,7 +18,7 @@ struct spTreeNode {
 	KDTreeNode right; // Pointer to the right subtree
 	SPPoint* data; // Pointer to a point (only if the current node is a leaf) otherwise this field value is NULL
 };
- /*chooseing the correct cordinate
+/*chooseing the correct cordinate
  to split acording to the max_sperde method in the insraction file;
  */
 int maxSpred(SPKDArray array){
@@ -46,7 +46,7 @@ int maxSpred(SPKDArray array){
 /*
 choose wich cor to aplit by acording to the
 method given in config file.
-*/
+ */
 
 int chooseRec(SPKDArray array,int mune, int cor){
 	switch (mune) {
@@ -54,8 +54,9 @@ int chooseRec(SPKDArray array,int mune, int cor){
 		return maxSpred(array);
 		break;
 	case 1: // RANDOM
+#define MAX_SPREAD = getcopl(array);
 		srand(time(NULL)); // TODO yuval: do we need to call this only once?
-		return rand()%Getcol(array);
+		return rand();
 		break;
 	case 2: // INCREMENTAL
 		return (cor+1)%Getcol(array); // TODO yuval: is modulo syntax correct?
