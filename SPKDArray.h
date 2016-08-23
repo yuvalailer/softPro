@@ -21,8 +21,8 @@ typedef struct sp_kdarray_t* SPKDArray;
  *
  * TODO complete documentation of both functions
  *
- * @param
- * @assert
+ * @param arr - an array of SPPoints & size - its size
+ * @assert //TODO - needed?
  * @return
  *
  */

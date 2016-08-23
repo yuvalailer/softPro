@@ -1,30 +1,52 @@
 
+#include <string.h>
 #include <cstdio>
 #include <cstdlib>
 
 #include "SPConfig.h"
 
-/*int main(int argc,char* argv[]){ //TODO finish insert [R] error messeges page 6 in the end.
+//TODO where are the stored messages go into? SPLOGGER?
+
+int main(int argc,char* argv[]){
 
 	SPConfig config = (SPConfig)malloc(sizeof(SPConfig));
-	if (config == NULL){//TODO check what happens in bad allocation what does main return?
-		return NULL;
+	if (config == NULL){return NULL;}//TODO check what happens in bad allocation what does main return?
+	char* path = "";
+	if((argv[1]!=NULL)||(argv[2]!=NULL)){ // if inserted command line arguments
+		if ((argv[1] == "-c") && (argv[2] != NULL) ){ // check if a path was inserted in the correct format
+			strcpy(path,argv[2]);
+		}else{
+			printf("Invalid command line : use -c <config_filename>\n");
+			return NULL;
+		}
 	}
-	if (){ // TODO TODO check if inserted command line argument - ailer because its linux i didnt understand
 
+	if (!strcmp(path,"")){ //if no path was inserted
+		path = "spcbir.config";
 	}
-	else{
-		SP_CONFIG_MSG msg; //TODO check what msg pointer do we need to insert
-		config = spConfigCreate("spcbir.config",&msg); //TODO check what msg pointer do we need to insert
-		if (config == NULL){
-			if (msg == SP_CONFIG_CANNOT_OPEN_FILE){ //TODO where are the stored masseges stored to? splogger? ailer?
-				printf("The default configuration file spcbir.config couldn’t be open");
+
+	SP_CONFIG_MSG msg;
+	config = spConfigCreate(path,&msg); //TODO check what msg pointer do we need to insert
+	if (config == NULL){ // if there was an error
+		if (msg == SP_CONFIG_CANNOT_OPEN_FILE){
+			if(!strcmp(path,"spcbir.config")){
+				printf("The default configuration file spcbir.config couldn’t be open\n");
+				return NULL;
+			}else{
+				printf("The configuration file %s couldn’t be open\n",path);
 				return NULL;
 			}
 		}
 	}
 
-	printf("all good");
+	// finished creating config file
+
+	if (){
+
+	}
+
+
+
 	return 1;
-}*/
+}
 
