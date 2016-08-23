@@ -43,31 +43,34 @@ int maxSpred(SPKDArray array){
 	}
 	return ans;
 }
+
 /*
 choose wich cor to aplit by acording to the
 method given in config file.
  */
 
 int chooseRec(SPKDArray array,int mune, int cor){
-	switch (mune) {
-	case 0: // MAX_SPREAD
-		return maxSpred(array);
-		break;
-	case 1: // RANDOM
-#define MAX_SPREAD = getcopl(array);
-		srand(time(NULL)); // TODO yuval: do we need to call this only once?
-		return rand();
-		break;
-	case 2: // INCREMENTAL
-		return (cor+1)%Getcol(array); // TODO yuval: is modulo syntax correct?
-		break;
-
-	default:
-		break;
-	}
+	return 1; // TODO yuval: change
+//	switch (mune) {
+//	case 1: // MAX_SPREAD //TODO yvual: change back to 0, and define the defult of the config create to 0.
+//		return maxSpred(array);
+//		break;
+//	case 0: // RANDOM
+//#define MAX_SPREAD = getcopl(array);
+//		srand(time(NULL)); // TODO yuval: do we need to call this only once?
+//		return rand();
+//		break;
+//	case 2: // INCREMENTAL
+//		return (cor+1)%Getcol(array); // TODO yuval: is modulo syntax correct?
+//		break;
+//
+//	default:
+//		return 1; // TODO yuval: remove
+//		break;
+//	}
 }
 KDTreeNode RecTree(SPKDArray array, int mune, int i){
-	KDTreeNode ans;
+	KDTreeNode ans = (KDTreeNode)malloc(sizeof(KDTreeNode));
 	int cord; // the cordinate to split by.
 	cord = chooseRec(array,mune,i); // choose the cordinate with the coreect enum;
 	if(Getcol(array) == 1){ // stopping criteria for the recursive function. node is a leaf
@@ -83,7 +86,6 @@ KDTreeNode RecTree(SPKDArray array, int mune, int i){
 	ans->right = RecTree((Split((array),cord))[1],mune,cord);
 	return ans;
 }
-
 
 KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initing a Tree by points array;
 	int cord = 0;
@@ -117,21 +119,24 @@ int main(){
 	SPConfig config = spConfigCreate("config.config",&msg);
 	//SPKDArray kdarr = Init(arr,size);
 	KDTreeNode source = InitTree(arr,5,config);
-	printf(" a - ok !! ");
+	printf(" a - ok !! \n");
 
 	int printer(KDTreeNode node){
 		if(node == NULL){
 			printf("--null--");
 			return 0;
+
 		} else {
-			printf("node is: %d\n",getDat(node->data));
-			printf("--left node is: %d\n",printer(node->left));
-			printf("--right node is: %d\n",printer(node->right));
-			return -1;
+
+			printf("node is: %d\n",getDat(node->data);
+			return printf("--left node is: %d\n",printer(node->left));
+			return printf("--right node is: %d\n",printer(node->right));
+
 		}
 	}
 
 	printer(source);
+	return 0;
 }
 
 
