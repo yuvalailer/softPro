@@ -4,10 +4,15 @@
 #include <cstdlib>
 
 #include "SPConfig.h"
+#include "SPPoint.h"
+
+using namespace sp;
 
 //TODO where are the stored messages go into? SPLOGGER?
 
 int main(int argc,char* argv[]){
+
+
 
 	SPConfig config = (SPConfig)malloc(sizeof(SPConfig));
 	if (config == NULL){return NULL;}//TODO check what happens in bad allocation what does main return?
@@ -41,7 +46,25 @@ int main(int argc,char* argv[]){
 
 	// finished creating config file
 
-	if (){
+	int i;
+
+	if (spConfigGetExtractionMode(config)){ // if we are in extraction mode
+
+		SPPoint* temppoint;
+		char* temppath;
+		int tempnfeats = spConfigGetNumOfFeatures(config,&msg); //TODO check messege
+		int tempnofimages = spConfigGetNumOfImages(config,&msg);//TODO where to store messages SPLogger
+
+		for (i = 0; i < tempnofimages; i++) {
+			msg = spConfigGetImagePath (temppath,config,i); //TODO mssg to where
+			temppoint = getImageFeatures(temppath,i,tempnfeats);
+
+		}
+
+	}
+	else{ // non - extraction mode
+
+
 
 	}
 

@@ -169,7 +169,7 @@ Returns the split method as an int. were:
 1. MAX_SPREAD = 0
 2. RANDOM = 1
 3. INCREMENTAL = 2
-*/
+ */
 
 int spConfigGetMethud(const SPConfig config);
 
@@ -179,5 +179,12 @@ int spConfigGetMethud(const SPConfig config);
  */
 
 void spConfigDestroy(SPConfig config);
+
+/*
+ * @param config - the configuration file from which to extract
+ * @return - field extraction mode (boolean)
+ */
+
+bool spConfigGetExtractionMode(const SPConfig config);
 
 #endif /* SPCONFIG_H_ */

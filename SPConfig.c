@@ -433,6 +433,10 @@ int spConfigGetMethud(const SPConfig config){
 	return config->spKDTreeSplitMethod;
 }
 
+bool spConfigGetExtractionMode(const SPConfig config){
+	return config->spExtractionMode;
+}
+
 void spConfigDestroy(SPConfig config){
 	if (config != NULL) {
 		free(config->spImagesDirectory);
@@ -443,6 +447,8 @@ void spConfigDestroy(SPConfig config){
 		free (config);
 	}
 }
+
+
 
 
 
