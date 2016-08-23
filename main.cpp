@@ -59,6 +59,7 @@ int main(int argc,char* argv[]){
 			msg = spConfigGetImagePath (temppath,config,i); //TODO mssg to where
 			temppoint = getImageFeatures(temppath,i,tempnfeats);
 
+
 		}
 
 	}
