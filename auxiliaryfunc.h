@@ -9,6 +9,7 @@
 #define SOFTPRO_AUXILIARYFUNC_H_
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "SPPoint.h"
 
@@ -19,7 +20,7 @@
  *
  */
 
-void writefeats(FILE* fw,SPPoint* temppoint);
+void writefeats(FILE* fw,SPPoint temppoint);
 
 
 #endif /* SOFTPRO_AUXILIARYFUNC_H_ */
