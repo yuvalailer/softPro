@@ -21,6 +21,7 @@ struct spTreeNode {
 };
 
 int maxSpred(SPKDArray array){
+
 	int size = Getrows(array);
 	int* temp = (int*)malloc(sizeof(int)*size); // making a temp array for sorting.
 	int ans;
