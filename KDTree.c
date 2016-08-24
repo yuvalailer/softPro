@@ -106,7 +106,7 @@ KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a 
 	int splitmethod = spConfigGetMethod(config); // Splitting the arrays by the method in the config file;
 	SPKDArray array = Init(arr,size); // building the KDArray
 	//each split method decided calls another recursive function to compute the kdtree
-	if(splitmethod == 0){ //MAX_SPREAD - tested and working
+	if(splitmethod == 0){ //MAX_SPREAD
 		return RecTree0(array);
 	}
 	else if(splitmethod == 1){ //RANDOM
@@ -117,7 +117,17 @@ KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a 
 	}
 }
 
-int printer(KDTreeNode node){
+void KDTreeDestroy(KDTreeNode head){
+	if(head->val == -1){
+		free(head);
+	}
+	else{
+		KDTreeDestroy(head->left);
+		KDTreeDestroy(head->right);
+	}
+}
+
+/*int printer(KDTreeNode node){
 	if (node == NULL) {
 		printf("--null-- \n");
 		return 0;
@@ -130,9 +140,9 @@ int printer(KDTreeNode node){
 		printer(node->right);
 	};
 	return 0;
-}
+}*/
 
-
+/*
 int main(){
 
 	int size = 5;
@@ -151,10 +161,10 @@ int main(){
 	SP_CONFIG_MSG msg;
 	SPConfig config = spConfigCreate("config.config",&msg);
 	KDTreeNode head = InitTree(arr,5,config);
+	KDTreeDestroy(head);
 	printf(" a - ok !! \n");
-	//printer(source);
 	return 1;
-}
+}*/
 
 
 

@@ -83,6 +83,12 @@ KDTreeNode RecTree2(SPKDArray array,int i);
 
 int findmedian(SPKDArray array,int splitcord);
 
+/*
+ * frees all allocation of memory
+ */
+
+void KDTreeDestroy(KDTreeNode head);
+
 #endif /* SOFTPRO_KDTREE_H_ */
 
 
