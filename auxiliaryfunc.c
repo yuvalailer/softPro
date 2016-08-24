@@ -52,6 +52,7 @@ void writefeats(FILE* fw,SPPoint* temppoint,int numOfFeats){
 SPPoint* getfeats(FILE* fr,int* tempdir){
 	int dim;
 	int index;
+	int dir;
 	char templine[1024];
 
 	fgets(templine,1024,fr);//read "i"
@@ -62,13 +63,14 @@ SPPoint* getfeats(FILE* fr,int* tempdir){
 	dim = atoi(templine);
 	fgets(templine,1024,fr);//read "nof"
 	fgets(templine,1024,fr);//read total number of features
-	*tempdir = atoi(templine);
+	dir = atoi(templine);
+	*tempdir = dir;
 	double arr[dim];
 
-	SPPoint* ans = (SPPoint*)malloc(sizeof(SPPoint)*(*tempdir));
+	SPPoint* ans = (SPPoint*)malloc(sizeof(SPPoint)*(dir));
 
 	int i,j;
-	for (j = 0; j < (*tempdir); ++j) {
+	for (j = 0; j < (dir); ++j) {
 		for (i = 0; i < dim; ++i) { //fill arr
 			fgets(templine,1024,fr);
 			arr[i] = atof(templine);
@@ -78,10 +80,9 @@ SPPoint* getfeats(FILE* fr,int* tempdir){
 	return ans;
 }
 
-/*
- * tester for auxilary functions - working!!!!
- *
+/*tester - working!
  * int main(){
+	int a;
 
 	FILE* fw = fopen("checkingwritefeats.txt","w");
 	double data[3] = {15.5,16.2,17.3};
@@ -95,7 +96,7 @@ SPPoint* getfeats(FILE* fr,int* tempdir){
 	arr[2] = spPointCreate(data2,3,5);
 	writefeats(fw,arr,numoffeats);
 	FILE* fr = fopen("checkingreadfeats.txt","r");
-	arr1 = getfeats(fr,3);
+	arr1 = getfeats(fr,&a);
 	int i;
 	for (i = 0; i < 3; ++i) {
 		printf("point dex: %d\npoint dim: %d\n",spPointGetIndex(arr1[i]),spPointGetDimension(arr1[i]));

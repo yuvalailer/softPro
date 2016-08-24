@@ -89,20 +89,21 @@ KDTreeNode RecTree(SPKDArray array, int mune, int i){
 	return ans;
 }
 
-KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initing a Tree by points array;
-	int cord = 0;
-	int mune = spConfigGetMethod(config); // Spiting the arrays by the method in the config file;
+//KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initing a Tree by points array;
+//	int cord = 0;
+//	int mune = spConfigGetMethod(config); // Spiting the arrays by the method in the config file;
+//
+//	KDTreeNode ans = (KDTreeNode)malloc(sizeof(KDTreeNode));
+//	SPKDArray array = Init(arr,size);
+//
+//	ans = RecTree(array,mune,cord);
+//	if(ans == NULL){
+//		printf("bad"); //TODO
+//	}
+//	return ans;
+//}
 
-	KDTreeNode ans = (KDTreeNode)malloc(sizeof(KDTreeNode));
-	SPKDArray array = Init(arr,size);
-
-	ans = RecTree(array,mune,cord);
-	if(ans == NULL){
-		printf("bad"); //TODO
-	}
-	return ans;
-}
-
+/*
 int main(){
 
 	int size = 5;
@@ -147,6 +148,7 @@ int main(){
 	printer(source);
 	return 1;
 }
+*/
 
 
 
