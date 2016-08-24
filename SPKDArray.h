@@ -47,6 +47,8 @@ int Getcol(SPKDArray kdArr);
 
 int Getrows(SPKDArray kdArr);
 
-SPPoint* Getpoints(SPKDArray kdArr);
+SPPoint* Getpointsarray(SPKDArray kdArr);
+
+int** GetMat(SPKDArray kdArr);
 
 #endif /* SOFTPRO_SPKDARRAY_H_ */

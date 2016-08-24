@@ -17,6 +17,7 @@ using namespace sp;
 
 //TODO where are the stored messages go into? SPLOGGER?
 
+/*
 int main(int argc,char* argv[]){
 
 	SPConfig config = (SPConfig)malloc(sizeof(SPConfig));
@@ -154,4 +155,5 @@ int main(int argc,char* argv[]){
 	free(config);
 	return 1;
 }
+*/
 
