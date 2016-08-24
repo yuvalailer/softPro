@@ -50,6 +50,7 @@ method given in config file.
  */
 
 int chooseRec(SPKDArray array,int mune, int cor){
+	printf("enum is %d \n",mune);
 	return 1; // TODO yuval: change
 //	switch (mune) {
 //	case 1: // MAX_SPREAD //TODO yvual: change back to 0, and define the defult of the config create to 0.
@@ -94,6 +95,9 @@ KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initing a Tree 
 	SPKDArray array = Init(arr,size);
 
 	ans = RecTree(array,mune,cord);
+	if(ans == NULL){
+		printf("bad"); //TODO
+	}
 	return ans;
 }
 
@@ -123,21 +127,23 @@ int main(){
 	printf(" a - ok !! \n");
 
 	int printer(KDTreeNode node){
-		if(node == NULL){
+		if (node == NULL) {
 			printf("--null--");
 			return 0;
 
 		} else {
+			if(node->dim == 1){
+				printf("node is: %d\n",getDat(node[0]));
+			}
 
-			printf("node is: %d\n",getDat(node->data);
-			return printf("--left node is: %d\n",printer(node->left));
-			return printf("--right node is: %d\n",printer(node->right));
+			printer(node->left);
+			printer(node->right);
 
-		}
+		};
 	}
 
 	printer(source);
-	return 0;
+	return 1;
 }
 */
 

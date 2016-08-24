@@ -80,7 +80,8 @@ double spPointL2SquaredDistance(SPPoint p, SPPoint q){
 }
 
 double* getDat(const SPPoint point) { //TODO yuval: deacler header
-	double* dat = (double*)malloc(sizeof(double)*point->dim);
+	int dim = spPointGetDimension(point);
+	double* dat = (double*)malloc(sizeof(double)*(dim));
 	dat = point->data;
 	return dat;
 }
