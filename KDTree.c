@@ -8,13 +8,15 @@
 #include "KDTree.h"
 #include <time.h>
 #include <stdlib.h>
+#include "SPConfig.h"
+#include "SPPoint.h"
 #define INVALID -1;
 // making a Tree Node struct
 
 struct spTreeNode {
 	int dim; // The splitting dimension
 	int val; // The median value of the splitting dimension
-	KDTreeNode left; // Pointer to the left subtree
+	KDTreeNode left ; // Pointer to the left subtree
 	KDTreeNode right; // Pointer to the right subtree
 	SPPoint* data; // Pointer to a point (only if the current node is a leaf) otherwise this field value is NULL
 };
@@ -50,25 +52,24 @@ method given in config file.
  */
 
 int chooseRec(SPKDArray array,int mune, int cor){
-	printf("enum is %d \n",mune);
-	return 1; // TODO yuval: change
-//	switch (mune) {
-//	case 1: // MAX_SPREAD //TODO yvual: change back to 0, and define the defult of the config create to 0.
-//		return maxSpred(array);
-//		break;
-//	case 0: // RANDOM
-//#define MAX_SPREAD = getcopl(array);
-//		srand(time(NULL)); // TODO yuval: do we need to call this only once?
-//		return rand();
-//		break;
-//	case 2: // INCREMENTAL
-//		return (cor+1)%Getcol(array); // TODO yuval: is modulo syntax correct?
-//		break;
-//
-//	default:
-//		return 1; // TODO yuval: remove
-//		break;
-//	}
+
+	switch (mune) {
+	case 1: // MAX_SPREAD //TODO yvual: change back to 0, and define the defult of the config create to 0.
+		return maxSpred(array);
+		break;
+	case 0: // RANDOM
+#define MAX_SPREAD = getcopl(array);
+		srand(time(NULL)); // TODO yuval: do we need to call this only once?
+		return rand();
+		break;
+	case 2: // INCREMENTAL
+		return (cor+1)%Getcol(array); // TODO yuval: is modulo syntax correct?
+		break;
+
+	default:
+		return 1; // TODO yuval: remove
+		break;
+	}
 }
 KDTreeNode RecTree(SPKDArray array, int mune, int i){
 	KDTreeNode ans = (KDTreeNode)malloc(sizeof(KDTreeNode));
@@ -90,7 +91,8 @@ KDTreeNode RecTree(SPKDArray array, int mune, int i){
 
 KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initing a Tree by points array;
 	int cord = 0;
-	int mune = spConfigGetMethud(config); // Spiting the arrays by the method in the config file;
+	int mune = spConfigGetMethod(config); // Spiting the arrays by the method in the config file;
+
 	KDTreeNode ans = (KDTreeNode)malloc(sizeof(KDTreeNode));
 	SPKDArray array = Init(arr,size);
 
@@ -101,7 +103,6 @@ KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initing a Tree 
 	return ans;
 }
 
-/*
 int main(){
 
 	int size = 5;
@@ -128,24 +129,24 @@ int main(){
 
 	int printer(KDTreeNode node){
 		if (node == NULL) {
-			printf("--null--");
+			printf("--null-- \n");
 			return 0;
 
 		} else {
-			if(node->dim == 1){
-				printf("node is: %d\n",getDat(node[0]));
+			if(node->data != NULL){
+				printf("node is: %d \n",getDat(node->data));
 			}
 
 			printer(node->left);
 			printer(node->right);
 
 		};
+		return 0;
 	}
 
 	printer(source);
 	return 1;
 }
-*/
 
 
 

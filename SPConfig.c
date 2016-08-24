@@ -13,7 +13,6 @@
 //TODO add description to all auxiliary functions above each one.
 //TODO check if includes should be only on header file. (not supposed to be changed) meantime all not in header are in source
 
-typedef enum {RANDOM, MAX_SPREAD,INCREMENTAL} method;
 
 
 struct sp_config_t{ //already a pointer!!!! SPConfig
@@ -442,7 +441,20 @@ SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config){
 }
 
 int spConfigGetMethod(const SPConfig config){
-	bool a = config->spExtractionMode;
+	switch (config->spKDTreeSplitMethod) { // TODO yuval: why is this not working?
+		case MAX_SPREAD:
+			return 0;
+			break;
+		case RANDOM:
+			return 1;
+			break;
+		case INCREMENTAL:
+			return 2;
+			break;
+		default:
+			return 0;
+			break;
+	}
 	return  config->spKDTreeSplitMethod;
 }
 

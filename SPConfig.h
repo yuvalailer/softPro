@@ -9,6 +9,7 @@
 /**
  * A data-structure which is used for configuring the system.
  */
+typedef enum {MAX_SPREAD,RANDOM,INCREMENTAL} method; // TODO yuval: oreder was reverse, yet donot change
 
 typedef enum sp_config_msg_t {
 	SP_CONFIG_MISSING_DIR,
