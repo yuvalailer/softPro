@@ -80,8 +80,8 @@ SPPoint* getfeats(FILE* fr,int* tempdir){
 	return ans;
 }
 
-/*tester - working!
- * int main(){
+/*
+int main(){
 	int a;
 
 	FILE* fw = fopen("checkingwritefeats.txt","w");

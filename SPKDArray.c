@@ -6,6 +6,8 @@
 
 #include "SPKDArray.h"
 
+#include <stdlib.h>
+
 struct sp_kdarray_t {
 	SPPoint* pointsarr;
 	int rows;
@@ -29,7 +31,7 @@ SPKDArray Init(SPPoint* arr, int size){
 	int i;
 	int j;
 
-	int dim = spPointGetDimension(arr[0]); // checking dimension of sppoints in arr
+	int dim = spPointGetDimension(arr[0]); // checking dimension of SPPoints in arr
 
 	Tuple* temp = (Tuple*)malloc(sizeof(Tuple)*size);
 	for (i = 0; i < size; i++) { //initialize special array of tuples
@@ -62,7 +64,7 @@ SPKDArray Init(SPPoint* arr, int size){
 		ans->pointsarr[i] = spPointCopy(arr[i]);
 	}
 
-	free (temp);
+	free(temp);
 	return ans;
 }
 
@@ -73,9 +75,9 @@ SPKDArray* Split(SPKDArray kdArr, int coor){
 	int i,j,t,p;
 	int sizeR = (int)size/2;
 	int sizeL = size - sizeR;
-	int* X = (int*)malloc(sizeof(int)*size);
-	int* map1 = (int*)malloc(sizeof(int)*size);
-	int* map2 = (int*)malloc(sizeof(int)*size);
+	int X[size];
+	int map1[size];
+	int map2[size];
 
 	SPKDArray* ans = (SPKDArray*)malloc(sizeof(SPKDArray)*2);
 	SPKDArray left = (SPKDArray)malloc(sizeof(SPKDArray));
@@ -168,59 +170,74 @@ SPPoint* Getpoints(SPKDArray kdArr){
 	return a;
 }
 
-//int main(){
-//
-//	int size = 5;
-//	int dim = 2;
-//
-//	SPPoint* arr = (SPPoint*)malloc(sizeof(SPPoint)*size);
-//
-//	double a1[2]= {1,2};
-//	double b1[2] = {123,70};
-//	double c1[2] = {2,7};
-//	double d1[2] = {9,11};
-//	double e1[2]= {3,4};
-//
-//	arr[0] = (spPointCreate(a1,dim,0));
-//	arr[1] = (spPointCreate(b1,dim,1));
-//	arr[2] = (spPointCreate(c1,dim,2));
-//	arr[3] = (spPointCreate(d1,dim,3));
-//	arr[4] = (spPointCreate(e1,dim,4));
-//
-//	SPKDArray kdarr = Init(arr,size);
-//
-//	int i,j;
-//
-//	for (i = 0; i < kdarr->rows; i++) {
-//		for (j = 0; j < kdarr->col;j++) {
-//			printf("%d ",kdarr->mat[i][j]);
-//		}
-//		printf("\n");
-//	}
-//
-//	SPKDArray* sparr = Split(kdarr,0);
-//	SPKDArray ail1 = sparr[0];
-//	SPKDArray ail2 = sparr[1];
-//
-//	for (i = 0; i < 2; ++i) {
-//		for (j = 0; j < 3; ++j) {
-//			printf("%d ",ail1->mat[i][j]);
-//		}
-//		printf("\n");
-//	}
-//
-//	for (i = 0; i < 2; ++i) {
-//		for (j = 0; j < 2; ++j) {
-//			printf("%d ",ail2->mat[i][j]);
-//		}
-//		printf("\n");
-//	}
-//
-//	return 0;
-//}
-//
-//
-//
+/*
+int main(){
+
+	int size = 5;
+	int dim = 2;
+
+	SPPoint* arr = (SPPoint*)malloc(sizeof(SPPoint)*size);
+
+	double a1[2]= {1,2};
+	double b1[2] = {123,70};
+	double c1[2] = {2,7};
+	double d1[2] = {9,11};
+	double e1[2]= {3,4};
+
+	arr[0] = (spPointCreate(a1,dim,0));
+	arr[1] = (spPointCreate(b1,dim,1));
+	arr[2] = (spPointCreate(c1,dim,2));
+	arr[3] = (spPointCreate(d1,dim,3));
+	arr[4] = (spPointCreate(e1,dim,4));
+
+	SPKDArray kdarr = Init(arr,size);
+
+	int i,j;
+
+	printf("mat of first kdarray is: \n");
+	for (i = 0; i < kdarr->rows; i++) {
+		for (j = 0; j < kdarr->col;j++) {
+			printf("%d ",kdarr->mat[i][j]);
+		}
+		printf("\n");
+	}
+
+	SPKDArray* sparr = Split(kdarr,0);
+	SPKDArray ail1 = sparr[0];
+	SPKDArray ail2 = sparr[1];
+
+	printf("points of left kdarray are: \n");
+	for (i = 0; i < 3; ++i) {
+		printf("%d place - (%f,%f)\n",i,spPointGetAxisCoor(ail1->pointsarr[i],0),spPointGetAxisCoor(ail1->pointsarr[i],1));
+	}
+	printf("\n");
+
+	printf("mat of left kdarray is: \n");
+	for (i = 0; i < 2; ++i) {
+		for (j = 0; j < 3; ++j) {
+			printf("%d ",ail1->mat[i][j]);
+		}
+		printf("\n");
+	}
+	printf("points of right kdarray are: \n");
+	for (i = 0; i < 2; ++i) {
+		printf("%d place - (%f,%f)\n",i,spPointGetAxisCoor(ail2->pointsarr[i],0),spPointGetAxisCoor(ail2->pointsarr[i],1));
+	}
+	printf("\n");
+	printf("mat of right kdarray is: \n");
+	for (i = 0; i < 2; ++i) {
+		for (j = 0; j < 2; ++j) {
+			printf("%d ",ail2->mat[i][j]);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
+*/
+
+
+
 
 
 

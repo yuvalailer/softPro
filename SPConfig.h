@@ -213,4 +213,13 @@ bool spConfigGetExtractionMode(const SPConfig config);
  */
 SP_CONFIG_MSG spConfigGetImagePathfeats(char* imagePath, const SPConfig config,int index);
 
+/*
+ * return the spnumofsimilarimages field config contains
+ * @param config - the struct of which we extract the field
+ * @return
+ * - int - the field value
+ */
+
+int spConfigGetNumSimilarImages(const SPConfig config);
+
 #endif /* SPCONFIG_H_ */

@@ -8,11 +8,9 @@
 #ifndef SOFTPRO_SPKDARRAY_H_
 #define SOFTPRO_SPKDARRAY_H_
 
-#include<stdio.h>
-
-#include<stdlib.h>
-
 #include "SPPoint.h"
+
+struct sp_kdarray_t;
 
 typedef struct sp_kdarray_t* SPKDArray;
 

@@ -474,6 +474,10 @@ SP_CONFIG_MSG spConfigGetImagePathfeats(char* imagePath, const SPConfig config,i
 	}
 }
 
+int spConfigGetNumSimilarImages(const SPConfig config){
+	return config->spNumOfSimilarImages;
+}
+
 
 void spConfigDestroy(SPConfig config){
 	if (config != NULL) {

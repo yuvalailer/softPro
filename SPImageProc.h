@@ -1,9 +1,21 @@
 #ifndef SPIMAGEPROC_H_
 #define SPIMAGEPROC_H_
-#include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <vector>
 
+#include <stdbool.h>
+#include <c++/vector>
+#include <C:\opencv\build\include\opencv2/xfeatures2d.hpp> //TODO change includes to be not total
+#include <C:\opencv\build\include\opencv2/core.hpp>
+#include <C:\opencv\build\include\opencv2/imgproc.hpp>
+#include <C:\opencv\build\include\opencv2/imgcodecs.hpp>
+#include <C:\opencv\build\include\opencv2/highgui.hpp>
+#include <C:\opencv\build\include\opencv/cv.h>
+#include <C:\opencv\build\include\opencv/cvaux.hpp>
+#include <C:\opencv\build\include\opencv/cvwimage.h>
+#include <C:\opencv\build\include\opencv/cxcore.hpp>
+#include <C:\opencv\build\include\opencv/cxeigen.hpp>
+#include <C:\opencv\build\include\opencv/cxmisc.h>
+#include <C:\opencv\build\include\opencv/highgui.h>
+#include <C:\opencv\build\include\opencv/ml.h>
 extern "C" {
 #include "SPConfig.h"
 #include "SPPoint.h"
