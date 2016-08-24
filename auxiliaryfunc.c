@@ -30,8 +30,14 @@ void writefeats(FILE* fw,SPPoint* temppoint,int numOfFeats){
 	fputs(dimstring,fw);
 	fputs("\n",fw);
 
-	int i;
-	int j;
+	char nofstring[1024]; //writing number of feats for this image
+	fputs("nof\n",fw);
+	itoa(numOfFeats,nofstring,10);
+	fputs(nofstring,fw);
+	fputs("\n",fw);
+
+
+	int i,j;
 
 	for (j = 0; j < numOfFeats ; ++j) { //feature = SPPoint, then for each SPPoint
 		for (i = 0; i < dim; ++i) {
@@ -43,7 +49,7 @@ void writefeats(FILE* fw,SPPoint* temppoint,int numOfFeats){
 	}
 }
 
-SPPoint* getfeats(FILE* fr,int size){
+SPPoint* getfeats(FILE* fr,int* tempdir){
 	int dim;
 	int index;
 	char templine[1024];
@@ -54,12 +60,15 @@ SPPoint* getfeats(FILE* fr,int size){
 	fgets(templine,1024,fr);//read "n"
 	fgets(templine,1024,fr);//read dim of SPPoint
 	dim = atoi(templine);
+	fgets(templine,1024,fr);//read "nof"
+	fgets(templine,1024,fr);//read total number of features
+	*tempdir = atoi(templine);
 	double arr[dim];
-	SPPoint* ans = (SPPoint*)malloc(sizeof(SPPoint)*size);
 
-	int i;
-	int j;
-	for (j = 0; j < size; ++j) {
+	SPPoint* ans = (SPPoint*)malloc(sizeof(SPPoint)*(*tempdir));
+
+	int i,j;
+	for (j = 0; j < (*tempdir); ++j) {
 		for (i = 0; i < dim; ++i) { //fill arr
 			fgets(templine,1024,fr);
 			arr[i] = atof(templine);

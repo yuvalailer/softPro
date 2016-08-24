@@ -1,11 +1,11 @@
 #include <cstdlib>
 #include <cassert>
 #include <cstring>
-#include <C:\opencv\build\include\opencv2/xfeatures2d.hpp>
-#include <C:\opencv\build\include\opencv2/core.hpp>
-#include <C:\opencv\build\include\opencv2/imgproc.hpp>
-#include <C:\opencv\build\include\opencv2/imgcodecs.hpp>
-#include <C:\opencv\build\include\opencv2/highgui.hpp>
+#include <opencv2/xfeatures2d.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/highgui.hpp>
 #include <cstdio>
 #include "SPImageProc.h"
 extern "C" {
@@ -51,7 +51,7 @@ void sp::ImageProc::initFromConfig(const SPConfig config) {
 		spLoggerPrintError(NUM_OF_FEATS_ERROR, __FILE__, __func__, __LINE__);
 		throw Exception();
 	}
-	minimalGui = spConfigMinialGui(config, &msg);
+	minimalGui = spConfigMinimalGui(config, &msg);
 	if (msg != SP_CONFIG_SUCCESS) {
 		spLoggerPrintError(MINIMAL_GUI_ERROR, __FILE__, __func__, __LINE__);
 		throw Exception();
@@ -202,6 +202,7 @@ SPPoint* sp::ImageProc::getImageFeatures(const char* imagePath, int index,
 		}
 		resPoints[i] = spPointCreate(pcaSift, pcaDim, index);
 	}
+	free(pcaSift);
 	return resPoints;
 }
 

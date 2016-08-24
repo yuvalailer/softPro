@@ -1,7 +1,7 @@
 #ifndef SPIMAGEPROC_H_
 #define SPIMAGEPROC_H_
-#include <C:\opencv\build\include\opencv2/core.hpp>
-#include <C:\opencv\build\include\opencv2/imgcodecs.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/imgcodecs.hpp>
 #include <vector>
 
 extern "C" {
@@ -12,7 +12,7 @@ extern "C" {
 namespace sp {
 
 /**
- * A class which supports different image processing functionalities.
+ * A class which supports different image processing functionalites.
  */
 class ImageProc {
 private:
@@ -24,7 +24,8 @@ private:
 	bool minimalGui;
 	void initFromConfig(const SPConfig);
 	void getImagesMat(std::vector<cv::Mat>&, const SPConfig);
-	void getFeatures(std::vector<cv::Mat>&,cv::Mat&);
+	void getFeatures(std::vector<cv::Mat>&,
+			cv::Mat&);
 	void preprocess(const SPConfig config);
 	void initPCAFromFile(const SPConfig config);
 public:

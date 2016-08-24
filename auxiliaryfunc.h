@@ -27,11 +27,12 @@ void writefeats(FILE* fw,SPPoint* temppoint,int numOfFeats);
  * that the file represents.
  * relevant only to non - extraction mode in main function
  * @param  fr - a file reader, size - number of feats to extract
+ * tempdir - a pointer to where number of features extracted will be saved
  * @return - SPPoint* - the array of features for the image
  *
  */
 
-SPPoint* getfeats(FILE* fr,int size);
+SPPoint* getfeats(FILE* fr,int* tempdir);
 
 
 

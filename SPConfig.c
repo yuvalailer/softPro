@@ -16,20 +16,20 @@
 
 
 struct sp_config_t{ //already a pointer!!!! SPConfig
-	char* spImagesDirectory;
-	char* spImagesPrefix;
-	char* spImagesSuffix;
+	char spImagesDirectory[1024];
+	char spImagesPrefix[1024];
+	char spImagesSuffix[1024];
 	int spNumOfImages;
 	int spPCADimension;
-	char* spPCAFilename;
+	char spPCAFilename[1024];
 	int spNumOfFeatures;
 	bool spExtractionMode;
 	int spNumOfSimilarImages;
-	method spKDTreeSplitMethod; // ?
+	method spKDTreeSplitMethod;
 	int spKNN;
 	bool spMinimalGUI;
 	int spLoggerLevel;
-	char* spLoggerFilename;
+	char spLoggerFilename[1024];
 };
 
 /*
@@ -300,15 +300,11 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 		return NULL;
 	}
 	//TODO check if needed so much mallocs here and add bad malloc check
-	config->spImagesDirectory = (char*)malloc(sizeof(char)*1024);
 	strcpy(config->spImagesDirectory,"notset");
-	config->spImagesPrefix = (char*)malloc(sizeof(char)*1024);
 	strcpy(config->spImagesPrefix,"notset");
-	config->spImagesSuffix = (char*)malloc(sizeof(char)*1024);
 	strcpy(config->spImagesSuffix,"notset");
 	config->spNumOfImages = 0;
 	config->spPCADimension = 20;
-	config->spPCAFilename = (char*)malloc(sizeof(char)*1024);
 	strcpy(config->spPCAFilename,"pca.yml");
 	config->spNumOfFeatures = 100;
 	config->spExtractionMode = true;
@@ -317,7 +313,6 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 	config->spKNN = 1;
 	config->spKDTreeSplitMethod = MAX_SPREAD;
 	config->spLoggerLevel = 3;
-	config->spLoggerFilename = (char*)malloc(sizeof(char)*1024);
 	strcpy(config->spLoggerFilename,"stdout");
 	char* line = (char*)malloc(sizeof(char)*1024);
 	if(line == NULL){
@@ -482,11 +477,6 @@ SP_CONFIG_MSG spConfigGetImagePathfeats(char* imagePath, const SPConfig config,i
 
 void spConfigDestroy(SPConfig config){
 	if (config != NULL) {
-		free(config->spImagesDirectory);
-		free(config->spImagesPrefix);
-		free(config->spImagesSuffix);
-		free(config->spPCAFilename);
-		free(config->spLoggerFilename);
 		free (config);
 	}
 }
