@@ -54,10 +54,10 @@ method given in config file.
 int chooseRec(SPKDArray array,int mune, int cor){
 
 	switch (mune) {
-	case 1: // MAX_SPREAD //TODO yvual: change back to 0, and define the defult of the config create to 0.
+	case 0: // MAX_SPREAD //TODO yvual: change back to 0, and define the defult of the config create to 0.
 		return maxSpred(array);
 		break;
-	case 0: // RANDOM
+	case 1: // RANDOM
 #define MAX_SPREAD = getcopl(array);
 		srand(time(NULL)); // TODO yuval: do we need to call this only once?
 		return rand();
