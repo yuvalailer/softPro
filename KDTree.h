@@ -2,7 +2,7 @@
  * KDTree.h
  *
  *  Created on: 18 баев„ 2016
- *      Author: yuval
+ *      Author: yuval ailer & michael ozeri
  */
 
 #ifndef SOFTPRO_KDTREE_H_
