@@ -299,7 +299,7 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 		*msg = SP_CONFIG_ALLOC_FAIL;
 		return NULL;
 	}
-	//TODO check if needed so much mallocs here and add bad malloc check
+	//TODO check if needed so many mallocs here and add bad malloc check
 	strcpy(config->spImagesDirectory,"notset");
 	strcpy(config->spImagesPrefix,"notset");
 	strcpy(config->spImagesSuffix,"notset");

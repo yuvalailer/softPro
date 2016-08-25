@@ -16,6 +16,12 @@ struct spTreeNode {
 	KDTreeNode right;
 	SPPoint data;
 };
+struct Bpq {
+	int size;
+	SPPoint point;
+};
+
+BPQ bpq;
 
 int maxSpred(SPKDArray array){
 	int dim = Getrows(array);
@@ -115,6 +121,12 @@ KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a 
 	else{//INCREMENTAL
 		return RecTree2(array,0);
 	}
+}
+// end of init
+
+
+void kNearestNeighbors(KDTreeNode curr , BPQ bpq, SPPoint P){
+
 }
 
 void KDTreeDestroy(KDTreeNode head){

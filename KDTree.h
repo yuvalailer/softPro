@@ -30,6 +30,8 @@
  */
 
 typedef struct spTreeNode* KDTreeNode;
+typedef struct Bpq* BPQ;
+
 
 /*
  *builds KDTree from SPPoints (feats) array. accoarding to the system configuration.
