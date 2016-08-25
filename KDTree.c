@@ -6,7 +6,8 @@
  */
 
 #include "KDTree.h"
-
+#include "SPBPriorityQueue.h"
+#include "SPConfig.h"
 #define INVALID -1;
 
 struct spTreeNode {
@@ -16,12 +17,18 @@ struct spTreeNode {
 	KDTreeNode right;
 	SPPoint data;
 };
-struct Bpq {
-	int size;
-	SPPoint point;
-};
 
-BPQ bpq;
+
+int KDTreeGetDim(KDTreeNode node){
+	int a = node->dim;
+	return a;
+}
+
+int KDTreeGetVal(KDTreeNode node){
+	int a = node->val;
+	return a;
+}
+
 
 int maxSpred(SPKDArray array){
 	int dim = Getrows(array);
@@ -83,8 +90,8 @@ KDTreeNode RecTree1(SPKDArray array){
 	}
 	ans->dim = splitcord;
 	ans->val = findmedian(array,splitcord);
-	ans->left = RecTree1(Split(array,splitcord)[0]);
-	ans->right = RecTree1(Split(array,splitcord)[1]);
+	ans->left = RecTree0(Split(array,splitcord)[0]);
+	ans->right = RecTree0(Split(array,splitcord)[1]);
 	ans->data = NULL;
 	return ans;
 }
@@ -102,8 +109,8 @@ KDTreeNode RecTree2(SPKDArray array,int i){
 	}
 	ans->dim = splitcord;
 	ans->val = findmedian(array,splitcord);
-	ans->left = RecTree2(Split(array,splitcord)[0],splitcord+1);
-	ans->right = RecTree2(Split(array,splitcord)[1],splitcord+1);
+	ans->left = RecTree0(Split(array,splitcord +1)[0]);
+	ans->right = RecTree0(Split(array,splitcord + 1)[1]);
 	ans->data = NULL;
 	return ans;
 }
@@ -124,10 +131,46 @@ KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a 
 }
 // end of init
 
+/*Recursive function. meant to use the Tree structure to effectively
+ * find the closets neighbors and fill the Queue.
+ * works as dicribed in the pdf file added to the project
+ */
+void kNearestNeighbors(KDTreeNode curr , SPBPQueue bpq, SPPoint P){
+	if (curr == NULL) {
+		return; //TODO? see PDF/
+	}
 
-void kNearestNeighbors(KDTreeNode curr , BPQ bpq, SPPoint P){
-
+	if(curr->data != NULL){ //TODO yuval: is this a good leaf check
+		int distance = spPointL2SquaredDistance(curr->data,P);
+		SPListElement elm = spListElementCreate(spPointGetIndex(curr->data),distance);
+		spBPQueueEnqueue(bpq,elm);
+		return;
+	}
+	double* data = (double*)getDat(P); // TODO yuval: is this the right p[] ment in the pdf?
+	if(data[curr->dim] <= KDTreeGetVal(curr)){
+		kNearestNeighbors(curr->left,bpq,P);
+		if(!(spBPQueueIsFull(bpq)) || abs((curr->val) - data[curr->dim]) < spBPQueueGetMaxSize(bpq)){
+			kNearestNeighbors(curr->right,bpq,P);
+		}
+	} else {
+		kNearestNeighbors(curr->right,bpq,P);
+		if(!(spBPQueueIsFull(bpq)) || abs((curr->val) - data[curr->dim]) < spBPQueueGetMaxSize(bpq)){
+			kNearestNeighbors(curr->left,bpq,P);
+		}
+	}
 }
+/*
+* envalop fuction. ment to pass the K parameter to the function.
+* returns a queue with the K -NEAREST NEIGHBORs.
+*/
+
+SPBPQueue KDTreeSearch(KDTreeNode head,SPPoint point, int num){
+	SPBPQueue bpq;
+	bpq = spBPQueueCreate(num); // TODO yuval: need to know the size - is this the config or the tree?
+	kNearestNeighbors(head,bpq,point);
+	return bpq;
+}
+
 
 void KDTreeDestroy(KDTreeNode head){
 	if(head->val == -1){
@@ -138,6 +181,8 @@ void KDTreeDestroy(KDTreeNode head){
 		KDTreeDestroy(head->right);
 	}
 }
+
+
 
 /*int printer(KDTreeNode node){
 	if (node == NULL) {

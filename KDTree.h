@@ -30,7 +30,6 @@
  */
 
 typedef struct spTreeNode* KDTreeNode;
-typedef struct Bpq* BPQ;
 
 
 /*
