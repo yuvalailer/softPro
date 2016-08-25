@@ -314,21 +314,9 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 	config->spKDTreeSplitMethod = MAX_SPREAD;
 	config->spLoggerLevel = 3;
 	strcpy(config->spLoggerFilename,"stdout");
-	char* line = (char*)malloc(sizeof(char)*1024);
-	if(line == NULL){
-		*msg = SP_CONFIG_ALLOC_FAIL;
-		return NULL;
-	}
-	char* param = (char*)malloc(sizeof(char)*1024);
-	if(param == NULL){
-		*msg = SP_CONFIG_ALLOC_FAIL;
-		return NULL;
-	}
-	char* val = (char*)malloc(sizeof(char)*1024);
-	if(val == NULL){
-		*msg = SP_CONFIG_ALLOC_FAIL;
-		return NULL;
-	}
+	char line[1024];
+	char param[1024];
+	char val[1024];
 	int linenumber = 1;
 	while(fgets(line,1024,fp)!= NULL){ //each time read a line only each line is at most 1024 (moab)
 		trim(line);
@@ -348,9 +336,6 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 		linenumber++;
 	}
 	fclose(fp);
-	free(line);
-	free(param);
-	free(val);
 	if((strcmp(config->spImagesDirectory,"notset")==0)){
 		printf("File: %s\nLine: %d\nMessage: Parameter %s is not set",filename,linenumber,"spImagesDirectory");
 		*msg = SP_CONFIG_MISSING_DIR;
@@ -406,12 +391,7 @@ int spConfigGetPCADim(const SPConfig config, SP_CONFIG_MSG* msg){
 	}
 }
 SP_CONFIG_MSG spConfigGetImagePath(char* imagePath, const SPConfig config,int index){
-	char* tmp;
-	sprintf("%d",tmp,index);
 
-	if(strlen(imagePath)<(strlen(tmp)+strlen(config->spImagesDirectory)+strlen(config->spImagesPrefix)+strlen(config->spImagesSuffix))){
-		return SP_CONFIG_ALLOC_FAIL;
-	}
 	if(imagePath == NULL || config == NULL){
 		return SP_CONFIG_INVALID_ARGUMENT;
 	} else if (index>=config->spNumOfImages) {
@@ -436,7 +416,7 @@ SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config){
 }
 
 int spConfigGetMethod(const SPConfig config){
-	switch (config->spKDTreeSplitMethod) { // TODO yuval: why is this not working?
+	switch (config->spKDTreeSplitMethod) {
 		case MAX_SPREAD:
 			return 0;
 			break;
