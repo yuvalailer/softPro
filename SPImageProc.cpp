@@ -1,21 +1,18 @@
-#include <cstdlib>
-#include <cassert>
-#include <cstring>
-#include <C:\opencv\build\include\opencv2/xfeatures2d.hpp> //TODO change includes to be not total
-#include <C:\opencv\build\include\opencv2/core.hpp>
-#include <C:\opencv\build\include\opencv2/imgproc.hpp>
-#include <C:\opencv\build\include\opencv2/imgcodecs.hpp>
-#include <C:\opencv\build\include\opencv2/highgui.hpp>
-#include <C:\opencv\build\include\opencv/cv.hpp>
-#include <C:\opencv\build\include\opencv/cvaux.hpp>
-#include <C:\opencv\build\include\opencv/cvwimage.h>
-#include <C:\opencv\build\include\opencv/cxcore.hpp>
-#include <C:\opencv\build\include\opencv/cxeigen.hpp>
-#include <C:\opencv\build\include\opencv/cxmisc.h>
-#include <C:\opencv\build\include\opencv/highgui.h>
-#include <C:\opencv\build\include\opencv/ml.h>
-#include <cstdio>
 #include "SPImageProc.h"
+
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/xfeatures2d.hpp>
+#include <cstdio>
+#include <cstdlib>
+
+#include "C:/opencv/build/include/opencv2/highgui.hpp"
+#include "C:/opencv/build/include/opencv2/imgcodecs.hpp"
+
+struct sp_config_t;
+
 extern "C" {
 #include "SPLogger.h"
 }

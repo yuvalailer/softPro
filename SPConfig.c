@@ -10,11 +10,6 @@
 #include <assert.h>
 #include <ctype.h>
 
-//TODO add description to all auxiliary functions above each one.
-//TODO check if includes should be only on header file. (not supposed to be changed) meantime all not in header are in source
-
-
-
 struct sp_config_t{ //already a pointer!!!! SPConfig
 	char spImagesDirectory[1024];
 	char spImagesPrefix[1024];

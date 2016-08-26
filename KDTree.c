@@ -179,6 +179,7 @@ void KDTreeDestroy(KDTreeNode head){
 }
 
 
+/*
 int main(){
 	int size = 5;
 	int dim = 2;
@@ -201,6 +202,7 @@ int main(){
 	return 1;
 }
 
+*/
 
 
 
