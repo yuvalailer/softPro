@@ -105,6 +105,12 @@ double spPointGetAxisCoor(SPPoint point, int axis);
  * The L2-Squared distance between p and q
  */
 double spPointL2SquaredDistance(SPPoint p, SPPoint q);
+/*
+ * gets a copy of data array of doubles from point
+ * @param point - the SPPoint from which to extract the double array
+ * @return double* a pointer to the double array extracted
+ */
+double* getDat(const SPPoint point);
 
 
 #endif /* SPPOINT_H_ */

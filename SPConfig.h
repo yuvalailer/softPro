@@ -176,7 +176,7 @@ int spConfigGetMethod(const SPConfig config);
 
 /**
  * Frees all memory resources associate with config. 
- * If config == NULL nothig is done.
+ * If config == NULL nothing is done.
  */
 
 void spConfigDestroy(SPConfig config);
@@ -221,5 +221,56 @@ SP_CONFIG_MSG spConfigGetImagePathfeats(char* imagePath, const SPConfig config,i
  */
 
 int spConfigGetNumSimilarImages(const SPConfig config);
+
+/*
+ * a utill function. made to avoid code copying in all the next
+ * functions.
+ * is an internal tool, makes asserts act.
+ */
+
+int configUtills (int filed, const SPConfig config, SP_CONFIG_MSG* msg);
+
+/*
+ * the function trims whitespaces from both ends of the string s accepted.
+ * @param - s the string to be changed in-place
+ */
+
+void trim(char*s);
+
+/*
+ * the function checks if string s contains char c
+ * @param - s the string to check
+ * c - the char checking if s contains
+ * @return true if contains else false
+ */
+bool contains(char* s,char c);
+
+/*
+ * the function checks if the string s contains only number chars;
+ * @param s the string to check
+ * @return true if contains only number char else false
+ */
+
+bool allnum(char* s);
+
+/*
+ * the function inserts the val given into param field in config
+ * @param config - the SPCoinfig file given in order to insert val into
+ * @param param - the field of config inserting val into
+ * @param val the value to be inserted into config
+ * @return true if success in insertion else false
+ */
+
+bool insertconfig(SPConfig config,char* param,char* val);
+
+/*
+ * splits the string given into left and right and trims them for whitespaces after the split
+ * @param s the string to be splitted to left and right
+ * @param left - pointer to which to insert the left splitted string s
+ * @param right - pointer to which to insert the right splitted string s
+ */
+void splitmid(char* s,char* left,char* right);
+
+
 
 #endif /* SPCONFIG_H_ */

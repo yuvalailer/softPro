@@ -14,6 +14,7 @@
 #include "SPPoint.h"
 #include "SPKDArray.h"
 #include "SPConfig.h"
+#include "SPBPriorityQueue.h"
 
 /*
  * A Kd-tree struct. used for sorting and matching the picturs to one
@@ -89,6 +90,18 @@ int findmedian(SPKDArray array,int splitcord);
  */
 
 void KDTreeDestroy(KDTreeNode head);
+
+/*
+ * Recursive function. meant to use the Tree structure to effectively
+ * find the closets neighbors and fill the Queue.
+ * works as dicribed in the pdf file added to the project
+ * finfing a feature (SPPoint) k - Nearest Neighbors (closest in distance from the point).
+ * @param curr - the head of the tree to search the point P k nearest neighbors.
+ * @param P the query point
+ * @param bpq - the SPBPQueue used to store the k nearest points.
+ */
+
+void kNearestNeighbors(KDTreeNode curr , SPBPQueue bpq, SPPoint P);
 
 #endif /* SOFTPRO_KDTREE_H_ */
 

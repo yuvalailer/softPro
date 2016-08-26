@@ -6,7 +6,6 @@
  */
 
 #include "KDTree.h"
-#include "SPBPriorityQueue.h"
 #include "SPConfig.h"
 #define INVALID -1;
 
@@ -28,9 +27,6 @@ int KDTreeGetVal(KDTreeNode node){
 	int a = node->val;
 	return a;
 }
-
-
-SPPoint nullpoint;
 
 int maxSpred(SPKDArray array){
 	int dim = Getrows(array);
@@ -73,7 +69,7 @@ KDTreeNode RecTree0(SPKDArray array){
 	}
 	ans->dim = splitcord;
 	ans->val = findmedian(array,splitcord);
-	ans->left = RecTree0(Split(array,splitcord)[0]);
+//	ans->left = RecTree0(Split(array,splitcord)[0]);
 //	ans->right = RecTree0(Split(array,splitcord)[1]);
 //	ans->data = NULL;
 	return ans;
@@ -133,16 +129,12 @@ KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a 
 }
 // end of init
 
-/*Recursive function. meant to use the Tree structure to effectively
- * find the closets neighbors and fill the Queue.
- * works as dicribed in the pdf file added to the project
- */
+
 void kNearestNeighbors(KDTreeNode curr , SPBPQueue bpq, SPPoint P){
 	if (curr == NULL) {
 		return; //TODO? see PDF/
 	}
-
-	if(curr->data != NULL){ //TODO yuval: is this a good leaf check
+	if(curr->dim != NULL){ //TODO yuval: is this a good leaf check
 		int distance = spPointL2SquaredDistance(curr->data,P);
 		SPListElement elm = spListElementCreate(spPointGetIndex(curr->data),distance);
 		spBPQueueEnqueue(bpq,elm);
@@ -161,6 +153,7 @@ void kNearestNeighbors(KDTreeNode curr , SPBPQueue bpq, SPPoint P){
 		}
 	}
 }
+
 /*
 * envalop fuction. ment to pass the K parameter to the function.
 * returns a queue with the K -NEAREST NEIGHBORs.
@@ -202,7 +195,7 @@ int main(){
 	arr[4] = (spPointCreate(e1,dim,4));
 	SP_CONFIG_MSG msg;
 	SPConfig config = spConfigCreate("config.config",&msg);
-	KDTreeNode head = InitTree(arr,5,config);
+//	KDTreeNode head = InitTree(arr,5,config);
 //	KDTreeDestroy(head);
 	printf("chellooo!!!!!!");
 	return 1;

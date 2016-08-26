@@ -32,12 +32,6 @@ struct sp_config_t{ //already a pointer!!!! SPConfig
 	char spLoggerFilename[1024];
 };
 
-/*
- * a utill function. made to avoid code copying in all the next
- * functions.
- * is an internal tool, makes asserts act.
- */
-
 int configUtills (int filed, const SPConfig config, SP_CONFIG_MSG* msg){
 	assert(msg != NULL);
 	int ans; // used in configutills only.
@@ -55,11 +49,6 @@ int configUtills (int filed, const SPConfig config, SP_CONFIG_MSG* msg){
 	}
 	return ans; // Return an int. to be change if needed in the function.
 }
-
-/*
- * the function trims whitespaces from both ends of the string s accepted.
- * @param - s the string to be changed in-place
- */
 
 void trim(char*s){
 	int len = strlen(s);
@@ -90,12 +79,6 @@ void trim(char*s){
 	*(s+len-cnt) = '\0';
 }
 
-/*
- * the function checks if string s contains char c
- * @param - s the string to check
- * c - the char checking if s contains
- * @return true if contains else false
- */
 
 bool contains(char* s,char c){
 	int len = strlen(s);
@@ -299,7 +282,7 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 		*msg = SP_CONFIG_ALLOC_FAIL;
 		return NULL;
 	}
-	//TODO check if needed so many mallocs here and add bad malloc check
+
 	strcpy(config->spImagesDirectory,"notset");
 	strcpy(config->spImagesPrefix,"notset");
 	strcpy(config->spImagesSuffix,"notset");
@@ -438,12 +421,7 @@ bool spConfigGetExtractionMode(const SPConfig config){
 }
 
 SP_CONFIG_MSG spConfigGetImagePathfeats(char* imagePath, const SPConfig config,int index){
-	char* tmp;
-	sprintf("%d",tmp,index);
 
-	if(strlen(imagePath)<(strlen(tmp)+strlen(config->spImagesDirectory)+strlen(config->spImagesPrefix)+6)){
-		return SP_CONFIG_ALLOC_FAIL;
-	}
 	if(imagePath == NULL || config == NULL){
 		return SP_CONFIG_INVALID_ARGUMENT;
 	} else if (index>=config->spNumOfImages) {
