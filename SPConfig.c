@@ -36,8 +36,7 @@ int configUtills (int filed, const SPConfig config, SP_CONFIG_MSG* msg){
 	} else { // config is good.
 		ans = filed;
 		if(filed == 0){ // what is the EXtract mode?
-			*msg = SP_CONFIG_INVALID_ARGUMENT; //TODO un-specified answer in this case.. send an email to moab.
-			//TODO change this part of the function according to the main function
+			*msg = SP_CONFIG_INVALID_ARGUMENT;
 		} else {
 			*msg = SP_CONFIG_SUCCESS;
 		}
@@ -339,13 +338,13 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 }
 
 bool spConfigIsExtractionMode(const SPConfig config, SP_CONFIG_MSG* msg){
-	int filed = (int)(config->spExtractionMode); // enter the exc_mode as int.
-	return (bool)configUtills(filed,config,msg);
+	*msg = SP_CONFIG_SUCCESS; //always filled because default value
+	return config->spExtractionMode;
 }
 
 bool spConfigMinimalGui(const SPConfig config, SP_CONFIG_MSG* msg){
-	int filed = (int)(config->spMinimalGUI); // enter the MinimalGUI_mode as int.
-	return (bool)configUtills(filed,config,msg);
+	*msg = SP_CONFIG_SUCCESS; //always filled because default value
+	return config->spMinimalGUI;
 
 }
 int spConfigGetNumOfImages(const SPConfig config, SP_CONFIG_MSG* msg){
@@ -354,20 +353,15 @@ int spConfigGetNumOfImages(const SPConfig config, SP_CONFIG_MSG* msg){
 }
 
 int spConfigGetNumOfFeatures(const SPConfig config, SP_CONFIG_MSG* msg){
-	int filed = (config->spNumOfFeatures); // enter the NumOfFeatures_mode as int.
-	return configUtills(filed,config,msg);
+	*msg = SP_CONFIG_SUCCESS; //always filled because default value
+	return config->spNumOfFeatures;
 }
 
 int spConfigGetPCADim(const SPConfig config, SP_CONFIG_MSG* msg){
-	int ans;
-	int filed = (config->spPCADimension); // enter the spPCADimension as int.
-	ans = configUtills(filed,config,msg); // return value needs to be negative int. thus the additional if loop.
-	if (ans == 0){
-		return -1;
-	} else {
-		return ans;
-	}
+	*msg = SP_CONFIG_SUCCESS; //always filled because default value
+	return config->spPCADimension;
 }
+
 SP_CONFIG_MSG spConfigGetImagePath(char* imagePath, const SPConfig config,int index){
 
 	if(imagePath == NULL || config == NULL){
@@ -380,11 +374,10 @@ SP_CONFIG_MSG spConfigGetImagePath(char* imagePath, const SPConfig config,int in
 	}
 }
 
-
 SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config){
-	if(strlen(pcaPath)<(strlen(config->spImagesDirectory)+strlen(config->spPCAFilename))){
-		return SP_CONFIG_ALLOC_FAIL;
-	}
+//	if(strlen(pcaPath)<(strlen(config->spImagesDirectory)+strlen(config->spPCAFilename))){
+//		return SP_CONFIG_ALLOC_FAIL;
+//	} //TODO check if this is necessary at all (strlen checks until '\0' not array size
 	if(pcaPath == NULL || config == NULL){
 		return SP_CONFIG_INVALID_ARGUMENT;
 	} else {

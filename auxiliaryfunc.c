@@ -80,6 +80,17 @@ SPPoint* getfeats(FILE* fr,int* tempdir){
 	return ans;
 }
 
+void calculatewinners(int* winners,int* hits,int hitssize,int winnerssize){ //TODO finish the func
+	int max = 0;
+	int maxindex;
+	int i,j;
+	for (i = 0; i < winnerssize; ++i) {
+		max = 0;
+		for (j = 0; j < hitssize; ++j) {
+		}
+	}
+}
+
 /*
 int main(){
 	int a;

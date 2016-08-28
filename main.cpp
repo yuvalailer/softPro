@@ -19,37 +19,36 @@ using namespace sp;
 
 int main(int argc,char* argv[]){
 
-	SPConfig config = (SPConfig)malloc(sizeof(SPConfig));
-	if (config == NULL){return NULL;}//TODO check what happens in bad allocation what does main return?
-	char* path = "";
-	if((argv[1]!=NULL)||(argv[2]!=NULL)){ // if inserted command line arguments
-		if ((argv[1] == "-c") && (argv[2] != NULL) ){ // check if a path was inserted in the correct format
-			strcpy(path,argv[2]);
+	SPConfig config;
+	char configpath[1024] = ""; //TODO can we assume 1024?
+
+	if(argc > 1){ // if inserted command line arguments
+		if ((argc == 3)&&(!(strcmp(argv[1],"-c")))){ // check if a path was inserted in the correct format
+			strcpy(configpath,argv[2]);
 		}else{
 			printf("Invalid command line : use -c <config_filename>\n"); //TODO understand in what to change <config_filename>
-			return NULL;
+			return 0;
 		}
 	}
-
-	if (!strcmp(path,"")){ //if no path was inserted
-		path = "spcbir.config";
+	if (!strcmp(configpath,"")){ //if no path was inserted
+		strcpy(configpath,"spcbir.config");
 	}
 
 	SP_CONFIG_MSG msg;
-	config = spConfigCreate(path,&msg); //TODO check what msg pointer do we need to insert
+	config = spConfigCreate(configpath,&msg); //TODO check what msg pointer do we need to insert
 	if (config == NULL){ // if there was an error
 		if (msg == SP_CONFIG_CANNOT_OPEN_FILE){
-			if(!strcmp(path,"spcbir.config")){
+			if(!strcmp(configpath,"spcbir.config")){
 				printf("The default configuration file spcbir.config couldn’t be open\n");
-				return NULL;
+				return 0;
 			}else{
-				printf("The configuration file %s couldn’t be open\n",path);
-				return NULL;
+				printf("The configuration file %s couldn’t be open\n",configpath);
+				return 0;
 			}
 		}
 	}
 
-	// finished creating config file
+	// finished creating configuration file
 
 	ImageProc proc = ImageProc(config);
 
@@ -61,7 +60,8 @@ int main(int argc,char* argv[]){
 	int numofimages = spConfigGetNumOfImages(config,&msg);
 	int numoffeatures = spConfigGetNumOfFeatures(config,&msg);
 	int tempdir[numofimages];
-	char* temppath;
+	char* temppath = (char*)malloc(sizeof(char)*1024); //TODO release + can asuume 1024 at most?
+	int tempnumOfFeatsextracted;
 
 	SPPoint** directory = (SPPoint**)malloc(sizeof(SPPoint*)*numofimages); // allocating matrix of feats per image
 
@@ -69,7 +69,7 @@ int main(int argc,char* argv[]){
 
 	if (spConfigGetExtractionMode(config)){ // if we are in extraction mode
 
-		int tempnumOfFeatsextracted;
+
 		FILE* fw;
 
 		for (i = 0; i < numofimages; i++) { //for each image in image directory
@@ -121,7 +121,7 @@ int main(int argc,char* argv[]){
 
 	while(!out){
 		printf("Please enter an image path:\n");
-		char* quarypath;
+		char* quarypath = (char*)malloc(sizeof(char)*1024); //TODO can we assume that quarypath is at most 1024?
 		scanf("%s",quarypath);
 		if(!strcmp(quarypath,"<>")){ //if chose to exit the program
 			printf("Exiting…\n");
@@ -129,25 +129,45 @@ int main(int argc,char* argv[]){
 		}
 
 		KDTreeNode head = InitTree(finaldir,n,config); //initialization of KDTree complexity: O(d X nlogn)
+
 		int hits[numofimages];
+		for(i=0;i<numofimages;i++){//initialize to -1 hits per image
+			hits[i] = -1;
+		}
 		/* an array to keep track of how many times
 		 *an image feature was selected to be k-nearest feature*/
+
 		int winners[numofsimilarimages];
 		/* an array contains indexes of winners ordered by numbered of hits
 		 * example: winner[0] - the index of the most closest image*/
 
+		SPPoint* quaryfeatures = proc.getImageFeatures(quarypath,numofimages,&tempnumOfFeatsextracted);
 
+		SPBPQueue tempbpq = spBPQueueCreate(numofsimilarimages);
 
+		for (i = 0; i < tempnumOfFeatsextracted; ++i) { //count hits per image
+			kNearestNeighbors(head,tempbpq,quaryfeatures[i]);
+			while(!spBPQueueIsEmpty(tempbpq)){
+				hits[spListElementGetIndex(spBPQueuePeek(tempbpq))]++;
+				spBPQueueDequeue(tempbpq);
 
-		//showing resaults
+			}
+			spBPQueueClear(tempbpq);
+		}
 
-		if(spConfigMinimalGui(config,&msg)){ // if we are in minimal gui mode
+		calculatewinners(winners,hits,numofimages,numofsimilarimages); //TODO finish at source file the func
+
+		free(quaryfeatures);
+
+		//showing results
+
+		if(spConfigMinimalGui(config,&msg)){ // if we are in minimal-GUI mode
 			for (i = 0; i <numofsimilarimages ; ++i) {
 				spConfigGetImagePath(temppath,config,winners[i]);
 				proc.showImage(temppath);
 			}
 		}
-		else{ // not in minimal gui mode
+		else{ // not in minimal-GUI mode
 			printf("Best candidates for - %s - are:\n",quarypath);
 			for (i = 0; i < numofsimilarimages; ++i) {
 				spConfigGetImagePath(temppath,config,winners[i]);

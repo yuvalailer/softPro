@@ -88,8 +88,8 @@ KDTreeNode RecTree1(SPKDArray array){
 	}
 	ans->dim = splitcord;
 	ans->val = findmedian(array,splitcord);
-	ans->left = RecTree0(Split(array,splitcord)[0]);
-	ans->right = RecTree0(Split(array,splitcord)[1]);
+	ans->left = RecTree1(Split(array,splitcord)[0]);
+	ans->right = RecTree1(Split(array,splitcord)[1]);
 	ans->data = NULL;
 	return ans;
 }
@@ -107,8 +107,8 @@ KDTreeNode RecTree2(SPKDArray array,int i){
 	}
 	ans->dim = splitcord;
 	ans->val = findmedian(array,splitcord);
-	ans->left = RecTree0(Split(array,splitcord +1)[0]);
-	ans->right = RecTree0(Split(array,splitcord + 1)[1]);
+	ans->left = RecTree2(Split(array,splitcord )[0],splitcord+1);
+	ans->right = RecTree2(Split(array,splitcord)[1],splitcord+1);
 	ans->data = NULL;
 	return ans;
 }
@@ -127,7 +127,7 @@ KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a 
 		return RecTree2(array,0);
 	}
 }
-// end of init
+
 
 
 void kNearestNeighbors(KDTreeNode curr , SPBPQueue bpq, SPPoint P){

@@ -1,10 +1,10 @@
 #ifndef SPIMAGEPROC_H_
 #define SPIMAGEPROC_H_
 
+#include <opencv2/core/mat.hpp>
 #include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <stdbool.h>
-#include <c++/vector>
+#include <cstdbool>
+#include <vector>
 
 extern "C" {
 #include "SPConfig.h"
