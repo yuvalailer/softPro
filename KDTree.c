@@ -69,9 +69,9 @@ KDTreeNode RecTree0(SPKDArray array){
 	}
 	ans->dim = splitcord;
 	ans->val = findmedian(array,splitcord);
-//	ans->left = RecTree0(Split(array,splitcord)[0]);
-//	ans->right = RecTree0(Split(array,splitcord)[1]);
-//	ans->data = NULL;
+	ans->left = RecTree0(Split(array,splitcord)[0]);
+	ans->right = RecTree0(Split(array,splitcord)[1]);
+	ans->data = NULL;
 	return ans;
 }
 
@@ -155,9 +155,9 @@ void kNearestNeighbors(KDTreeNode curr , SPBPQueue bpq, SPPoint P){
 }
 
 /*
-* envalop fuction. ment to pass the K parameter to the function.
-* returns a queue with the K -NEAREST NEIGHBORs.
-*/
+ * envalop fuction. ment to pass the K parameter to the function.
+ * returns a queue with the K -NEAREST NEIGHBORs.
+ */
 
 SPBPQueue KDTreeSearch(KDTreeNode head,SPPoint point, int num){
 	SPBPQueue bpq;
@@ -178,8 +178,8 @@ void KDTreeDestroy(KDTreeNode head){
 	}
 }
 
-
 /*
+
 int main(){
 	int size = 5;
 	int dim = 2;
@@ -195,14 +195,16 @@ int main(){
 	arr[3] = (spPointCreate(d1,dim,3));
 	arr[4] = (spPointCreate(e1,dim,4));
 	SP_CONFIG_MSG msg;
-	SPConfig config = spConfigCreate("config.config",&msg);
-//	KDTreeNode head = InitTree(arr,5,config);
-//	KDTreeDestroy(head);
+	SPConfig config = spConfigCreate("spcbir.config",&msg);
+	KDTreeNode head = InitTree(arr,5,config);
+	printf("here\n");
+	fflush(stdout);
+	//	KDTreeDestroy(head);
 	printf("chellooo!!!!!!");
 	return 1;
 }
-
 */
+
 
 
 

@@ -160,7 +160,7 @@ int Getrows(SPKDArray kdArr){
 	int a = kdArr->rows;
 	return a;
 }
-int** GetMat(SPKDArray kdArr){ // TODO yuval: all needs to be declared in header.
+int** GetMat(SPKDArray kdArr){
 	return kdArr->mat;
 }
 

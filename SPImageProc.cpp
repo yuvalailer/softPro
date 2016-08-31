@@ -1,17 +1,13 @@
-#include "SPImageProc.h"
-
-#include <opencv2/core/core_c.h>
-#include <opencv2/core/cvstd.hpp>
-#include <opencv2/core/mat.inl.hpp>
-#include <opencv2/core/persistence.hpp>
-#include <opencv2/core/ptr.inl.hpp>
-#include <opencv2/core/types.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/xfeatures2d/nonfree.hpp>
-#include <cstdio>
 #include <cstdlib>
-
+#include <cassert>
+#include <cstring>
+#include <opencv2/xfeatures2d.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/highgui.hpp>
+#include <cstdio>
+#include "SPImageProc.h"
 extern "C" {
 #include "SPLogger.h"
 }

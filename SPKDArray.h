@@ -33,21 +33,41 @@ SPKDArray Init(SPPoint* arr, int size);
  *
  *returns an array of 2 SPKDArray-s. left & right.
  *
- * TODO complete documentation
- *
- * @param
- * @assert
- * @return - array of two pointers
+ * @param kdArr the kdarray to be splitted
+ * @param coor - the coordinate from which to split the array to left or right
+ * @return - array of two pointers to the left KDarray and right kdarray
  *
  */
 
 SPKDArray* Split(SPKDArray kdArr, int coor);
 
+/*
+ * returns the number of cols of the SPKDArray
+ * @param kdArr - the SPKDArray to return the #cols value
+ * @return int - the number of cols
+ */
+
 int Getcol(SPKDArray kdArr);
+
+/*
+ * returns the number of rows of the SPKDArray matrix
+ * @param kdArr - the SPKDArray to return the #rows value
+ * @return int - the number of rows
+ *
+ */
 
 int Getrows(SPKDArray kdArr);
 
+/*
+ * returns the SPPoint array of the SPKDArray
+ * @param kdArr - the SPKDArray to return its SPPoint array
+ * @return SPPoint* the copy of the SPPoint array of the SPKDArray
+ *
+ */
+
 SPPoint* Getpointsarray(SPKDArray kdArr);
+
+
 
 int** GetMat(SPKDArray kdArr);
 

@@ -20,7 +20,7 @@ using namespace sp;
 int main(int argc,char* argv[]){
 
 	SPConfig config;
-	char configpath[1024] = ""; //TODO can we assume 1024?
+	char configpath[1024] = ""; // asked moab can assume that not more than 1024 char
 
 	if(argc > 1){ // if inserted command line arguments
 		if ((argc == 3)&&(!(strcmp(argv[1],"-c")))){ // check if a path was inserted in the correct format
@@ -81,6 +81,7 @@ int main(int argc,char* argv[]){
 			fw = fopen(temppath,"w");//open file for writing
 			writefeats(fw,directory[i],tempnumOfFeatsextracted);
 		}
+
 		fclose(fw);
 
 		finaldir = (SPPoint*)malloc(sizeof(SPPoint)*n); //making final dir
@@ -126,6 +127,7 @@ int main(int argc,char* argv[]){
 		if(!strcmp(quarypath,"<>")){ //if chose to exit the program
 			printf("Exiting…\n");
 			out = true;
+			break;
 		}
 
 		KDTreeNode head = InitTree(finaldir,n,config); //initialization of KDTree complexity: O(d X nlogn)
@@ -134,12 +136,12 @@ int main(int argc,char* argv[]){
 		for(i=0;i<numofimages;i++){//initialize to -1 hits per image
 			hits[i] = -1;
 		}
-		/* an array to keep track of how many times
-		 *an image feature was selected to be k-nearest feature*/
+//		 an array to keep track of how many times
+//		 *an image feature was selected to be k-nearest feature
 
 		int winners[numofsimilarimages];
-		/* an array contains indexes of winners ordered by numbered of hits
-		 * example: winner[0] - the index of the most closest image*/
+//		 an array contains indexes of winners ordered by numbered of hits
+//		 * example: winner[0] - the index of the most closest image
 
 		SPPoint* quaryfeatures = proc.getImageFeatures(quarypath,numofimages,&tempnumOfFeatsextracted);
 
