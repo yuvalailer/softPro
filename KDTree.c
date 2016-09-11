@@ -7,6 +7,7 @@
 
 #include "KDTree.h"
 #include "SPConfig.h"
+#include <math.h>
 #define INVALID -1;
 
 struct spTreeNode {
@@ -31,6 +32,9 @@ int KDTreeGetVal(KDTreeNode node){
 int maxSpred(SPKDArray array){
 	int dim = Getrows(array);
 	int size = Getcol(array);
+	if(size == 1){
+		return 0;
+	}
 	double max = 0;
 	int maxcor = 0;
 	int i;
@@ -41,8 +45,8 @@ int maxSpred(SPKDArray array){
 	for(i = 0;i < dim;i++){ // O(d) to find max spread coordinate
 		data1 = spPointGetAxisCoor((temparr[mat[i][0]]),i);
 		data2 = spPointGetAxisCoor((temparr[mat[i][size-1]]),i);
-		if((data2-data1)>max){
-			max = data2-data1;
+		if(abs(data2-data1)>max){
+			max = abs(data2-data1);
 			maxcor = i;
 		}
 	}
@@ -57,9 +61,10 @@ int findmedian(SPKDArray array,int splitcord){
 }
 
 KDTreeNode RecTree0(SPKDArray array){
-	int splitcord = maxSpred(array); // O(d)
 	KDTreeNode ans = (KDTreeNode)malloc(sizeof(KDTreeNode));
-	if(Getcol(array) == 1){
+	if((Getcol(array) == 1)||(array == NULL)){
+		printf("got to leaf, index is: %d\n",spPointGetIndex(Getpointsarray(array)[0]));
+		fflush(stdout);
 		ans->dim = INVALID;
 		ans->val = INVALID;
 		ans->data = spPointCopy(Getpointsarray(array)[0]);
@@ -67,10 +72,19 @@ KDTreeNode RecTree0(SPKDArray array){
 		ans->right = NULL;
 		return ans;
 	}
+
+	int splitcord = maxSpred(array); // O(d)
+	printf("splitcord is: %d\n",splitcord);
+	fflush(stdout);
 	ans->dim = splitcord;
 	ans->val = findmedian(array,splitcord);
-	ans->left = RecTree0(Split(array,splitcord)[0]);
-	ans->right = RecTree0(Split(array,splitcord)[1]);
+	//	printf("dim is: %d, val is: %d\n",ans->dim,ans->val);
+	//	fflush(stdout);
+	SPKDArray* splitarray = Split(array,splitcord);
+	//	printf("after split,dim is: %d, val is: %d\n",ans->dim,ans->val);
+	//	fflush(stdout);
+	ans->left = RecTree0(splitarray[0]);
+	ans->right = RecTree0(splitarray[1]);
 	ans->data = NULL;
 	return ans;
 }
@@ -116,7 +130,7 @@ KDTreeNode RecTree2(SPKDArray array,int i){
 KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a Tree by points array;
 	int splitmethod = spConfigGetMethod(config); // Splitting the arrays by the method in the config file;
 	SPKDArray array = Init(arr,size); // building the KDArray
-	//each split method decided calls another recursive function to compute the kdtree
+	//each split method decided calls another recursive function to compute the KDTree
 	if(splitmethod == 0){ //MAX_SPREAD
 		return RecTree0(array);
 	}
@@ -169,6 +183,7 @@ SPBPQueue KDTreeSearch(KDTreeNode head,SPPoint point, int num){
 
 void KDTreeDestroy(KDTreeNode head){
 	if(head->val == -1){
+		spPointDestroy(head->data);
 		free(head);
 	}
 	else{
@@ -193,14 +208,15 @@ int main(){
 	arr[2] = (spPointCreate(c1,dim,2));
 	arr[3] = (spPointCreate(d1,dim,3));
 	arr[4] = (spPointCreate(e1,dim,4));
-	SP_CONFIG_MSG msg;
+	SP_CONFIG_MSG msg = (SP_CONFIG_MSG)malloc(sizeof(SP_CONFIG_MSG));
 	SPConfig config = spConfigCreate("spcbir.config",&msg);
 	KDTreeNode head = InitTree(arr,5,config);
 	printf("here\n");
 	fflush(stdout);
-	//	KDTreeDestroy(head);
+//	KDTreeDestroy(head);
 	printf("chellooo!!!!!!");
 	fflush(stdout);
+	free(head);
 	return 1;
 }
 

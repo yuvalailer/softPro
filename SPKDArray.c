@@ -162,11 +162,13 @@ SPKDArray* Split(SPKDArray kdArr, int coor){
 }
 
 int Getcol(SPKDArray kdArr){
-	return kdArr->col;
+	int temp = kdArr->col;
+	return temp;
 }
 
 int Getrows(SPKDArray kdArr){
-	return kdArr->rows;
+	int temp = (kdArr->rows);
+	return temp;
 }
 int** GetMat(SPKDArray kdArr){
 	return kdArr->mat;
