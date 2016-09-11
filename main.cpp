@@ -17,6 +17,9 @@ using namespace sp;
 
 //TODO where are the stored messages go into? SPLOGGER?
 
+
+/*
+
 int main(int argc,char* argv[]){
 
 	SPConfig config;
@@ -114,6 +117,10 @@ int main(int argc,char* argv[]){
 		}
 		free(directory);
 	}
+//	int var;
+//	for (var = 0; var < n; ++var) {
+//		printpoint(finaldir[var]);
+//	}
 
 	//after extraction / non - extraction and we have our finaldir containing all the feats(SPPoints)!
 
@@ -122,10 +129,12 @@ int main(int argc,char* argv[]){
 
 	while(!out){
 		printf("Please enter an image path:\n");
-		char* quarypath = (char*)malloc(sizeof(char)*1024); //TODO can we assume that quarypath is at most 1024?
+		fflush(stdout);
+		char* quarypath = (char*)malloc(sizeof(char)*1024); //moab said can assume quary path is at most 1024
 		scanf("%s",quarypath);
 		if(!strcmp(quarypath,"<>")){ //if chose to exit the program
 			printf("Exiting…\n");
+			free(quarypath);
 			out = true;
 			break;
 		}
@@ -136,12 +145,11 @@ int main(int argc,char* argv[]){
 		for(i=0;i<numofimages;i++){//initialize to -1 hits per image
 			hits[i] = -1;
 		}
-//		 an array to keep track of how many times
-//		 *an image feature was selected to be k-nearest feature
+		//an array to keep track of how many times an image feature was selected to be k-nearest feature
 
 		int winners[numofsimilarimages];
-//		 an array contains indexes of winners ordered by numbered of hits
-//		 * example: winner[0] - the index of the most closest image
+
+		//an array contains indexes of winners ordered by numbered of hits example: winner[0] - the index of the most closest image
 
 		SPPoint* quaryfeatures = proc.getImageFeatures(quarypath,numofimages,&tempnumOfFeatsextracted);
 
@@ -178,6 +186,8 @@ int main(int argc,char* argv[]){
 		}
 	}
 	free(config);
+	printf("woohooo!");
 	return 1;
 }
 
+*/

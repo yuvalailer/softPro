@@ -80,21 +80,26 @@ SPPoint* getfeats(FILE* fr,int* tempdir){
 	return ans;
 }
 
-void calculatewinners(int* winners,int* hits,int hitssize,int winnerssize){ //TODO finish the func
-	int max = 0;
+void calculatewinners(int* winners,int* hits,int hitssize,int winnerssize){
+	int max;
 	int maxindex;
-	int i,j;
+	int i = 0 ,j = 0;
 	for (i = 0; i < winnerssize; ++i) {
-		max = 0;
+		max = -1;
+		maxindex = -1;
 		for (j = 0; j < hitssize; ++j) {
+			if(hits[j]>max){
+				max = hits[j];
+				maxindex=j;
+			}
 		}
+		hits[maxindex] = -1;
+		winners[i] = maxindex;
 	}
 }
 
-/*
-int main(){
+/*int main(){
 	int a;
-
 	FILE* fw = fopen("checkingwritefeats.txt","w");
 	double data[3] = {15.5,16.2,17.3};
 	double data1[3] = {5.5,100.6,13.2};
@@ -115,6 +120,12 @@ int main(){
 		double b = spPointGetAxisCoor(arr1[i],1);
 		double c = spPointGetAxisCoor(arr1[i],2);
 		printf("%f %f %f\n",a,b,c);
+	}
+	int hits[4] = {5,4,80,2};
+	int winners[7] = {-1,-1,-1,-1,-1,-1,-1};
+	calculatewinners(winners,hits,4,7);
+	for (a = 0; a < 7; ++a) {
+		printf("%d ",winners[a]);
 	}
 	return 1;
 }*/

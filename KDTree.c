@@ -134,7 +134,7 @@ void kNearestNeighbors(KDTreeNode curr , SPBPQueue bpq, SPPoint P){
 	if (curr == NULL) {
 		return; //TODO? see PDF/
 	}
-	if(curr->dim != NULL){ //TODO yuval: is this a good leaf check
+	if(curr->data != NULL){ // we are in a leaf
 		int distance = spPointL2SquaredDistance(curr->data,P);
 		SPListElement elm = spListElementCreate(spPointGetIndex(curr->data),distance);
 		spBPQueueEnqueue(bpq,elm);
@@ -178,7 +178,6 @@ void KDTreeDestroy(KDTreeNode head){
 	}
 }
 
-/*
 
 int main(){
 	int size = 5;
@@ -201,9 +200,9 @@ int main(){
 	fflush(stdout);
 	//	KDTreeDestroy(head);
 	printf("chellooo!!!!!!");
+	fflush(stdout);
 	return 1;
 }
-*/
 
 
 

@@ -35,7 +35,7 @@ void writefeats(FILE* fw,SPPoint* temppoint,int numOfFeats);
 SPPoint* getfeats(FILE* fr,int* tempdir);
 
 /*
- * the function orders indexes of most hit images into winners
+ * the function orders indexes of most hit images into winners all other places in winners not filled are -1;
  * @param - hits an array containing in index i the number of hits for image i
  * @param winners an array containing indexes of images by order of most hits
  * @param hitssize size of hits array
@@ -43,7 +43,6 @@ SPPoint* getfeats(FILE* fr,int* tempdir);
  */
 
 void calculatewinners(int* winners,int* hits,int hitssize,int winnerssize);
-
 
 
 #endif /* SOFTPRO_AUXILIARYFUNC_H_ */
