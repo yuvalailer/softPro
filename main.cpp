@@ -60,7 +60,7 @@ int main(int argc,char* argv[]){
 	int n=0;
 
 	int numofimages = spConfigGetNumOfImages(config,&msg);
-	int numoffeatures = spConfigGetNumOfFeatures(config,&msg);
+//	int numoffeatures = spConfigGetNumOfFeatures(config,&msg);
 	int tempdir[numofimages];
 	char* temppath = (char*)malloc(sizeof(char)*1024); //TODO release + can asuume 1024 at most?
 	int tempnumOfFeatsextracted;
@@ -116,10 +116,6 @@ int main(int argc,char* argv[]){
 		}
 		free(directory);
 	}
-//	int var;
-//	for (var = 0; var < n; ++var) {
-//		printpoint(finaldir[var]);
-//	}
 
 	//after extraction / non - extraction and we have our finaldir containing all the feats(SPPoints)!
 

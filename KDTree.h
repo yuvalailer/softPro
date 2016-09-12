@@ -110,5 +110,7 @@ void kNearestNeighbors(KDTreeNode* curr , SPBPQueue bpq, SPPoint P);
 
 SPBPQueue KDTreeSearch(KDTreeNode* head,SPPoint point, int num);
 
+void KDTreePrint(KDTreeNode* curr,int level);
+
 
 #endif /* KDTREE_H_ */

@@ -270,7 +270,7 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 		*msg = SP_CONFIG_CANNOT_OPEN_FILE;
 		return NULL;
 	}
-	SPConfig config = (SPConfig)malloc(sizeof(SPConfig)); //allocating memory and setting default values
+	SPConfig config = (SPConfig)malloc(sizeof(*config)); //allocating memory and setting default values //TODO check of ok
 	if(config == NULL){
 		*msg = SP_CONFIG_ALLOC_FAIL;
 		return NULL;

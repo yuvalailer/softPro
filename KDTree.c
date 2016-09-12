@@ -69,16 +69,11 @@ KDTreeNode* RecTree0(SPKDArray* array){
 		ans->data = spPointCopy(Getpointsarray(array)[0]);
 		ans->left = NULL;
 		ans->right = NULL;
-		printf("leaf! index is: %d\n",spPointGetIndex(ans->data));
 		return ans;
 	}
-
 	int splitcord = maxSpred(array); // O(d)
-	printf("splitcord is: %d\n",splitcord);
-	fflush(stdout);
 	ans->dim = splitcord;
 	ans->val = findmedian(array,splitcord);
-	printf("dim is: %d, val is: %f\n",ans->dim,ans->val);
 	KDArrayTuple* splitarray = Split(array,splitcord);
 	ans->left = RecTree0(kdtupgetleft(splitarray));
 	ans->right = RecTree0(kdtupgetright(splitarray));
@@ -190,11 +185,23 @@ SPBPQueue KDTreeSearch(KDTreeNode* head,SPPoint point, int num){
 void KDTreeDestroy(KDTreeNode* head){
 	if(head->val == -1){
 		spPointDestroy(head->data);
+		free(head);
 	}
 	else{
 		if(head->left != NULL){KDTreeDestroy(head->left);}
 		if(head->right != NULL){KDTreeDestroy(head->right);}
 		free(head);
+	}
+}
+
+void KDTreePrint(KDTreeNode* curr,int level){
+	if(curr->val == -1){
+		printf("reached a leaf!, index is: %d\n",spPointGetIndex(curr->data));
+	}
+	else{
+		printf("reached Node, dim: %d, val: %f\n",curr->dim,curr->val);
+		if(curr->left != NULL){KDTreePrint(curr->left,level+1);}
+		if(curr->right != NULL){KDTreePrint(curr->right,level+1);}
 	}
 }
 
@@ -215,8 +222,9 @@ void KDTreeDestroy(KDTreeNode* head){
 	SP_CONFIG_MSG msg;
 	SPConfig config = spConfigCreate("spcbir.config",&msg);
 	KDTreeNode* head = InitTree(arr,size,config);
+	KDTreePrint(head,0);
 	KDTreeDestroy(head);
-	printf("chellooo!!!!!!");
 	spConfigDestroy(config);
-	return 0;
+	return 1;
 }*/
+
