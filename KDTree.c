@@ -1,19 +1,17 @@
 /*
  * KDTree.c
  *
- *  Created on: 18 באוג׳ 2016
- *      Author: yuval ailer & michael ozeri
+ *  Created on: 12 בספט׳ 2016
+ *      Author: NMR
  */
 
 #include "KDTree.h"
-#include "SPConfig.h"
-#include <math.h>
-#define INVALID -1;
 
-struct spTreeNode {
-	int dim;
+
+struct spKDTreeNode{
 	int val;
-	KDTreeNode left ;
+	int dim;
+	KDTreeNode left;
 	KDTreeNode right;
 	SPPoint data;
 };
@@ -62,9 +60,10 @@ int findmedian(SPKDArray array,int splitcord){
 
 KDTreeNode RecTree0(SPKDArray array){
 	KDTreeNode ans = (KDTreeNode)malloc(sizeof(KDTreeNode));
+	if(ans == NULL){
+		return NULL;
+	}
 	if((Getcol(array) == 1)||(array == NULL)){
-		printf("got to leaf, index is: %d\n",spPointGetIndex(Getpointsarray(array)[0]));
-		fflush(stdout);
 		ans->dim = INVALID;
 		ans->val = INVALID;
 		ans->data = spPointCopy(Getpointsarray(array)[0]);
@@ -78,11 +77,7 @@ KDTreeNode RecTree0(SPKDArray array){
 	fflush(stdout);
 	ans->dim = splitcord;
 	ans->val = findmedian(array,splitcord);
-	//	printf("dim is: %d, val is: %d\n",ans->dim,ans->val);
-	//	fflush(stdout);
 	SPKDArray* splitarray = Split(array,splitcord);
-	//	printf("after split,dim is: %d, val is: %d\n",ans->dim,ans->val);
-	//	fflush(stdout);
 	ans->left = RecTree0(splitarray[0]);
 	ans->right = RecTree0(splitarray[1]);
 	ans->data = NULL;
@@ -128,16 +123,23 @@ KDTreeNode RecTree2(SPKDArray array,int i){
 }
 
 KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a Tree by points array;
-	int splitmethod = spConfigGetMethod(config); // Splitting the arrays by the method in the config file;
+	method splitmethod = spConfigGetMethod(config); // Splitting the arrays by the method in the config file;
 	SPKDArray array = Init(arr,size); // building the KDArray
+	if(array ==NULL){
+		return NULL;
+	}
 	//each split method decided calls another recursive function to compute the KDTree
-	if(splitmethod == 0){ //MAX_SPREAD
+	switch(splitmethod){
+	case MAX_SPREAD:
 		return RecTree0(array);
-	}
-	else if(splitmethod == 1){ //RANDOM
+		break;
+	case RANDOM:
 		return RecTree1(array);
-	}
-	else{//INCREMENTAL
+		break;
+	case INCREMENTAL:
+		return RecTree2(array,0);
+		break;
+	default: //default to create tree by incremental
 		return RecTree2(array,0);
 	}
 }
@@ -169,13 +171,13 @@ void kNearestNeighbors(KDTreeNode curr , SPBPQueue bpq, SPPoint P){
 }
 
 /*
- * envalop fuction. ment to pass the K parameter to the function.
+ * envelope function. meant to pass the K parameter to the function.
  * returns a queue with the K -NEAREST NEIGHBORs.
  */
 
 SPBPQueue KDTreeSearch(KDTreeNode head,SPPoint point, int num){
 	SPBPQueue bpq;
-	bpq = spBPQueueCreate(num); // TODO yuval: need to know the size - is this the config or the tree?
+	bpq = spBPQueueCreate(num);
 	kNearestNeighbors(head,bpq,point);
 	return bpq;
 }
@@ -184,20 +186,18 @@ SPBPQueue KDTreeSearch(KDTreeNode head,SPPoint point, int num){
 void KDTreeDestroy(KDTreeNode head){
 	if(head->val == -1){
 		spPointDestroy(head->data);
-		free(head);
 	}
 	else{
-		KDTreeDestroy(head->left);
-		KDTreeDestroy(head->right);
+		if(head->left != NULL){KDTreeDestroy(head->left);}
+		if(head->right != NULL){KDTreeDestroy(head->right);}
 		free(head);
 	}
 }
 
-
 int main(){
 	int size = 5;
 	int dim = 2;
-	SPPoint* arr = (SPPoint*)malloc(sizeof(SPPoint)*size);
+	SPPoint arr[size];
 	double a1[2]= {1.0,2.0};
 	double b1[2] = {123.0,70.0};
 	double c1[2] = {2.0,7.0};
@@ -208,23 +208,11 @@ int main(){
 	arr[2] = (spPointCreate(c1,dim,2));
 	arr[3] = (spPointCreate(d1,dim,3));
 	arr[4] = (spPointCreate(e1,dim,4));
-	SP_CONFIG_MSG msg = (SP_CONFIG_MSG)malloc(sizeof(SP_CONFIG_MSG));
+	SP_CONFIG_MSG msg;
 	SPConfig config = spConfigCreate("spcbir.config",&msg);
-	KDTreeNode head = InitTree(arr,5,config);
-	printf("here\n");
-	fflush(stdout);
+	KDTreeNode head = InitTree(arr,size,config);
 //	KDTreeDestroy(head);
 	printf("chellooo!!!!!!");
-	fflush(stdout);
-	free(head);
-	return 1;
+//	spConfigDestroy(config);
+	return 0;
 }
-
-
-
-
-
-
-
-
-

@@ -1,6 +1,15 @@
 #ifndef SPPOINT_H_
 #define SPPOINT_H_
 
+#include "SPLogger.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+
+
 /**
  * SPPoint Summary
  * Encapsulates a point with variable length dimension. The coordinates

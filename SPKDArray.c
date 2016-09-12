@@ -6,8 +6,6 @@
 
 #include "SPKDArray.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 
 struct sp_kdarray_t {
 	SPPoint* pointsarr;

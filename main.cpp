@@ -153,10 +153,10 @@ int main(int argc,char* argv[]){
 
 		SPPoint* quaryfeatures = proc.getImageFeatures(quarypath,numofimages,&tempnumOfFeatsextracted);
 
-		SPBPQueue tempbpq = spBPQueueCreate(numofsimilarimages);
+		SPBPQueue tempbpq;
 
 		for (i = 0; i < tempnumOfFeatsextracted; ++i) { //count hits per image
-			kNearestNeighbors(head,tempbpq,quaryfeatures[i]);
+			tempbpq = KDTreeSearch(head,quaryfeatures[i],numofsimilarimages);
 			while(!spBPQueueIsEmpty(tempbpq)){
 				hits[spListElementGetIndex(spBPQueuePeek(tempbpq))]++;
 				spBPQueueDequeue(tempbpq);
@@ -189,5 +189,5 @@ int main(int argc,char* argv[]){
 	printf("woohooo!");
 	return 1;
 }
-
 */
+

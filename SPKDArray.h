@@ -5,10 +5,18 @@
  *      Author: NMR
  */
 
-#ifndef SOFTPRO_SPKDARRAY_H_
-#define SOFTPRO_SPKDARRAY_H_
+#ifndef SPKDARRAY_H_
+#define SPKDARRAY_H_
 
 #include "SPPoint.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
+#include <assert.h>
+#include <ctype.h>
 
 struct sp_kdarray_t;
 
@@ -71,4 +79,4 @@ SPPoint* Getpointsarray(SPKDArray kdArr);
 
 int** GetMat(SPKDArray kdArr);
 
-#endif /* SOFTPRO_SPKDARRAY_H_ */
+#endif /* SPKDARRAY_H_ */

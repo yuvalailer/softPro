@@ -1,15 +1,20 @@
 #ifndef SPCONFIG_H_
 #define SPCONFIG_H_
 
-#include <stdbool.h>
-#include <stdio.h>
-#include <string.h>
 #include "SPLogger.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
+#include <assert.h>
+#include <ctype.h>
+
 
 /**
  * A data-structure which is used for configuring the system.
  */
-typedef enum {MAX_SPREAD,RANDOM,INCREMENTAL} method; // TODO yuval: oreder was reverse, yet donot change
+typedef enum {MAX_SPREAD,RANDOM,INCREMENTAL} method;
 
 typedef enum sp_config_msg_t {
 	SP_CONFIG_MISSING_DIR,
@@ -172,7 +177,7 @@ Returns the split method as an int. were:
 3. INCREMENTAL = 2
  */
 
-int spConfigGetMethod(const SPConfig config);
+method spConfigGetMethod(const SPConfig config);
 
 /**
  * Frees all memory resources associate with config. 

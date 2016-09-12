@@ -1,8 +1,16 @@
 #ifndef SPLIST_H_
 #define SPLIST_H_
 
-#include <stdbool.h>
+
 #include "SPListElement.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
+#include <assert.h>
+#include <ctype.h>
+
 /**
  * List Container Summary
  *

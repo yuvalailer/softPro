@@ -1,7 +1,5 @@
 #include "SPListElement.h"
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
+
 
 struct sp_list_element_t {
 	int index;

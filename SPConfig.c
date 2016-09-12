@@ -5,10 +5,9 @@
  *      Author: michael ozeri & yuval ailer
  */
 
-#include <stdlib.h>
+
 #include "SPConfig.h"
-#include <assert.h>
-#include <ctype.h>
+
 
 struct sp_config_t{ //already a pointer!!!! SPConfig
 	char spImagesDirectory[1024];
@@ -386,21 +385,7 @@ SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config){
 	}
 }
 
-int spConfigGetMethod(const SPConfig config){
-	switch (config->spKDTreeSplitMethod) {
-		case MAX_SPREAD:
-			return 0;
-			break;
-		case RANDOM:
-			return 1;
-			break;
-		case INCREMENTAL:
-			return 2;
-			break;
-		default:
-			return 0;
-			break;
-	}
+method spConfigGetMethod(const SPConfig config){
 	return  config->spKDTreeSplitMethod;
 }
 

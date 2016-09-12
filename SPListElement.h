@@ -1,6 +1,14 @@
 #ifndef LISTELEMENT_H_
 #define LISTELEMENT_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
+#include <assert.h>
+#include <ctype.h>
+
 /**
  * List Element Summary
  *

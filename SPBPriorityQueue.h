@@ -1,7 +1,11 @@
 #ifndef SPBPRIORITYQUEUE_H_
 #define SPBPRIORITYQUEUE_H_
 #include "SPListElement.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
+#include <time.h>
 /**
  * SP Bounded Priority Queue summary
  *

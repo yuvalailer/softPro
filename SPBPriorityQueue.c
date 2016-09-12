@@ -6,7 +6,6 @@
  */
 
 #include "SPBPriorityQueue.h"
-#include <stdlib.h>
 #include "SPList.h"
 
 struct sp_bp_queue_t {

@@ -1,20 +1,25 @@
 /*
  * KDTree.h
  *
- *  Created on: 18 באוג׳ 2016
- *      Author: yuval ailer & michael ozeri
+ *  Created on: 12 בספט׳ 2016
+ *      Author: NMR
  */
 
-#ifndef SOFTPRO_KDTREE_H_
-#define SOFTPRO_KDTREE_H_
+#ifndef KDTREE_H_
+#define KDTREE_H_
+#define INVALID -1
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
 #include "SPPoint.h"
 #include "SPKDArray.h"
 #include "SPConfig.h"
 #include "SPBPriorityQueue.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
+
 
 /*
  * A Kd-tree struct. used for sorting and matching the picturs to one
@@ -30,7 +35,7 @@
  based on the lecture on kd-trees.
  */
 
-typedef struct spTreeNode* KDTreeNode;
+typedef struct spKDTreeNode* KDTreeNode;
 
 
 /*
@@ -103,10 +108,7 @@ void KDTreeDestroy(KDTreeNode head);
 
 void kNearestNeighbors(KDTreeNode curr , SPBPQueue bpq, SPPoint P);
 
-#endif /* SOFTPRO_KDTREE_H_ */
+SPBPQueue KDTreeSearch(KDTreeNode head,SPPoint point, int num);
 
 
-
-
-
-
+#endif /* KDTREE_H_ */

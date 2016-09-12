@@ -7,8 +7,7 @@
  */
 
 #include "SPPoint.h"
-#include <assert.h>
-#include <stdlib.h>
+
 
 
 struct sp_point_t {
