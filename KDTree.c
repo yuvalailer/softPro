@@ -9,25 +9,25 @@
 
 
 struct spKDTreeNode{
-	int val;
+	double val;
 	int dim;
-	KDTreeNode left;
-	KDTreeNode right;
+	KDTreeNode* left;
+	KDTreeNode* right;
 	SPPoint data;
 };
 
 
-int KDTreeGetDim(KDTreeNode node){
+int KDTreeGetDim(KDTreeNode* node){
 	int a = node->dim;
 	return a;
 }
 
-int KDTreeGetVal(KDTreeNode node){
+int KDTreeGetVal(KDTreeNode* node){
 	int a = node->val;
 	return a;
 }
 
-int maxSpred(SPKDArray array){
+int maxSpred(SPKDArray* array){
 	int dim = Getrows(array);
 	int size = Getcol(array);
 	if(size == 1){
@@ -51,15 +51,15 @@ int maxSpred(SPKDArray array){
 	return maxcor;
 }
 
-int findmedian(SPKDArray array,int splitcord){
+int findmedian(SPKDArray* array,int splitcord){
 	int median;
 	int size = Getcol(array);
 	median = spPointGetAxisCoor((Getpointsarray(array))[(GetMat(array))[splitcord][size/2]],splitcord);
 	return median;
 }
 
-KDTreeNode RecTree0(SPKDArray array){
-	KDTreeNode ans = (KDTreeNode)malloc(sizeof(KDTreeNode));
+KDTreeNode* RecTree0(SPKDArray* array){
+	KDTreeNode* ans = (KDTreeNode*)malloc(sizeof(KDTreeNode));
 	if(ans == NULL){
 		return NULL;
 	}
@@ -69,6 +69,7 @@ KDTreeNode RecTree0(SPKDArray array){
 		ans->data = spPointCopy(Getpointsarray(array)[0]);
 		ans->left = NULL;
 		ans->right = NULL;
+		printf("leaf! index is: %d\n",spPointGetIndex(ans->data));
 		return ans;
 	}
 
@@ -77,16 +78,17 @@ KDTreeNode RecTree0(SPKDArray array){
 	fflush(stdout);
 	ans->dim = splitcord;
 	ans->val = findmedian(array,splitcord);
-	SPKDArray* splitarray = Split(array,splitcord);
-	ans->left = RecTree0(splitarray[0]);
-	ans->right = RecTree0(splitarray[1]);
+	printf("dim is: %d, val is: %f\n",ans->dim,ans->val);
+	KDArrayTuple* splitarray = Split(array,splitcord);
+	ans->left = RecTree0(kdtupgetleft(splitarray));
+	ans->right = RecTree0(kdtupgetright(splitarray));
 	ans->data = NULL;
 	return ans;
 }
 
-KDTreeNode RecTree1(SPKDArray array){
+KDTreeNode* RecTree1(SPKDArray* array){
 	int splitcord = (rand()%Getrows(array));
-	KDTreeNode ans = (KDTreeNode)malloc(sizeof(KDTreeNode));
+	KDTreeNode* ans = (KDTreeNode*)malloc(sizeof(KDTreeNode));
 	if(Getcol(array) == 1){
 		ans->dim = INVALID;
 		ans->val = INVALID;
@@ -97,15 +99,16 @@ KDTreeNode RecTree1(SPKDArray array){
 	}
 	ans->dim = splitcord;
 	ans->val = findmedian(array,splitcord);
-	ans->left = RecTree1(Split(array,splitcord)[0]);
-	ans->right = RecTree1(Split(array,splitcord)[1]);
+	KDArrayTuple* splitarray = Split(array,splitcord);
+	ans->left = RecTree1(kdtupgetleft(splitarray));
+	ans->right = RecTree1(kdtupgetright(splitarray));
 	ans->data = NULL;
 	return ans;
 }
 
-KDTreeNode RecTree2(SPKDArray array,int i){
+KDTreeNode* RecTree2(SPKDArray* array,int i){
 	int splitcord = (i%Getrows(array));
-	KDTreeNode ans = (KDTreeNode)malloc(sizeof(KDTreeNode));
+	KDTreeNode* ans = (KDTreeNode*)malloc(sizeof(KDTreeNode));
 	if(Getcol(array) == 1){ // stopping criteria for the recursive function. node is a leaf
 		ans->dim = INVALID;
 		ans->val = INVALID;
@@ -116,15 +119,16 @@ KDTreeNode RecTree2(SPKDArray array,int i){
 	}
 	ans->dim = splitcord;
 	ans->val = findmedian(array,splitcord);
-	ans->left = RecTree2(Split(array,splitcord )[0],splitcord+1);
-	ans->right = RecTree2(Split(array,splitcord)[1],splitcord+1);
+	KDArrayTuple* splitarray = Split(array,splitcord);
+	ans->left = RecTree2(kdtupgetleft(splitarray),splitcord+1);
+	ans->right = RecTree2(kdtupgetright(splitarray),splitcord+1);
 	ans->data = NULL;
 	return ans;
 }
 
-KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a Tree by points array;
+KDTreeNode* InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a Tree by points array;
 	method splitmethod = spConfigGetMethod(config); // Splitting the arrays by the method in the config file;
-	SPKDArray array = Init(arr,size); // building the KDArray
+	SPKDArray* array = Init(arr,size); // building the KDArray
 	if(array ==NULL){
 		return NULL;
 	}
@@ -146,7 +150,7 @@ KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a 
 
 
 
-void kNearestNeighbors(KDTreeNode curr , SPBPQueue bpq, SPPoint P){
+void kNearestNeighbors(KDTreeNode* curr , SPBPQueue bpq, SPPoint P){
 	if (curr == NULL) {
 		return; //TODO? see PDF/
 	}
@@ -175,7 +179,7 @@ void kNearestNeighbors(KDTreeNode curr , SPBPQueue bpq, SPPoint P){
  * returns a queue with the K -NEAREST NEIGHBORs.
  */
 
-SPBPQueue KDTreeSearch(KDTreeNode head,SPPoint point, int num){
+SPBPQueue KDTreeSearch(KDTreeNode* head,SPPoint point, int num){
 	SPBPQueue bpq;
 	bpq = spBPQueueCreate(num);
 	kNearestNeighbors(head,bpq,point);
@@ -183,7 +187,7 @@ SPBPQueue KDTreeSearch(KDTreeNode head,SPPoint point, int num){
 }
 
 
-void KDTreeDestroy(KDTreeNode head){
+void KDTreeDestroy(KDTreeNode* head){
 	if(head->val == -1){
 		spPointDestroy(head->data);
 	}
@@ -194,7 +198,7 @@ void KDTreeDestroy(KDTreeNode head){
 	}
 }
 
-int main(){
+/*int main(){
 	int size = 5;
 	int dim = 2;
 	SPPoint arr[size];
@@ -210,9 +214,9 @@ int main(){
 	arr[4] = (spPointCreate(e1,dim,4));
 	SP_CONFIG_MSG msg;
 	SPConfig config = spConfigCreate("spcbir.config",&msg);
-	KDTreeNode head = InitTree(arr,size,config);
-//	KDTreeDestroy(head);
+	KDTreeNode* head = InitTree(arr,size,config);
+	KDTreeDestroy(head);
 	printf("chellooo!!!!!!");
-//	spConfigDestroy(config);
+	spConfigDestroy(config);
 	return 0;
-}
+}*/

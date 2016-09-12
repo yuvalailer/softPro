@@ -20,7 +20,9 @@
 
 struct sp_kdarray_t;
 
-typedef struct sp_kdarray_t* SPKDArray;
+typedef struct sp_kdarray_t SPKDArray;
+
+typedef struct kdarraytup KDArrayTuple;
 
 /**
  * Allocates a new SPKDArray from given data in arr and size.
@@ -33,7 +35,7 @@ typedef struct sp_kdarray_t* SPKDArray;
  *
  */
 
-SPKDArray Init(SPPoint* arr, int size);
+SPKDArray* Init(SPPoint* arr, int size);
 
 /**
  * splits the SPKDArray given into two SPKDArrays with respect to the
@@ -47,7 +49,7 @@ SPKDArray Init(SPPoint* arr, int size);
  *
  */
 
-SPKDArray* Split(SPKDArray kdArr, int coor);
+KDArrayTuple* Split(SPKDArray* kdArr, int coor);
 
 /*
  * returns the number of cols of the SPKDArray
@@ -55,7 +57,7 @@ SPKDArray* Split(SPKDArray kdArr, int coor);
  * @return int - the number of cols
  */
 
-int Getcol(SPKDArray kdArr);
+int Getcol(SPKDArray* kdArr);
 
 /*
  * returns the number of rows of the SPKDArray matrix
@@ -64,7 +66,7 @@ int Getcol(SPKDArray kdArr);
  *
  */
 
-int Getrows(SPKDArray kdArr);
+int Getrows(SPKDArray* kdArr);
 
 /*
  * returns the SPPoint array of the SPKDArray
@@ -73,10 +75,14 @@ int Getrows(SPKDArray kdArr);
  *
  */
 
-SPPoint* Getpointsarray(SPKDArray kdArr);
+SPPoint* Getpointsarray(SPKDArray* kdArr);
 
 
 
-int** GetMat(SPKDArray kdArr);
+int** GetMat(SPKDArray* kdArr);
+
+SPKDArray* kdtupgetleft(KDArrayTuple* tup);
+
+SPKDArray* kdtupgetright(KDArrayTuple* tup);
 
 #endif /* SPKDARRAY_H_ */

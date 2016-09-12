@@ -18,7 +18,6 @@ using namespace sp;
 //TODO where are the stored messages go into? SPLOGGER?
 
 
-/*
 
 int main(int argc,char* argv[]){
 
@@ -139,7 +138,7 @@ int main(int argc,char* argv[]){
 			break;
 		}
 
-		KDTreeNode head = InitTree(finaldir,n,config); //initialization of KDTree complexity: O(d X nlogn)
+		KDTreeNode* head = InitTree(finaldir,n,config); //initialization of KDTree complexity: O(d X nlogn)
 
 		int hits[numofimages];
 		for(i=0;i<numofimages;i++){//initialize to -1 hits per image
@@ -189,5 +188,4 @@ int main(int argc,char* argv[]){
 	printf("woohooo!");
 	return 1;
 }
-*/
 

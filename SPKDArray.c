@@ -20,13 +20,18 @@ typedef struct tuple{
 	int pdex; // index in pointsarray
 }Tuple;
 
+typedef struct kdarraytup{
+	SPKDArray* left;
+	SPKDArray* right;
+}KDArrayTuple;
+
 int tuplesort(const void * x,const void * y){
 	Tuple* a = (Tuple*)x; Tuple* b = (Tuple*)y;
 	return ((spPointGetAxisCoor(a->point,a->sortingindex)) - (spPointGetAxisCoor(b->point,b->sortingindex)));
 }
 
-SPKDArray Init(SPPoint* arr, int size){
-	SPKDArray ans = (SPKDArray)malloc(sizeof(SPKDArray));
+SPKDArray* Init(SPPoint* arr, int size){
+	SPKDArray* ans = (SPKDArray*)malloc(sizeof(SPKDArray));
 	int i;
 	int j;
 
@@ -67,7 +72,7 @@ SPKDArray Init(SPPoint* arr, int size){
 	return ans;
 }
 
-SPKDArray* Split(SPKDArray kdArr, int coor){
+KDArrayTuple* Split(SPKDArray* kdArr, int coor){
 
 	int size = kdArr->col;
 	int dim = kdArr->rows;
@@ -82,9 +87,9 @@ SPKDArray* Split(SPKDArray kdArr, int coor){
 	int map1[size];
 	int map2[size];
 
-	SPKDArray* ans = (SPKDArray*)malloc(sizeof(SPKDArray)*2);
-	SPKDArray left = (SPKDArray)malloc(sizeof(SPKDArray));
-	SPKDArray right = (SPKDArray)malloc(sizeof(SPKDArray));
+	KDArrayTuple* ans = (KDArrayTuple*)malloc(sizeof(KDArrayTuple));
+	SPKDArray* left = (SPKDArray*)malloc(sizeof(SPKDArray));
+	SPKDArray* right = (SPKDArray*)malloc(sizeof(SPKDArray));
 	right->pointsarr = (SPPoint*)malloc(sizeof(SPPoint)*sizeR);
 	left->pointsarr = (SPPoint*)malloc(sizeof(SPPoint)*sizeL);
 
@@ -153,27 +158,35 @@ SPKDArray* Split(SPKDArray kdArr, int coor){
 	right->col = sizeR;
 	left->rows = kdArr->rows;
 	right->rows = kdArr->rows;
-	ans[0] = left;
-	ans[1] = right;
+	ans->left = left;
+	ans->right = right;
 
 	return ans;
 }
 
-int Getcol(SPKDArray kdArr){
+int Getcol(SPKDArray* kdArr){
 	int temp = kdArr->col;
 	return temp;
 }
 
-int Getrows(SPKDArray kdArr){
+int Getrows(SPKDArray* kdArr){
 	int temp = (kdArr->rows);
 	return temp;
 }
-int** GetMat(SPKDArray kdArr){
+int** GetMat(SPKDArray* kdArr){
 	return kdArr->mat;
 }
 
-SPPoint* Getpointsarray(SPKDArray kdArr){
+SPPoint* Getpointsarray(SPKDArray* kdArr){
 	return kdArr->pointsarr;
+}
+
+SPKDArray* kdtupgetleft(KDArrayTuple* tup){
+	return tup->left;
+}
+
+SPKDArray* kdtupgetright(KDArrayTuple* tup){
+	return tup->right;
 }
 
 /*int main(){

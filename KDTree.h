@@ -35,7 +35,7 @@
  based on the lecture on kd-trees.
  */
 
-typedef struct spKDTreeNode* KDTreeNode;
+typedef struct spKDTreeNode KDTreeNode;
 
 
 /*
@@ -46,7 +46,7 @@ typedef struct spKDTreeNode* KDTreeNode;
  *@return a pointer to KDTree head node.
  */
 
-KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config);
+KDTreeNode* InitTree(SPPoint* arr, int size, SPConfig config);
 
 /*
  * finds the max spread coordinate according to the SPKDArray given
@@ -54,7 +54,7 @@ KDTreeNode InitTree(SPPoint* arr, int size, SPConfig config);
  * @return the max spread coordinate
  */
 
-int maxSpred(SPKDArray array);
+int maxSpred(SPKDArray* array);
 
 /*
  * builds recursively the KDTree by MAX_SPREAD split method
@@ -62,7 +62,7 @@ int maxSpred(SPKDArray array);
  * @return KDTreeNode
  */
 
-KDTreeNode RecTree0(SPKDArray array);
+KDTreeNode* RecTree0(SPKDArray* array);
 
 /*
  * builds recursively the KDTree by RANDOM split method
@@ -70,7 +70,7 @@ KDTreeNode RecTree0(SPKDArray array);
  * @return KDTreeNode
  */
 
-KDTreeNode RecTree1(SPKDArray array);
+KDTreeNode* RecTree1(SPKDArray* array);
 
 /*
  * builds recursively the KDTree by INCREMENTAL split method
@@ -79,7 +79,7 @@ KDTreeNode RecTree1(SPKDArray array);
  * @return KDTreeNode
  */
 
-KDTreeNode RecTree2(SPKDArray array,int i);
+KDTreeNode* RecTree2(SPKDArray* array,int i);
 
 /*
  * finding median value with respect to the splitcord in the SPKDArray
@@ -88,13 +88,13 @@ KDTreeNode RecTree2(SPKDArray array,int i);
  * @return the value of the median value with respect to the splitcord in the SPKDArray
  */
 
-int findmedian(SPKDArray array,int splitcord);
+int findmedian(SPKDArray* array,int splitcord);
 
 /*
  * frees all allocation of memory
  */
 
-void KDTreeDestroy(KDTreeNode head);
+void KDTreeDestroy(KDTreeNode* head);
 
 /*
  * Recursive function. meant to use the Tree structure to effectively
@@ -106,9 +106,9 @@ void KDTreeDestroy(KDTreeNode head);
  * @param bpq - the SPBPQueue used to store the k nearest points.
  */
 
-void kNearestNeighbors(KDTreeNode curr , SPBPQueue bpq, SPPoint P);
+void kNearestNeighbors(KDTreeNode* curr , SPBPQueue bpq, SPPoint P);
 
-SPBPQueue KDTreeSearch(KDTreeNode head,SPPoint point, int num);
+SPBPQueue KDTreeSearch(KDTreeNode* head,SPPoint point, int num);
 
 
 #endif /* KDTREE_H_ */
