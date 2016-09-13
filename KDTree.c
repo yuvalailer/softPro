@@ -204,8 +204,16 @@ void KDTreePrint(KDTreeNode* curr,int level){
 		if(curr->right != NULL){KDTreePrint(curr->right,level+1);}
 	}
 }
+void printQue( SPBPQueue que){
+	int i = 0;
+	while(!spBPQueueIsEmpty(que)){
+		printf("%d. %d \n",i,spListElementGetIndex(spBPQueuePeek(que)));
+		spBPQueueDequeue(que);
+				i++;
+	}
+}
 
-/*int main(){
+int main(){
 	int size = 5;
 	int dim = 2;
 	SPPoint arr[size];
@@ -223,8 +231,12 @@ void KDTreePrint(KDTreeNode* curr,int level){
 	SPConfig config = spConfigCreate("spcbir.config",&msg);
 	KDTreeNode* head = InitTree(arr,size,config);
 	KDTreePrint(head,0);
+	// tree serch
+	SPBPQueue que = KDTreeSearch(head,arr[0],4); // here you can change all the parameters..
+	// que print.. add for testing
+	printQue(que);
 	KDTreeDestroy(head);
 	spConfigDestroy(config);
 	return 1;
-}*/
+}
 
