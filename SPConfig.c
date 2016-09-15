@@ -270,7 +270,7 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 		*msg = SP_CONFIG_CANNOT_OPEN_FILE;
 		return NULL;
 	}
-	SPConfig config = (SPConfig)malloc(sizeof(*config)); //allocating memory and setting default values //TODO check of ok
+	SPConfig config = (SPConfig)malloc(sizeof(*config)); //allocating memory and setting default values
 	if(config == NULL){
 		*msg = SP_CONFIG_ALLOC_FAIL;
 		return NULL;
@@ -302,33 +302,35 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 		}
 		splitmid(line,param,val);
 		if ((contains(param,' '))||(contains(val,' '))){
-			printf("File: %s\nLine: %d\nMessage: Invalid configuration line",filename,linenumber);
+			printf("File: %s\nLine: %d\nMessage: Invalid configuration line\n",filename,linenumber);
+			*msg = SP_CONFIG_INVALID_ARGUMENT;
 			return NULL;
 		}
 		if(!(in = insertconfig(config,param,val))){
-			printf("File: %s\nLine: %d\nMessage: Invalid value - constraint not met",filename,linenumber);
+			printf("File: %s\nLine: %d\nMessage: Invalid value - constraint not met\n",filename,linenumber);
+			*msg = SP_CONFIG_INVALID_ARGUMENT;
 			return NULL;
 		}
 		linenumber++;
 	}
 	fclose(fp);
 	if((strcmp(config->spImagesDirectory,"notset")==0)){
-		printf("File: %s\nLine: %d\nMessage: Parameter %s is not set",filename,linenumber,"spImagesDirectory");
+		printf("File: %s\nLine: %d\nMessage: Parameter %s is not set\n",filename,linenumber,"spImagesDirectory");
 		*msg = SP_CONFIG_MISSING_DIR;
 		return NULL;
 	}
 	if(strcmp(config->spImagesPrefix,"notset")==0){
-		printf("File: %s\nLine: %d\nMessage: Parameter %s is not set",filename,linenumber,"spImagesPrefix");
+		printf("File: %s\nLine: %d\nMessage: Parameter %s is not set\n",filename,linenumber,"spImagesPrefix");
 		*msg = SP_CONFIG_MISSING_PREFIX;
 		return NULL;
 	}
 	if(strcmp(config->spImagesSuffix,"notset")==0){
-		printf("File: %s\nLine: %d\nMessage: Parameter %s is not set",filename,linenumber,"spImagesSuffix");
+		printf("File: %s\nLine: %d\nMessage: Parameter %s is not set\n",filename,linenumber,"spImagesSuffix");
 		*msg = SP_CONFIG_MISSING_SUFFIX;
 		return NULL;
 	}
 	if(config->spNumOfImages == 0){
-		printf("File: %s\nLine: %d\nMessage: Parameter %s is not set",filename,linenumber,"spNumOfImages");
+		printf("File: %s\nLine: %d\nMessage: Parameter %s is not set\n",filename,linenumber,"spNumOfImages");
 		*msg = SP_CONFIG_MISSING_NUM_IMAGES;
 		return NULL;
 	}
@@ -374,9 +376,9 @@ SP_CONFIG_MSG spConfigGetImagePath(char* imagePath, const SPConfig config,int in
 }
 
 SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config){
-//	if(strlen(pcaPath)<(strlen(config->spImagesDirectory)+strlen(config->spPCAFilename))){
-//		return SP_CONFIG_ALLOC_FAIL;
-//	} //TODO check if this is necessary at all (strlen checks until '\0' not array size
+	//	if(strlen(pcaPath)<(strlen(config->spImagesDirectory)+strlen(config->spPCAFilename))){
+	//		return SP_CONFIG_ALLOC_FAIL;
+	//	} //TODO check if this is necessary at all (strlen checks until '\0' not array size
 	if(pcaPath == NULL || config == NULL){
 		return SP_CONFIG_INVALID_ARGUMENT;
 	} else {
@@ -414,6 +416,76 @@ void spConfigDestroy(SPConfig config){
 	if (config != NULL) {
 		free (config);
 	}
+}
+
+char* spConfigGetLoggerFilename(const SPConfig config){
+	return config->spLoggerFilename;
+}
+
+SP_LOGGER_LEVEL spConfigGetLoggerLevel(const SPConfig config){
+	switch (config->spLoggerLevel){
+	case 0:
+		return SP_LOGGER_ERROR_LEVEL;
+	case 1:
+		return SP_LOGGER_WARNING_ERROR_LEVEL;
+	case 2:
+		return SP_LOGGER_INFO_WARNING_ERROR_LEVEL;
+	case 3:
+		return SP_LOGGER_DEBUG_INFO_WARNING_ERROR_LEVEL;
+	}
+	return SP_LOGGER_DEBUG_INFO_WARNING_ERROR_LEVEL;
+}
+
+void spConfigMsgToString(SP_CONFIG_MSG msg){
+	switch(msg) {
+	case SP_CONFIG_MISSING_DIR:
+		printf("SP_CONFIG_MISSING_DIR\n");
+		break;
+	case SP_CONFIG_MISSING_PREFIX:
+		printf("SP_CONFIG_MISSING_PREFIX\n");
+		break;
+	case SP_CONFIG_MISSING_SUFFIX:
+		printf("SP_CONFIG_MISSING_SUFFIX\n");
+		break;
+	case SP_CONFIG_MISSING_NUM_IMAGES:
+		printf("SP_CONFIG_MISSING_NUM_IMAGES\n");
+		break;
+	case SP_CONFIG_CANNOT_OPEN_FILE:
+		printf("SP_CONFIG_CANNOT_OPEN_FILE\n");
+		break;
+	case SP_CONFIG_ALLOC_FAIL:
+		printf("SP_CONFIG_ALLOC_FAIL\n");
+		break;
+	case SP_CONFIG_INVALID_INTEGER:
+		printf("SP_CONFIG_INVALID_INTEGER\n");
+		break;
+	case SP_CONFIG_INVALID_STRING:
+		printf("SP_CONFIG_INVALID_STRING\n");
+		break;
+	case SP_CONFIG_INVALID_ARGUMENT:
+		printf("SP_CONFIG_INVALID_ARGUMENT\n");
+		break;
+	case SP_CONFIG_INDEX_OUT_OF_RANGE:
+		printf("SP_CONFIG_INDEX_OUT_OF_RANGE\n");
+		break;
+	case SP_CONFIG_SUCCESS:
+		printf("SP_CONFIG_SUCCESS\n");
+		break;
+	}
+}
+
+
+int main(){
+//	SP_CONFIG_MSG msg;
+//	spConfigCreate("./configtest/badImagesconfig.config",&msg);
+//	spConfigMsgToString(msg);
+//	spConfigCreate("spcbir.config",&msg);
+//	spConfigMsgToString(msg);
+
+	char* str = "     ";
+	trim(str);
+	printf("%s",str);
+	return 1;
 }
 
 

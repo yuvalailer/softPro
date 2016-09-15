@@ -116,7 +116,7 @@ KDArrayTuple* Split(SPKDArray* kdArr, int coor){
 	}
 
 	for(i=0;i<sizeR;i++){ //fill right
-		right->pointsarr[i] = kdArr->pointsarr[kdArr->mat[coor][i+sizeL]]; // TODO is sizeL the correcrt?
+		right->pointsarr[i] = kdArr->pointsarr[kdArr->mat[coor][i+sizeL]];
 	}
 
 
@@ -142,7 +142,7 @@ KDArrayTuple* Split(SPKDArray* kdArr, int coor){
 	for(i=0;i<dim;i++){ //iterate over cols
 		t = 0; p = 0;
 		for(j=0;j<size;j++){ // move on row
-			num = kdArr->mat[i][j]; //TODO first row or col? in i and j?
+			num = kdArr->mat[i][j];
 			if(X[num] == 0){ // if the cell is in p1
 				left->mat[i][t] = map1[num]; // a1 in place t is the new coordinate in p1;
 				t++;

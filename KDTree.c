@@ -155,7 +155,7 @@ void kNearestNeighbors(KDTreeNode* curr , SPBPQueue bpq, SPPoint P){
 		spBPQueueEnqueue(bpq,elm);
 		return;
 	}
-	double* data = (double*)getDat(P); // TODO yuval: is this the right p[] ment in the pdf?
+	double* data = (double*)getDat(P);
 	if(data[curr->dim] <= KDTreeGetVal(curr)){
 		kNearestNeighbors(curr->left,bpq,P);
 		if(!(spBPQueueIsFull(bpq)) || abs((curr->val) - data[curr->dim]) < spBPQueueGetMaxSize(bpq)){
@@ -213,7 +213,7 @@ void printQue( SPBPQueue que){
 	}
 }
 
-int main(){
+/*int main(){
 	int size = 5;
 	int dim = 2;
 	SPPoint arr[size];
@@ -238,5 +238,5 @@ int main(){
 	KDTreeDestroy(head);
 	spConfigDestroy(config);
 	return 1;
-}
+}*/
 

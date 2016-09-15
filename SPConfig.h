@@ -276,6 +276,27 @@ bool insertconfig(SPConfig config,char* param,char* val);
  */
 void splitmid(char* s,char* left,char* right);
 
+/*
+ * returns a string representing the path of the splogger filename
+ * @param config - the config file containing the splogger filename
+ * @return char* according to the path decided in the config
+ */
+
+char* spConfigGetLoggerFilename(const SPConfig config);
+
+/*
+ *returns the level of the logger according to decided in config file
+ *@param config - the confing file containing the info
+ *@ret SP_LOGGER_LEVEL
+ */
+
+SP_LOGGER_LEVEL spConfigGetLoggerLevel(const SPConfig config);
+
+void spConfigMsgToString(SP_CONFIG_MSG msg);
+
+//bool Blank(char* str){
+//	while(*)
+//}
 
 
 #endif /* SPCONFIG_H_ */

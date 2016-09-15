@@ -18,6 +18,7 @@ using namespace sp;
 //TODO where are the stored messages go into? SPLOGGER?
 
 
+/*
 
 int main(int argc,char* argv[]){
 
@@ -51,6 +52,10 @@ int main(int argc,char* argv[]){
 	}
 
 	// finished creating configuration file
+
+	spLoggerCreate(spConfigGetLoggerFilename(config),spConfigGetLoggerLevel(config));
+
+	//finished creating SPLogger filename
 
 	ImageProc proc = ImageProc(config);
 
@@ -160,7 +165,7 @@ int main(int argc,char* argv[]){
 			spBPQueueClear(tempbpq);
 		}
 
-		calculatewinners(winners,hits,numofimages,numofsimilarimages); //TODO finish at source file the func
+		calculatewinners(winners,hits,numofimages,numofsimilarimages);
 
 		free(quaryfeatures);
 
@@ -180,8 +185,8 @@ int main(int argc,char* argv[]){
 			}
 		}
 	}
-	free(config);
-	printf("woohooo!");
+	spConfigDestroy(config);
 	return 1;
 }
+*/
 
