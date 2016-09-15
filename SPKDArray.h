@@ -85,4 +85,9 @@ SPKDArray* kdtupgetleft(KDArrayTuple* tup);
 
 SPKDArray* kdtupgetright(KDArrayTuple* tup);
 
+void KDArrayDestroy(SPKDArray* kdArr);
+
+void KDArrayTupleDestroy(KDArrayTuple* tup);
+
+
 #endif /* SPKDARRAY_H_ */

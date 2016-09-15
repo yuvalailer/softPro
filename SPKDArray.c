@@ -25,6 +25,14 @@ struct kdarraytup{
 	SPKDArray* right;
 };
 
+void TupleArrDestroy(Tuple* t,int size){
+	int i;
+	for (i = 0; i < size; ++i) {
+		spPointDestroy(t[i].point);
+	}
+	free(t);
+}
+
 int tuplesort(const void * x,const void * y){
 	Tuple* a = (Tuple*)x; Tuple* b = (Tuple*)y;
 	return ((spPointGetAxisCoor(a->point,a->sortingindex)) - (spPointGetAxisCoor(b->point,b->sortingindex)));
@@ -35,7 +43,7 @@ SPKDArray* Init(SPPoint* arr, int size){
 	int i;
 	int j;
 
-	int dim = spPointGetDimension(arr[0]); // checking dimension of SPPoints in arr
+	int dim = spPointGetDimension(arr[0]); //checking dimension of SPPoints in arr
 
 	Tuple* temp = (Tuple*)malloc(sizeof(Tuple)*size);
 	for (i = 0; i < size; i++) { //initialize special array of tuples
@@ -68,7 +76,7 @@ SPKDArray* Init(SPPoint* arr, int size){
 		ans->pointsarr[i] = spPointCopy(arr[i]);
 	}
 
-	free(temp);
+	TupleArrDestroy(temp,size);
 	return ans;
 }
 
@@ -187,6 +195,24 @@ SPKDArray* kdtupgetleft(KDArrayTuple* tup){
 
 SPKDArray* kdtupgetright(KDArrayTuple* tup){
 	return tup->right;
+}
+
+void KDArrayDestroy(SPKDArray* kdArr){
+	int i;
+//	for (i = 0; i < kdArr->rows; ++i) {
+//		free(kdArr->mat[i]);
+//	}
+	free(kdArr->mat);
+	for (i = 0; i < kdArr->col; ++i) {
+		spPointDestroy(kdArr->pointsarr[i]);
+	}
+	free(kdArr->pointsarr);
+	free(kdArr);
+}
+
+void KDArrayTupleDestroy(KDArrayTuple* tup){
+	KDArrayDestroy(tup->left);
+	KDArrayDestroy(tup->right);
 }
 
 /*int main(){

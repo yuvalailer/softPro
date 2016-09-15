@@ -17,8 +17,6 @@ using namespace sp;
 
 //TODO where are the stored messages go into? SPLOGGER?
 
-
-
 int main(int argc,char* argv[]){
 
 	SPConfig config;
@@ -75,7 +73,6 @@ int main(int argc,char* argv[]){
 	SPPoint* finaldir;
 
 	if (spConfigGetExtractionMode(config)){ // if we are in extraction mode
-
 
 		FILE* fw;
 
@@ -180,6 +177,7 @@ int main(int argc,char* argv[]){
 			}
 			free(hits);
 			free(winners);
+			KDTreeDestroy(head);
 		}
 		else{ // not in minimal-GUI mode
 			printf("Best candidates for - %s - are:\n",quarypath);
@@ -189,10 +187,13 @@ int main(int argc,char* argv[]){
 			}
 			free(hits);
 			free(winners);
+			KDTreeDestroy(head);
 		}
 	}
 	spConfigDestroy(config);
 	free(tempdir);
 	return 1;
 }
+
+
 

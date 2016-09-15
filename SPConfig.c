@@ -124,22 +124,22 @@ bool allnum(char* s){
 }
 
 bool insertconfig(SPConfig config,char* param,char* val){
-	if(strcmp(param,"spImagesDirectory")==0){
+	if(!strcmp(param,"spImagesDirectory")){
 		strcpy(config->spImagesDirectory,val);
 		return true;
 	}
-	if(strcmp(param,"spImagesPrefix")==0){
+	if(!strcmp(param,"spImagesPrefix")){
 		strcpy(config->spImagesPrefix,val);
 		return true;
 	}
-	if(strcmp(param,"spImagesSuffix")==0){
+	if(!strcmp(param,"spImagesSuffix")){
 		if ((!strcmp(val,".jpg"))&&(!strcmp(val,".png"))&&(!strcmp(val,".bmp"))&&(!strcmp(val,".gif"))){
 			return false;
 		}
 		strcpy(config->spImagesSuffix,val);
 		return true;
 	}
-	if(strcmp(param,"spNumOfImages")==0){
+	if(!strcmp(param,"spNumOfImages")){
 		if(!allnum(val)){//if val is not a string containing only numbers
 			return false;
 		}
@@ -150,7 +150,7 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	if(strcmp(param,"spPCADimension")==0){
+	if(!strcmp(param,"spPCADimension")){
 		if(!allnum(val)){//if val is not a string containing only numbers
 			return false;
 		}
@@ -161,11 +161,11 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	if(strcmp(param,"spPCAFilename")==0){
+	if(!strcmp(param,"spPCAFilename")){
 		strcpy(config->spPCAFilename,val);
 		return true;
 	}
-	if(strcmp(param,"spNumOfFeatures")==0){
+	if(!strcmp(param,"spNumOfFeatures")){
 		if(!allnum(val)){//if val is not a string containing only numbers
 			return false;
 		}
@@ -176,18 +176,18 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	if(strcmp(param,"spExtractionMode")==0){
+	if(!strcmp(param,"spExtractionMode")){
 		if(strcmp(val,"true")==0){
 			config->spExtractionMode = true;
 			return true;
 		}
-		else if(strcmp(val,"false")==0){
+		else if(!strcmp(val,"false")){
 			config->spExtractionMode = false;
 			return true;
 		}
 		return false;
 	}
-	if(strcmp(param,"spNumOfSimilarImages")==0){
+	if(!strcmp(param,"spNumOfSimilarImages")){
 		if(!allnum(val)){//if val is not a string containing only numbers
 			return false;
 		}
@@ -198,22 +198,22 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	if(strcmp(param,"spKDTreeSplitMethod")==0){
-		if(strcmp(val,"RANDOM")==0){
+	if(!strcmp(param,"spKDTreeSplitMethod")){
+		if(!strcmp(val,"RANDOM")){
 			config->spKDTreeSplitMethod = RANDOM;
 			return true;
 		}
-		else if(strcmp(val,"MAX_SPREAD")==0){
+		else if(!strcmp(val,"MAX_SPREAD")){
 			config->spKDTreeSplitMethod = MAX_SPREAD;
 			return true;
 		}
-		else if(strcmp(val,"INCREMENTAL")==0){
+		else if(!strcmp(val,"INCREMENTAL")){
 			config->spKDTreeSplitMethod = INCREMENTAL;
 			return true;
 		}
 		return false;
 	}
-	if(strcmp(param,"spKNN")==0){
+	if(!strcmp(param,"spKNN")){
 		if(!allnum(val)){//if val is not a string containing only numbers
 			return false;
 		}
@@ -224,18 +224,18 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	if(strcmp(param,"spMinimalGUI")==0){
+	if(!strcmp(param,"spMinimalGUI")){
 		if(strcmp(val,"true")==0){
 			config->spMinimalGUI = true;
 			return true;
 		}
-		else if(strcmp(val,"false")==0){
+		else if(!strcmp(val,"false")){
 			config->spMinimalGUI = false;
 			return true;
 		}
 		return false;
 	}
-	if(strcmp(param,"spLoggerLevel")==0){
+	if(!strcmp(param,"spLoggerLevel")){
 		if(!allnum(val)){//if val is not a string containing only numbers
 			return false;
 		}
@@ -246,15 +246,9 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	if(strcmp(param,"spLoggerFilename")==0){
-		if(strcmp(val,"stdout")==0){
-			strcpy(config->spLoggerFilename,val);
-			return true;
-		}
-		else{
-			strcpy(config->spLoggerFilename,"notstdout"); //TODO check meaning of what happens if value is not stdout.
-			return true;
-		}
+	if(!strcmp(param,"spLoggerFilename")){
+		strcpy(config->spLoggerFilename,val);
+		return true;
 	}
 	return false;
 }
@@ -299,7 +293,7 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 	char val[1024];
 	int linenumber = 1;
 	while(fgets(line,1024,fp)!= NULL){ //each time read a line only each line is at most 1024 (moab)
-		if((strlen(line) == 1)&&(!strcmp(line,"\n"))){
+		if((strlen(line) == 1)&&(!strcmp(line,"\n"))){ //if empty line
 			linenumber++;
 			continue;
 		}
@@ -308,8 +302,13 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 			linenumber++;
 			continue;
 		}
-		splitmid(line,param,val);
-		if ((contains(param,' '))||(contains(val,' '))){
+		if(!contains(line,'=')){
+			printf("File: %s\nLine: %d\nMessage: Invalid configuration line\n",filename,linenumber);
+			*msg = SP_CONFIG_INVALID_ARGUMENT;
+			return NULL;
+		}
+		splitmid(line,param,val); //calls trim inside and splits the line
+		if ((contains(param,' '))||(contains(val,' '))||(contains(param,'#'))||(contains(val,'#'))){
 			printf("File: %s\nLine: %d\nMessage: Invalid configuration line\n",filename,linenumber);
 			*msg = SP_CONFIG_INVALID_ARGUMENT;
 			return NULL;
@@ -509,7 +508,45 @@ bool Blank(char* s){
 	spConfigCreate("./configtest/badSuffixconfig.config",&msg);
 	spConfigMsgToString(msg);
 	printf("\n");
-
+	spConfigCreate("./configtest/badSuffixconfig2.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/Boolconfig.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/config.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/defaultBadconfig.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/Dimensionconfig.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/invalidline1.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/invalidline2.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/invalidline3.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/knnConf.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/Logconfig.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/treeConfig.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/validconfig1.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/validconfig2.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
 
 
 	return 1;
