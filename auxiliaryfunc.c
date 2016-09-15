@@ -13,22 +13,22 @@
 void writefeats(FILE* fw,SPPoint* temppoint,int numOfFeats){
 
 	int dex = spPointGetIndex(temppoint[0]);//all the image features have the same index
-	char dexstring[1024]; //TODO check if needed more than that or less or doesn't matter
+	char* dexstring;
 	fputs("i\n",fw);
-	itoa(dex,dexstring,10);
+	dexstring = itoa1(dex);
 	fputs(dexstring,fw);
 	fputs("\n",fw);
 
 	int dim = spPointGetDimension(temppoint[0]); //all the image features have the same dimension
-	char dimstring[1024];
+	char* dimstring;
 	fputs("d\n",fw);
-	itoa(dim,dimstring,10);
+	dimstring = itoa1(dim);
 	fputs(dimstring,fw);
 	fputs("\n",fw);
 
-	char nofstring[1024]; //writing number of feats for this image
+	char* nofstring; //writing number of feats for this image
 	fputs("nof\n",fw);
-	itoa(numOfFeats,nofstring,10);
+	nofstring = itoa1(numOfFeats);
 	fputs(nofstring,fw);
 	fputs("\n",fw);
 
@@ -92,6 +92,17 @@ void calculatewinners(int* winners,int* hits,int hitssize,int winnerssize){
 		hits[maxindex] = -1;
 		winners[i] = maxindex;
 	}
+}
+
+char* itoa1(int num){
+
+	static char str[32] = {0};
+	int i = 30;
+	for(; num && i ; --i, num /= 10){
+		str[i] = "0123456789abcdef"[num % 10];
+	}
+	return &str[i+1];
+
 }
 
 /*int main(){

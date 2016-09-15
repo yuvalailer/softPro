@@ -26,6 +26,7 @@ struct sp_config_t{ //already a pointer!!!! SPConfig
 	char spLoggerFilename[1024];
 };
 
+
 int configUtills (int filed, const SPConfig config, SP_CONFIG_MSG* msg){
 	assert(msg != NULL);
 	int ans; // used in configutills only.
@@ -43,7 +44,10 @@ int configUtills (int filed, const SPConfig config, SP_CONFIG_MSG* msg){
 	return ans; // Return an int. to be change if needed in the function.
 }
 
-void trim(char*s){
+void trim(char* s){
+	if(Blank(s)){
+		return;
+	}
 	int len = strlen(s);
 	int i=0;
 	int cnt = 0;
@@ -55,9 +59,10 @@ void trim(char*s){
 			i++;
 		}
 	}
-	for (i=0;i<len;i++){ // shift all left by cnt
-		*(s+i)=*(s+i+cnt);
+	for (i=0;i<len-cnt;i++){ // shift all left by cnt
+		*(s+i) = *(s+i+cnt);;
 	}
+	*(s+len-cnt) = '\0';
 	len = strlen(s);
 	i=0;
 	cnt = 0;
@@ -71,7 +76,6 @@ void trim(char*s){
 	}
 	*(s+len-cnt) = '\0';
 }
-
 
 bool contains(char* s,char c){
 	int len = strlen(s);
@@ -474,19 +478,28 @@ void spConfigMsgToString(SP_CONFIG_MSG msg){
 	}
 }
 
-
-int main(){
-//	SP_CONFIG_MSG msg;
-//	spConfigCreate("./configtest/badImagesconfig.config",&msg);
-//	spConfigMsgToString(msg);
-//	spConfigCreate("spcbir.config",&msg);
-//	spConfigMsgToString(msg);
-
-	char* str = "     ";
-	trim(str);
-	printf("%s",str);
-	return 1;
+bool Blank(char* s){
+	char* t = s;
+	while(*t != '\0'){
+		if(*t != ' '){
+			return false;
+		}
+		t = t+1;
+	}
+	return true;
 }
+
+
+/*int main(){
+
+		SP_CONFIG_MSG msg;
+//		spConfigCreate("./configtest/badImagesconfig.config",&msg);
+//		spConfigMsgToString(msg);
+		spConfigCreate("spcbir.config",&msg);
+		spConfigMsgToString(msg);
+
+	return 1;
+}*/
 
 
 

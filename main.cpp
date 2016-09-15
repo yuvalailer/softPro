@@ -18,7 +18,6 @@ using namespace sp;
 //TODO where are the stored messages go into? SPLOGGER?
 
 
-/*
 
 int main(int argc,char* argv[]){
 
@@ -188,5 +187,4 @@ int main(int argc,char* argv[]){
 	spConfigDestroy(config);
 	return 1;
 }
-*/
 

@@ -294,9 +294,9 @@ SP_LOGGER_LEVEL spConfigGetLoggerLevel(const SPConfig config);
 
 void spConfigMsgToString(SP_CONFIG_MSG msg);
 
-//bool Blank(char* str){
-//	while(*)
-//}
+bool Blank(char* s);
+
+char* itoa1(int num);
 
 
 #endif /* SPCONFIG_H_ */

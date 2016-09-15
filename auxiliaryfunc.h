@@ -46,5 +46,7 @@ SPPoint* getfeats(FILE* fr,int* tempdir);
 
 void calculatewinners(int* winners,int* hits,int hitssize,int winnerssize);
 
+char* itoa1(int num);
+
 
 #endif /* SOFTPRO_AUXILIARYFUNC_H_ */
