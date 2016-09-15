@@ -299,6 +299,10 @@ SPConfig spConfigCreate(const char* filename,SP_CONFIG_MSG* msg){
 	char val[1024];
 	int linenumber = 1;
 	while(fgets(line,1024,fp)!= NULL){ //each time read a line only each line is at most 1024 (moab)
+		if((strlen(line) == 1)&&(!strcmp(line,"\n"))){
+			linenumber++;
+			continue;
+		}
 		trim(line);
 		if(*line == '#'){ // if a comment than continue to next line
 			linenumber++;
@@ -492,11 +496,21 @@ bool Blank(char* s){
 
 /*int main(){
 
-		SP_CONFIG_MSG msg;
-//		spConfigCreate("./configtest/badImagesconfig.config",&msg);
-//		spConfigMsgToString(msg);
-		spConfigCreate("spcbir.config",&msg);
-		spConfigMsgToString(msg);
+	SP_CONFIG_MSG msg;
+	spConfigCreate("./configtest/badImagesconfig.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("spcbir.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/badImagesconfig2.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+	spConfigCreate("./configtest/badSuffixconfig.config",&msg);
+	spConfigMsgToString(msg);
+	printf("\n");
+
+
 
 	return 1;
 }*/

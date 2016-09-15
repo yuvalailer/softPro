@@ -20,10 +20,10 @@ typedef struct tuple{
 	int pdex; // index in pointsarray
 }Tuple;
 
-typedef struct kdarraytup{
+struct kdarraytup{
 	SPKDArray* left;
 	SPKDArray* right;
-}KDArrayTuple;
+};
 
 int tuplesort(const void * x,const void * y){
 	Tuple* a = (Tuple*)x; Tuple* b = (Tuple*)y;
