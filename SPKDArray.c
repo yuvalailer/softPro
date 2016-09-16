@@ -233,7 +233,7 @@ void KDArrayTupleDestroy(KDArrayTuple* tup){
 
 
 
-int main(){
+/*int main(){
 
 	int size = 5;
 	int dim = 2;
@@ -303,7 +303,7 @@ int main(){
 
 
 	return 0;
-}
+}*/
 
 
 

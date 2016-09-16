@@ -62,24 +62,8 @@ int maxSpred(SPKDArray* array);
  * @return KDTreeNode
  */
 
-KDTreeNode* RecTree0(SPKDArray* array);
+KDTreeNode* RecTreeBuild(SPKDArray* array,int i,method splitm);
 
-/*
- * builds recursively the KDTree by RANDOM split method
- * @param array - the SPKDArray from which it builds the tree and nodes
- * @return KDTreeNode
- */
-
-KDTreeNode* RecTree1(SPKDArray* array);
-
-/*
- * builds recursively the KDTree by INCREMENTAL split method
- * @param array - the SPKDArray from which it builds the tree and nodes
- * @param i - the next coordinate which to split to next level of the tree
- * @return KDTreeNode
- */
-
-KDTreeNode* RecTree2(SPKDArray* array,int i);
 
 /*
  * finding median value with respect to the splitcord in the SPKDArray
@@ -111,6 +95,12 @@ void kNearestNeighbors(KDTreeNode* curr , SPBPQueue bpq, SPPoint P);
 SPBPQueue KDTreeSearch(KDTreeNode* head,SPPoint point, int num);
 
 void KDTreePrint(KDTreeNode* curr,int level);
+
+int KDTreeGetDim(KDTreeNode* node);
+
+int KDTreeGetVal(KDTreeNode* node);
+
+int SplitDecide(method splitm,int i,SPKDArray* arr);
 
 
 #endif /* KDTREE_H_ */

@@ -80,7 +80,6 @@ int Getrows(SPKDArray* kdArr);
 SPPoint* Getpointsarray(SPKDArray* kdArr);
 
 
-
 int** GetMat(SPKDArray* kdArr);
 
 SPKDArray* kdtupgetleft(KDArrayTuple* tup);

@@ -17,16 +17,6 @@ struct spKDTreeNode{
 };
 
 
-int KDTreeGetDim(KDTreeNode* node){
-	int a = node->dim;
-	return a;
-}
-
-int KDTreeGetVal(KDTreeNode* node){
-	int a = node->val;
-	return a;
-}
-
 int maxSpred(SPKDArray* array){
 	int dim = Getrows(array);
 	int size = Getcol(array);
@@ -58,7 +48,7 @@ int findmedian(SPKDArray* array,int splitcord){
 	return median;
 }
 
-KDTreeNode* RecTree0(SPKDArray* array){
+KDTreeNode* RecTreeBuild(SPKDArray* array,int i,method splitm){
 	KDTreeNode* ans = (KDTreeNode*)malloc(sizeof(KDTreeNode));
 	if(ans == NULL){
 		return NULL;
@@ -71,55 +61,16 @@ KDTreeNode* RecTree0(SPKDArray* array){
 		ans->right = NULL;
 		return ans;
 	}
-	int splitcord = maxSpred(array); // O(d)
+	int splitcord = SplitDecide(splitm,i,array); // O(d)
 	ans->dim = splitcord;
 	ans->val = findmedian(array,splitcord);
 	KDArrayTuple* splitarray = Split(array,splitcord);
-	ans->left = RecTree0(kdtupgetleft(splitarray));
-	ans->right = RecTree0(kdtupgetright(splitarray));
+	ans->left = RecTreeBuild(kdtupgetleft(splitarray),splitcord+1,splitm);
+	ans->right = RecTreeBuild(kdtupgetright(splitarray),splitcord+1,splitm);
 	ans->data = NULL;
 	return ans;
 }
 
-KDTreeNode* RecTree1(SPKDArray* array){
-	int splitcord = (rand()%Getrows(array));
-	KDTreeNode* ans = (KDTreeNode*)malloc(sizeof(KDTreeNode));
-	if(Getcol(array) == 1){
-		ans->dim = INVALID;
-		ans->val = INVALID;
-		ans->data = spPointCopy(Getpointsarray(array)[0]);
-		ans->left = NULL;
-		ans->right = NULL;
-		return ans;
-	}
-	ans->dim = splitcord;
-	ans->val = findmedian(array,splitcord);
-	KDArrayTuple* splitarray = Split(array,splitcord);
-	ans->left = RecTree1(kdtupgetleft(splitarray));
-	ans->right = RecTree1(kdtupgetright(splitarray));
-	ans->data = NULL;
-	return ans;
-}
-
-KDTreeNode* RecTree2(SPKDArray* array,int i){
-	int splitcord = (i%Getrows(array));
-	KDTreeNode* ans = (KDTreeNode*)malloc(sizeof(KDTreeNode));
-	if(Getcol(array) == 1){ // stopping criteria for the recursive function. node is a leaf
-		ans->dim = INVALID;
-		ans->val = INVALID;
-		ans->data = spPointCopy(Getpointsarray(array)[0]);
-		ans->left = NULL;
-		ans->right = NULL;
-		return ans;
-	}
-	ans->dim = splitcord;
-	ans->val = findmedian(array,splitcord);
-	KDArrayTuple* splitarray = Split(array,splitcord);
-	ans->left = RecTree2(kdtupgetleft(splitarray),splitcord+1);
-	ans->right = RecTree2(kdtupgetright(splitarray),splitcord+1);
-	ans->data = NULL;
-	return ans;
-}
 
 KDTreeNode* InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a Tree by points array;
 	method splitmethod = spConfigGetMethod(config); // Splitting the arrays by the method in the config file;
@@ -127,20 +78,7 @@ KDTreeNode* InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a
 	if(array ==NULL){
 		return NULL;
 	}
-	//each split method decided calls another recursive function to compute the KDTree
-	switch(splitmethod){
-	case MAX_SPREAD:
-		return RecTree0(array);
-		break;
-	case RANDOM:
-		return RecTree1(array);
-		break;
-	case INCREMENTAL:
-		return RecTree2(array,0);
-		break;
-	default: //default to create tree by incremental
-		return RecTree2(array,0);
-	}
+	return RecTreeBuild(array,0,splitmethod);
 }
 
 
@@ -210,6 +148,29 @@ void printQue( SPBPQueue que){
 		printf("%d. %d \n",i,spListElementGetIndex(spBPQueuePeek(que)));
 		spBPQueueDequeue(que);
 				i++;
+	}
+}
+
+int KDTreeGetDim(KDTreeNode* node){
+	int a = node->dim;
+	return a;
+}
+
+int KDTreeGetVal(KDTreeNode* node){
+	int a = node->val;
+	return a;
+}
+
+int SplitDecide(method splitm,int i,SPKDArray* arr){
+	switch(splitm){
+	case MAX_SPREAD:
+		return maxSpred(arr);
+	case RANDOM:
+		return (rand()%Getrows(arr));
+	case INCREMENTAL:
+		return (i%Getrows(arr));
+	default:
+		return (i%Getrows(arr)); //default returns INCREMENTAL
 	}
 }
 

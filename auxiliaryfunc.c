@@ -7,7 +7,7 @@
 
 
 #include "auxiliaryfunc.h"
-#include "SPPoint.h"
+
 
 
 void writefeats(FILE* fw,SPPoint* temppoint,int numOfFeats){

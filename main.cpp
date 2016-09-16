@@ -15,10 +15,9 @@ extern "C"{
 
 using namespace sp;
 
-//TODO where are the stored messages go into? SPLOGGER?
+//TODO add SPLOGGER & store mssges
 
 
-/*
 
 int main(int argc,char* argv[]){
 
@@ -192,5 +191,4 @@ int main(int argc,char* argv[]){
 	free(tempdir);
 	return 1;
 }
-*/
 
