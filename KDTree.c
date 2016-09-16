@@ -78,7 +78,6 @@ KDTreeNode* RecTree0(SPKDArray* array){
 	ans->left = RecTree0(kdtupgetleft(splitarray));
 	ans->right = RecTree0(kdtupgetright(splitarray));
 	ans->data = NULL;
-//	KDArrayTupleDestroy(splitarray);
 	return ans;
 }
 
@@ -123,7 +122,6 @@ KDTreeNode* RecTree2(SPKDArray* array,int i){
 }
 
 KDTreeNode* InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a Tree by points array;
-	KDTreeNode* ans;
 	method splitmethod = spConfigGetMethod(config); // Splitting the arrays by the method in the config file;
 	SPKDArray* array = Init(arr,size); // building the KDArray
 	if(array ==NULL){
@@ -132,24 +130,16 @@ KDTreeNode* InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a
 	//each split method decided calls another recursive function to compute the KDTree
 	switch(splitmethod){
 	case MAX_SPREAD:
-		ans = RecTree0(array);
-		KDArrayDestroy(array);
-		return ans;
+		return RecTree0(array);
 		break;
 	case RANDOM:
-		ans =  RecTree1(array);
-		KDArrayDestroy(array);
-		return ans;
+		return RecTree1(array);
 		break;
 	case INCREMENTAL:
-		ans =  RecTree2(array,0);
-		KDArrayDestroy(array);
-		return ans;
+		return RecTree2(array,0);
 		break;
 	default: //default to create tree by incremental
-		ans =  RecTree2(array,0);
-		KDArrayDestroy(array);
-		return ans;
+		return RecTree2(array,0);
 	}
 }
 
@@ -177,7 +167,6 @@ void kNearestNeighbors(KDTreeNode* curr , SPBPQueue bpq, SPPoint P){
 			kNearestNeighbors(curr->left,bpq,P);
 		}
 	}
-	free(data);
 }
 
 /*
@@ -220,7 +209,7 @@ void printQue( SPBPQueue que){
 	while(!spBPQueueIsEmpty(que)){
 		printf("%d. %d \n",i,spListElementGetIndex(spBPQueuePeek(que)));
 		spBPQueueDequeue(que);
-		i++;
+				i++;
 	}
 }
 

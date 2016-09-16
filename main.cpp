@@ -17,6 +17,9 @@ using namespace sp;
 
 //TODO where are the stored messages go into? SPLOGGER?
 
+
+/*
+
 int main(int argc,char* argv[]){
 
 	SPConfig config;
@@ -64,7 +67,6 @@ int main(int argc,char* argv[]){
 	int numofimages = spConfigGetNumOfImages(config,&msg);
 	//	int numoffeatures = spConfigGetNumOfFeatures(config,&msg);
 	int* tempdir = (int*)malloc(sizeof(int)*numofimages);
-	//	int tempdir[numofimages];
 	char* temppath = (char*)malloc(sizeof(char)*1024); //TODO release + can asuume 1024 at most?
 	int tempnumOfFeatsextracted;
 
@@ -124,6 +126,8 @@ int main(int argc,char* argv[]){
 	bool out = false;
 	int numofsimilarimages = spConfigGetNumSimilarImages(config);
 
+	KDTreeNode* head = InitTree(finaldir,n,config); //initialization of KDTree complexity: O(d X nlogn)
+
 	while(!out){
 		printf("Please enter an image path:\n");
 		fflush(stdout);
@@ -136,16 +140,12 @@ int main(int argc,char* argv[]){
 			break;
 		}
 
-		KDTreeNode* head = InitTree(finaldir,n,config); //initialization of KDTree complexity: O(d X nlogn)
-
-		//		int hits[numofimages];
 		int* hits = (int*)malloc(sizeof(int)*numofimages);
 		for(i=0;i<numofimages;i++){//initialize to -1 hits per image
 			hits[i] = -1;
 		}
 		//an array to keep track of how many times an image feature was selected to be k-nearest feature
 
-		//		int winners[numofsimilarimages];
 		int* winners = (int*)malloc(sizeof(int)*numofsimilarimages);
 
 		//an array contains indexes of winners ordered by numbered of hits example: winner[0] - the index of the most closest image
@@ -177,7 +177,6 @@ int main(int argc,char* argv[]){
 			}
 			free(hits);
 			free(winners);
-			KDTreeDestroy(head);
 		}
 		else{ // not in minimal-GUI mode
 			printf("Best candidates for - %s - are:\n",quarypath);
@@ -187,13 +186,11 @@ int main(int argc,char* argv[]){
 			}
 			free(hits);
 			free(winners);
-			KDTreeDestroy(head);
 		}
 	}
 	spConfigDestroy(config);
 	free(tempdir);
 	return 1;
 }
-
-
+*/
 

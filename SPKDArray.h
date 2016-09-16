@@ -22,7 +22,9 @@ struct sp_kdarray_t;
 
 typedef struct sp_kdarray_t SPKDArray;
 
-typedef struct kdarraytup KDArrayTuple;
+typedef struct splitkdarrtuple KDArrayTuple;
+
+typedef struct sort_tuple SortTuple;
 
 /**
  * Allocates a new SPKDArray from given data in arr and size.
@@ -85,9 +87,10 @@ SPKDArray* kdtupgetleft(KDArrayTuple* tup);
 
 SPKDArray* kdtupgetright(KDArrayTuple* tup);
 
-void KDArrayDestroy(SPKDArray* kdArr);
+void TupleDestroy(SortTuple* tup,int size);
+
+void KDArrayDestroy(SPKDArray* arr);
 
 void KDArrayTupleDestroy(KDArrayTuple* tup);
-
 
 #endif /* SPKDARRAY_H_ */
