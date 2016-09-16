@@ -105,6 +105,14 @@ char* itoa1(int num){
 
 }
 
+void DirectoryDestroy(SPPoint** arr,int* num,int rows){
+	int i;
+	for (i = 0; i < rows; ++i) {
+		SPPointArrayDestroy(arr[i],num[i]);
+	}
+	free(arr);
+}
+
 /*int main(){
 	int a;
 	FILE* fw = fopen("checkingwritefeats.txt","w");

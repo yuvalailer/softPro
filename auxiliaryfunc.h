@@ -48,4 +48,6 @@ void calculatewinners(int* winners,int* hits,int hitssize,int winnerssize);
 
 char* itoa1(int num);
 
+void DirectoryDestroy(SPPoint** arr,int* num,int rows);
+
 #endif /* SOFTPRO_AUXILIARYFUNC_H_ */

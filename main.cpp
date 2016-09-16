@@ -117,7 +117,7 @@ int main(int argc,char* argv[]){
 				k++;
 			}
 		}
-		free(directory);
+		DirectoryDestroy(directory,tempdir,numofimages);
 	}
 
 	//after extraction / non - extraction and we have our finaldir containing all the feats(SPPoints)!
@@ -126,6 +126,8 @@ int main(int argc,char* argv[]){
 	int numofsimilarimages = spConfigGetNumSimilarImages(config);
 
 	KDTreeNode* head = InitTree(finaldir,n,config); //initialization of KDTree complexity: O(d X nlogn)
+
+	SPPointArrayDestroy(finaldir,n); //free finaldir after creating tree
 
 	while(!out){
 		printf("Please enter an image path:\n");
@@ -160,7 +162,8 @@ int main(int argc,char* argv[]){
 				spBPQueueDequeue(tempbpq);
 
 			}
-			spBPQueueClear(tempbpq);
+			//spBPQueueClear(tempbpq);
+			spBPQueueDestroy(tempbpq);
 		}
 
 		calculatewinners(winners,hits,numofimages,numofsimilarimages);
@@ -176,6 +179,7 @@ int main(int argc,char* argv[]){
 			}
 			free(hits);
 			free(winners);
+			free(quarypath);
 		}
 		else{ // not in minimal-GUI mode
 			printf("Best candidates for - %s - are:\n",quarypath);
@@ -185,8 +189,11 @@ int main(int argc,char* argv[]){
 			}
 			free(hits);
 			free(winners);
+			free(quarypath);
 		}
 	}
+
+	KDTreeDestroy(head);
 	spConfigDestroy(config);
 	free(tempdir);
 	return 1;

@@ -19,7 +19,7 @@ struct sp_point_t {
 };
 
 SPPoint spPointCreate(double* data, int dim, int index) {
-	if((dim<=0)||(data == NULL)||(index<0)){ //TODO check if need to take back
+	if((dim<=0)||(data == NULL)||(index<0)){
 		return NULL;
 	}
 	struct sp_point_t *point = (struct sp_point_t*) malloc(sizeof(struct sp_point_t));
@@ -78,11 +78,16 @@ double spPointL2SquaredDistance(SPPoint p, SPPoint q){
 	return sum;
 }
 
-double* getDat(const SPPoint point) {
-	int dim = spPointGetDimension(point);
-	double* dat = (double*)malloc(sizeof(double)*(dim));
-	dat = point->data;
-	return dat;
+double* spPointGetData(const SPPoint point) {
+	return point->data;
+}
+
+void SPPointArrayDestroy(SPPoint* point,int size){
+	int i;
+	for (i = 0; i < size; ++i) {
+		spPointDestroy(point[i]);
+	}
+	free(point);
 }
 
 

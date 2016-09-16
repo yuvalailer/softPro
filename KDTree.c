@@ -68,41 +68,48 @@ KDTreeNode* RecTreeBuild(SPKDArray* array,int i,method splitm){
 	ans->left = RecTreeBuild(kdtupgetleft(splitarray),splitcord+1,splitm);
 	ans->right = RecTreeBuild(kdtupgetright(splitarray),splitcord+1,splitm);
 	ans->data = NULL;
+	KDArrayTupleDestroy(splitarray);
 	return ans;
 }
 
 
 KDTreeNode* InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a Tree by points array;
 	method splitmethod = spConfigGetMethod(config); // Splitting the arrays by the method in the config file;
-	SPKDArray* array = Init(arr,size); // building the KDArray
-	if(array ==NULL){
+	SPKDArray* kdarr = Init(arr,size); // building the KDArray
+	if(kdarr ==NULL){
 		return NULL;
 	}
-	return RecTreeBuild(array,0,splitmethod);
+	KDTreeNode* ans = RecTreeBuild(kdarr,0,splitmethod);
+	KDArrayDestroy(kdarr); //free kdarr malloc'ed
+	return ans;
 }
 
 
 
-void kNearestNeighbors(KDTreeNode* curr , SPBPQueue bpq, SPPoint P){
+void kNearestNeighbors(KDTreeNode* curr , SPBPQueue bpq, SPPoint querypoint){
 	if (curr == NULL) {
 		return; //TODO? see PDF/
 	}
 	if(curr->data != NULL){ // we are in a leaf
-		int distance = spPointL2SquaredDistance(curr->data,P);
+		int distance = spPointL2SquaredDistance(curr->data,querypoint);
 		SPListElement elm = spListElementCreate(spPointGetIndex(curr->data),distance);
 		spBPQueueEnqueue(bpq,elm);
+		spListElementDestroy(elm);
 		return;
 	}
-	double* data = (double*)getDat(P);
+
+	double* data = (double*)spPointGetData(querypoint);
+
 	if(data[curr->dim] <= KDTreeGetVal(curr)){
-		kNearestNeighbors(curr->left,bpq,P);
+		kNearestNeighbors(curr->left,bpq,querypoint);
 		if(!(spBPQueueIsFull(bpq)) || abs((curr->val) - data[curr->dim]) < spBPQueueGetMaxSize(bpq)){
-			kNearestNeighbors(curr->right,bpq,P);
+			kNearestNeighbors(curr->right,bpq,querypoint);
 		}
-	} else {
-		kNearestNeighbors(curr->right,bpq,P);
+	}
+	else{
+		kNearestNeighbors(curr->right,bpq,querypoint);
 		if(!(spBPQueueIsFull(bpq)) || abs((curr->val) - data[curr->dim]) < spBPQueueGetMaxSize(bpq)){
-			kNearestNeighbors(curr->left,bpq,P);
+			kNearestNeighbors(curr->left,bpq,querypoint);
 		}
 	}
 }
@@ -112,9 +119,9 @@ void kNearestNeighbors(KDTreeNode* curr , SPBPQueue bpq, SPPoint P){
  * returns a queue with the K -NEAREST NEIGHBORs.
  */
 
-SPBPQueue KDTreeSearch(KDTreeNode* head,SPPoint point, int num){
+SPBPQueue KDTreeSearch(KDTreeNode* head,SPPoint point, int size){
 	SPBPQueue bpq;
-	bpq = spBPQueueCreate(num);
+	bpq = spBPQueueCreate(size);
 	kNearestNeighbors(head,bpq,point);
 	return bpq;
 }
@@ -123,11 +130,14 @@ SPBPQueue KDTreeSearch(KDTreeNode* head,SPPoint point, int num){
 void KDTreeDestroy(KDTreeNode* head){
 	if(head->val == -1){
 		spPointDestroy(head->data);
+		free(head->left);
+		free(head->right);
 		free(head);
 	}
 	else{
 		if(head->left != NULL){KDTreeDestroy(head->left);}
 		if(head->right != NULL){KDTreeDestroy(head->right);}
+		free(head->data);
 		free(head);
 	}
 }
@@ -142,11 +152,12 @@ void KDTreePrint(KDTreeNode* curr,int level){
 		if(curr->right != NULL){KDTreePrint(curr->right,level+1);}
 	}
 }
-void printQue( SPBPQueue que){
+
+void PrintQueue(SPBPQueue queue){
 	int i = 0;
-	while(!spBPQueueIsEmpty(que)){
-		printf("%d. %d \n",i,spListElementGetIndex(spBPQueuePeek(que)));
-		spBPQueueDequeue(que);
+	while(!spBPQueueIsEmpty(queue)){
+		printf("%d. %d \n",i,spListElementGetIndex(spBPQueuePeek(queue)));
+		spBPQueueDequeue(queue);
 				i++;
 	}
 }
@@ -174,30 +185,47 @@ int SplitDecide(method splitm,int i,SPKDArray* arr){
 	}
 }
 
-/*int main(){
+
+
+/*
+
+
+int main(){
+
+	//working with no leaks!! print tree has leak!!
 	int size = 5;
 	int dim = 2;
-	SPPoint arr[size];
+	SPPoint* sppointarr = (SPPoint*)malloc(sizeof(SPPoint)*size);
+
 	double a1[2]= {1.0,2.0};
 	double b1[2] = {123.0,70.0};
 	double c1[2] = {2.0,7.0};
 	double d1[2] = {9.0,11.0};
 	double e1[2]= {3.0,4.0};
-	arr[0] = (spPointCreate(a1,dim,0));
-	arr[1] = (spPointCreate(b1,dim,1));
-	arr[2] = (spPointCreate(c1,dim,2));
-	arr[3] = (spPointCreate(d1,dim,3));
-	arr[4] = (spPointCreate(e1,dim,4));
+
+	sppointarr[0] = (spPointCreate(a1,dim,0));
+	sppointarr[1] = (spPointCreate(b1,dim,1));
+	sppointarr[2] = (spPointCreate(c1,dim,2));
+	sppointarr[3] = (spPointCreate(d1,dim,3));
+	sppointarr[4] = (spPointCreate(e1,dim,4));
+
+
 	SP_CONFIG_MSG msg;
 	SPConfig config = spConfigCreate("spcbir.config",&msg);
-	KDTreeNode* head = InitTree(arr,size,config);
+
+	KDTreeNode* head = InitTree(sppointarr,size,config);
+
 	KDTreePrint(head,0);
-	// tree serch
-	SPBPQueue que = KDTreeSearch(head,arr[0],4); // here you can change all the parameters..
-	// que print.. add for testing
-	printQue(que);
+
+	SPBPQueue queue = KDTreeSearch(head,sppointarr[0],4);
+//	PrintQueue(queue); //has leaks because of peek
+
+	spBPQueueDestroy(queue);
 	KDTreeDestroy(head);
 	spConfigDestroy(config);
+	SPPointArrayDestroy(sppointarr,size);
+
 	return 1;
-}*/
+}
+*/
 

@@ -63,10 +63,10 @@ SPKDArray* Init(SPPoint* arr, int size){
 	ans->rows = dim;
 	ans->col = size;
 
-	ans->pointsarr = arr; /*(SPPoint*)malloc(sizeof(SPPoint)*size); // copying arr into pointsarr
+	ans->pointsarr = (SPPoint*)malloc(sizeof(SPPoint)*size); // copying arr into pointsarr
 	for (i = 0; i < size; ++i) {
-		ans->pointsarr[i] = spPointCopy(arr[i]); //TODO delete if working
-	}*/
+		ans->pointsarr[i] = spPointCopy(arr[i]);
+	}
 
 	TupleDestroy(temp,size);
 	return ans;
@@ -111,12 +111,12 @@ KDArrayTuple* Split(SPKDArray* kdArr, int coor){
 
 
 	// make the P's:
-	for(i=0;i<sizeL;i++){ // fill left
-		left->pointsarr[i] = kdArr->pointsarr[kdArr->mat[coor][i]];
+	for(i=0;i<sizeL;i++){ // fill left with copy!!! //TODO change?
+		left->pointsarr[i] = spPointCopy(kdArr->pointsarr[kdArr->mat[coor][i]]);
 	}
 
-	for(i=0;i<sizeR;i++){ //fill right
-		right->pointsarr[i] = kdArr->pointsarr[kdArr->mat[coor][i+sizeL]];
+	for(i=0;i<sizeR;i++){ //fill right  with copy!!! //TODO change?
+		right->pointsarr[i] = spPointCopy(kdArr->pointsarr[kdArr->mat[coor][i+sizeL]]);
 	}
 
 
@@ -213,27 +213,28 @@ void KDArrayDestroy(SPKDArray* arr){
 }
 
 void KDArrayTupleDestroy(KDArrayTuple* tup){
-	int i;
-	//	KDArrayDestroy(tup->left);
-	//	KDArrayDestroy(tup->right);
-	free(tup->left->pointsarr);
-	for (i = 0; i < tup->left->rows; ++i) {
-		free(tup->left->mat[i]);
-	}
-	free(tup->left->mat);
-	free(tup->left);
-	free(tup->right->pointsarr);
-	for (i = 0; i < tup->right->rows; ++i) {
-		free(tup->right->mat[i]);
-	}
-	free(tup->right->mat);
-	free(tup->right);
+	//	int i;
+	KDArrayDestroy(tup->left);
+	KDArrayDestroy(tup->right);
+	//	free(tup->left->pointsarr);
+	//	for (i = 0; i < tup->left->rows; ++i) {
+	//		free(tup->left->mat[i]);
+	//	}
+	//	free(tup->left->mat);
+	//	free(tup->left);
+	//	free(tup->right->pointsarr);
+	//	for (i = 0; i < tup->right->rows; ++i) {
+	//		free(tup->right->mat[i]);
+	//	}
+	//	free(tup->right->mat);
+	//	free(tup->right);
 	free(tup);
 }
 
 
+/*
 
-/*int main(){
+int main(){
 
 	int size = 5;
 	int dim = 2;
@@ -298,13 +299,15 @@ void KDArrayTupleDestroy(KDArrayTuple* tup){
 
 
 	KDArrayTupleDestroy(kdarrtup);
-
 	KDArrayDestroy(kdarr);
-
-
+	for (i = 0; i < 5; ++i) {
+		spPointDestroy(sppointarr[i]);
+	}
+	free(sppointarr);
 	return 0;
-}*/
+}
 
+*/
 
 
 

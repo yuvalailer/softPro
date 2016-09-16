@@ -119,7 +119,16 @@ double spPointL2SquaredDistance(SPPoint p, SPPoint q);
  * @param point - the SPPoint from which to extract the double array
  * @return double* a pointer to the double array extracted
  */
-double* getDat(const SPPoint point);
+double* spPointGetData(const SPPoint point);
+
+/*
+ * frees array of points
+ * @param point - a pointer to ther SPPoint array to be freed
+ * @param size - the size of the array
+ */
+
+
+void SPPointArrayDestroy(SPPoint* point,int size);
 
 
 #endif /* SPPOINT_H_ */
