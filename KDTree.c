@@ -53,7 +53,7 @@ KDTreeNode* RecTreeBuild(SPKDArray* array,int i,method splitm){
 	if(ans == NULL){
 		return NULL;
 	}
-	if((Getcol(array) == 1)||(array == NULL)){
+	if((Getcol(array) == 1)){
 		ans->dim = INVALID;
 		ans->val = INVALID;
 		ans->data = spPointCopy(Getpointsarray(array)[0]);
@@ -128,7 +128,7 @@ SPBPQueue KDTreeSearch(KDTreeNode* head,SPPoint point, int size){
 
 
 void KDTreeDestroy(KDTreeNode* head){
-	if(head->val == -1){
+	if(head->val == INVALID){
 		spPointDestroy(head->data);
 		free(head->left);
 		free(head->right);
@@ -158,7 +158,7 @@ void PrintQueue(SPBPQueue queue){
 	while(!spBPQueueIsEmpty(queue)){
 		printf("%d. %d \n",i,spListElementGetIndex(spBPQueuePeek(queue)));
 		spBPQueueDequeue(queue);
-				i++;
+		i++;
 	}
 }
 
@@ -215,6 +215,8 @@ int main(){
 
 	KDTreeNode* head = InitTree(sppointarr,size,config);
 
+	SPPointArrayDestroy(sppointarr,size);
+
 	KDTreePrint(head,0);
 
 	SPBPQueue queue = KDTreeSearch(head,sppointarr[0],4);
@@ -223,9 +225,9 @@ int main(){
 	spBPQueueDestroy(queue);
 	KDTreeDestroy(head);
 	spConfigDestroy(config);
-	SPPointArrayDestroy(sppointarr,size);
+
 
 	return 1;
 }
-*/
+ */
 

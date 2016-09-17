@@ -292,7 +292,7 @@ char* spConfigGetLoggerFilename(const SPConfig config);
 
 SP_LOGGER_LEVEL spConfigGetLoggerLevel(const SPConfig config);
 
-void spConfigMsgToString(SP_CONFIG_MSG msg);
+char* spConfigMsgToString(SP_CONFIG_MSG msg);
 
 bool Blank(char* s);
 

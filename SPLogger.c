@@ -179,6 +179,3 @@ int spLoggerLevelMaker(SP_LOGGER_LEVEL level){
 	return 5; // since all level are enums, their must be an int for it. this is for future maintenance and testing.
 }
 
-
-
-

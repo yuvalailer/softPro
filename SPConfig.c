@@ -247,14 +247,8 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		return false;
 	}
 	if(strcmp(param,"spLoggerFilename")==0){
-		if(strcmp(val,"stdout")==0){
 			strcpy(config->spLoggerFilename,val);
 			return true;
-		}
-		else{
-			strcpy(config->spLoggerFilename,"notstdout"); //TODO check meaning of what happens if value is not stdout.
-			return true;
-		}
 	}
 	return false;
 }
@@ -444,42 +438,43 @@ SP_LOGGER_LEVEL spConfigGetLoggerLevel(const SPConfig config){
 	return SP_LOGGER_DEBUG_INFO_WARNING_ERROR_LEVEL;
 }
 
-void spConfigMsgToString(SP_CONFIG_MSG msg){
+char* spConfigMsgToString(SP_CONFIG_MSG msg){
 	switch(msg) {
 	case SP_CONFIG_MISSING_DIR:
-		printf("SP_CONFIG_MISSING_DIR\n");
+		return "SP_CONFIG_MISSING_DIR";
 		break;
 	case SP_CONFIG_MISSING_PREFIX:
-		printf("SP_CONFIG_MISSING_PREFIX\n");
+		return "SP_CONFIG_MISSING_PREFIX";
 		break;
 	case SP_CONFIG_MISSING_SUFFIX:
-		printf("SP_CONFIG_MISSING_SUFFIX\n");
+		return "SP_CONFIG_MISSING_SUFFIX";
 		break;
 	case SP_CONFIG_MISSING_NUM_IMAGES:
-		printf("SP_CONFIG_MISSING_NUM_IMAGES\n");
+		return "SP_CONFIG_MISSING_NUM_IMAGES";
 		break;
 	case SP_CONFIG_CANNOT_OPEN_FILE:
-		printf("SP_CONFIG_CANNOT_OPEN_FILE\n");
+		return "SP_CONFIG_CANNOT_OPEN_FILE";
 		break;
 	case SP_CONFIG_ALLOC_FAIL:
-		printf("SP_CONFIG_ALLOC_FAIL\n");
+		return "SP_CONFIG_ALLOC_FAIL";
 		break;
 	case SP_CONFIG_INVALID_INTEGER:
-		printf("SP_CONFIG_INVALID_INTEGER\n");
+		return "SP_CONFIG_INVALID_INTEGER";
 		break;
 	case SP_CONFIG_INVALID_STRING:
-		printf("SP_CONFIG_INVALID_STRING\n");
+		return "SP_CONFIG_INVALID_STRING";
 		break;
 	case SP_CONFIG_INVALID_ARGUMENT:
-		printf("SP_CONFIG_INVALID_ARGUMENT\n");
+		return "SP_CONFIG_INVALID_ARGUMENT";
 		break;
 	case SP_CONFIG_INDEX_OUT_OF_RANGE:
-		printf("SP_CONFIG_INDEX_OUT_OF_RANGE\n");
+		return "SP_CONFIG_INDEX_OUT_OF_RANGE";
 		break;
 	case SP_CONFIG_SUCCESS:
-		printf("SP_CONFIG_SUCCESS\n");
+		return "SP_CONFIG_SUCCESS";
 		break;
 	}
+	return "SP_CONFIG_SUCCESS";
 }
 
 bool Blank(char* s){

@@ -113,6 +113,38 @@ void DirectoryDestroy(SPPoint** arr,int* num,int rows){
 	free(arr);
 }
 
+
+
+char* LoggerMSGtoString(SP_LOGGER_MSG msg){
+	switch(msg){
+	case SP_LOGGER_CANNOT_OPEN_FILE:
+		return "SP_LOGGER_CANNOT_OPEN_FILE";
+		break;
+	case SP_LOGGER_INVAlID_ARGUMENT:
+		return "SP_LOGGER_INVAlID_ARGUMENT";
+		break;
+	case SP_LOGGER_OUT_OF_MEMORY:
+		return "SP_LOGGER_OUT_OF_MEMORY";
+		break;
+	case SP_LOGGER_UNDIFINED:
+		return "SP_LOGGER_UNDIFINED";
+		break;
+	case SP_LOGGER_DEFINED:
+		return "SP_LOGGER_DEFINED";
+		break;
+	case SP_LOGGER_WRITE_FAIL:
+		return "SP_LOGGER_WRITE_FAIL";
+		break;
+	case SP_LOGGER_SUCCESS:
+		return "GREAT SUCCESS!!";
+		break;
+	default:
+		return "GREAT SUCCESS!!";
+		break;
+	}
+	return "GREAT SUCCESS!!";
+}
+
 /*int main(){
 	int a;
 	FILE* fw = fopen("checkingwritefeats.txt","w");

@@ -19,11 +19,11 @@ using namespace sp;
 
 
 
+
 int main(int argc,char* argv[]){
 
 	SPConfig config;
 	char configpath[1024] = ""; // asked moab can assume that not more than 1024 char
-
 	if(argc > 1){ // if inserted command line arguments
 		if ((argc == 3)&&(!(strcmp(argv[1],"-c")))){ // check if a path was inserted in the correct format
 			strcpy(configpath,argv[2]);
@@ -64,12 +64,21 @@ int main(int argc,char* argv[]){
 	int n=0;
 
 	int numofimages = spConfigGetNumOfImages(config,&msg);
-	//	int numoffeatures = spConfigGetNumOfFeatures(config,&msg);
+	spLoggerPrintMsg(spConfigMsgToString(msg));
+
 	int* tempdir = (int*)malloc(sizeof(int)*numofimages);
-	char* temppath = (char*)malloc(sizeof(char)*1024); //TODO release + can asuume 1024 at most?
+	if(tempdir == NULL){spLoggerPrintError("tempdir is null!",__FILE__,__func__,__LINE__);}
+	else{spLoggerPrintInfo("tempdir is succes!!");}
+
+	char* temppath = (char*)malloc(sizeof(char)*1024); //moab said can assume 1024 at most in kabala time
+	if(temppath == NULL){spLoggerPrintError("temppath is null!",__FILE__,__func__,__LINE__);return 0;}
+	else{spLoggerPrintInfo("temppath is succes!!");}
+
 	int tempnumOfFeatsextracted;
 
 	SPPoint** directory = (SPPoint**)malloc(sizeof(SPPoint*)*numofimages); // allocating matrix of feats per image
+	if(directory == NULL){spLoggerPrintError("directory is null!",__FILE__,__func__,__LINE__);return 0;}
+	else{spLoggerPrintInfo("directory is succes!!");}
 
 	SPPoint* finaldir;
 
@@ -162,7 +171,6 @@ int main(int argc,char* argv[]){
 				spBPQueueDequeue(tempbpq);
 
 			}
-			//spBPQueueClear(tempbpq);
 			spBPQueueDestroy(tempbpq);
 		}
 

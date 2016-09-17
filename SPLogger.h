@@ -1,5 +1,6 @@
 #ifndef SPLOGGER_H_
 #define SPLOGGER_H_
+#include <stdio.h>
 /**
  * SP Logger summary:
  * SP Logger is defined at compilation time and it must be initialized

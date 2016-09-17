@@ -50,4 +50,7 @@ char* itoa1(int num);
 
 void DirectoryDestroy(SPPoint** arr,int* num,int rows);
 
+char* LoggerMSGtoString(SP_LOGGER_MSG msg);
+
+
 #endif /* SOFTPRO_AUXILIARYFUNC_H_ */
