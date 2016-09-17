@@ -44,6 +44,8 @@ SPKDArray* Init(SPPoint* arr, int size){
 		temp[i].pdex = i;
 	}
 
+	spLoggerPrintDebug("finished creating sortTuple array",__FILE__,__func__,__LINE__);
+
 	ans->mat = (int**)malloc(sizeof(int*)*dim); //initialize matrix of indexes
 	for (i = 0; i < dim; ++i) {
 		ans->mat[i] = (int*)malloc(sizeof(int)*size);
@@ -60,6 +62,8 @@ SPKDArray* Init(SPPoint* arr, int size){
 		}
 	}
 
+	spLoggerPrintDebug("filled mat",__FILE__,__func__,__LINE__);
+
 	ans->rows = dim;
 	ans->col = size;
 
@@ -68,7 +72,9 @@ SPKDArray* Init(SPPoint* arr, int size){
 		ans->pointsarr[i] = spPointCopy(arr[i]);
 	}
 
-	TupleDestroy(temp,size);
+	spLoggerPrintDebug("copied pointsarray",__FILE__,__func__,__LINE__);
+
+	SortTupleDestroy(temp,size);
 	return ans;
 }
 
@@ -108,14 +114,14 @@ KDArrayTuple* Split(SPKDArray* kdArr, int coor){
 	}
 	// now we have X[1,0,...]
 
-
+	spLoggerPrintDebug("finished malloc of X",__FILE__,__func__,__LINE__);
 
 	// make the P's:
-	for(i=0;i<sizeL;i++){ // fill left with copy!!! //TODO change?
+	for(i=0;i<sizeL;i++){ // fill left with copy!!!
 		left->pointsarr[i] = spPointCopy(kdArr->pointsarr[kdArr->mat[coor][i]]);
 	}
 
-	for(i=0;i<sizeR;i++){ //fill right  with copy!!! //TODO change?
+	for(i=0;i<sizeR;i++){ //fill right  with copy!!!
 		right->pointsarr[i] = spPointCopy(kdArr->pointsarr[kdArr->mat[coor][i+sizeL]]);
 	}
 
@@ -153,6 +159,7 @@ KDArrayTuple* Split(SPKDArray* kdArr, int coor){
 		}
 	}
 
+	spLoggerPrintDebug("finished fill of right and left SPKDArrays",__FILE__,__func__,__LINE__);
 
 	left->col = sizeL;
 	right->col = sizeR;
@@ -160,19 +167,17 @@ KDArrayTuple* Split(SPKDArray* kdArr, int coor){
 	right->rows = kdArr->rows;
 	ans->left = left;
 	ans->right = right;
-
 	return ans;
 }
 
-int Getcol(SPKDArray* kdArr){
-	int temp = kdArr->col;
-	return temp;
+int SPKDArrayGetcol(SPKDArray* kdArr){
+	return kdArr->col;
 }
 
-int Getrows(SPKDArray* kdArr){
-	int temp = (kdArr->rows);
-	return temp;
+int SPKDArrayGetrows(SPKDArray* kdArr){
+	return (kdArr->rows);
 }
+
 int** GetMat(SPKDArray* kdArr){
 	return kdArr->mat;
 }
@@ -181,22 +186,20 @@ SPPoint* Getpointsarray(SPKDArray* kdArr){
 	return kdArr->pointsarr;
 }
 
-SPKDArray* kdtupgetleft(KDArrayTuple* tup){
+SPKDArray* KDArrayTupleGetleft(KDArrayTuple* tup){
 	return tup->left;
 }
 
-SPKDArray* kdtupgetright(KDArrayTuple* tup){
+SPKDArray* KDArrayTupleGetright(KDArrayTuple* tup){
 	return tup->right;
 }
 
-void TupleDestroy(SortTuple* tup,int size){
+void SortTupleDestroy(SortTuple* tup,int size){
 	int i;
 	for (i = 0; i < size; ++i) {
 		spPointDestroy(tup[i].point);
 	}
 	free(tup);
-
-
 }
 
 void KDArrayDestroy(SPKDArray* arr){
@@ -213,21 +216,8 @@ void KDArrayDestroy(SPKDArray* arr){
 }
 
 void KDArrayTupleDestroy(KDArrayTuple* tup){
-	//	int i;
 	KDArrayDestroy(tup->left);
 	KDArrayDestroy(tup->right);
-	//	free(tup->left->pointsarr);
-	//	for (i = 0; i < tup->left->rows; ++i) {
-	//		free(tup->left->mat[i]);
-	//	}
-	//	free(tup->left->mat);
-	//	free(tup->left);
-	//	free(tup->right->pointsarr);
-	//	for (i = 0; i < tup->right->rows; ++i) {
-	//		free(tup->right->mat[i]);
-	//	}
-	//	free(tup->right->mat);
-	//	free(tup->right);
 	free(tup);
 }
 

@@ -2,11 +2,10 @@
  * KDTree.c
  *
  *  Created on: 12 בספט׳ 2016
- *      Author: NMR
+ *      Author: michael ozeri & yuval ailer
  */
 
 #include "KDTree.h"
-
 
 struct spKDTreeNode{
 	double val;
@@ -16,10 +15,9 @@ struct spKDTreeNode{
 	SPPoint data;
 };
 
-
 int maxSpred(SPKDArray* array){
-	int dim = Getrows(array);
-	int size = Getcol(array);
+	int dim = SPKDArrayGetrows(array);
+	int size = SPKDArrayGetcol(array);
 	if(size == 1){
 		return 0;
 	}
@@ -41,9 +39,9 @@ int maxSpred(SPKDArray* array){
 	return maxcor;
 }
 
-int findmedian(SPKDArray* array,int splitcord){
+int FindMedian(SPKDArray* array,int splitcord){
 	int median;
-	int size = Getcol(array);
+	int size = SPKDArrayGetcol(array);
 	median = spPointGetAxisCoor((Getpointsarray(array))[(GetMat(array))[splitcord][size/2]],splitcord);
 	return median;
 }
@@ -53,7 +51,7 @@ KDTreeNode* RecTreeBuild(SPKDArray* array,int i,method splitm){
 	if(ans == NULL){
 		return NULL;
 	}
-	if((Getcol(array) == 1)){
+	if((SPKDArrayGetcol(array) == 1)){
 		ans->dim = INVALID;
 		ans->val = INVALID;
 		ans->data = spPointCopy(Getpointsarray(array)[0]);
@@ -63,10 +61,10 @@ KDTreeNode* RecTreeBuild(SPKDArray* array,int i,method splitm){
 	}
 	int splitcord = SplitDecide(splitm,i,array); // O(d)
 	ans->dim = splitcord;
-	ans->val = findmedian(array,splitcord);
+	ans->val = FindMedian(array,splitcord);
 	KDArrayTuple* splitarray = Split(array,splitcord);
-	ans->left = RecTreeBuild(kdtupgetleft(splitarray),splitcord+1,splitm);
-	ans->right = RecTreeBuild(kdtupgetright(splitarray),splitcord+1,splitm);
+	ans->left = RecTreeBuild(KDArrayTupleGetleft(splitarray),splitcord+1,splitm);
+	ans->right = RecTreeBuild(KDArrayTupleGetright(splitarray),splitcord+1,splitm);
 	ans->data = NULL;
 	KDArrayTupleDestroy(splitarray);
 	return ans;
@@ -81,6 +79,7 @@ KDTreeNode* InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a
 	}
 	KDTreeNode* ans = RecTreeBuild(kdarr,0,splitmethod);
 	KDArrayDestroy(kdarr); //free kdarr malloc'ed
+	SPPointArrayDestroy(arr,size);
 	return ans;
 }
 
@@ -88,7 +87,7 @@ KDTreeNode* InitTree(SPPoint* arr, int size, SPConfig config){ // initializing a
 
 void kNearestNeighbors(KDTreeNode* curr , SPBPQueue bpq, SPPoint querypoint){
 	if (curr == NULL) {
-		return; //TODO? see PDF/
+		return;
 	}
 	if(curr->data != NULL){ // we are in a leaf
 		int distance = spPointL2SquaredDistance(curr->data,querypoint);
@@ -113,11 +112,6 @@ void kNearestNeighbors(KDTreeNode* curr , SPBPQueue bpq, SPPoint querypoint){
 		}
 	}
 }
-
-/*
- * envelope function. meant to pass the K parameter to the function.
- * returns a queue with the K -NEAREST NEIGHBORs.
- */
 
 SPBPQueue KDTreeSearch(KDTreeNode* head,SPPoint point, int size){
 	SPBPQueue bpq;
@@ -163,13 +157,11 @@ void PrintQueue(SPBPQueue queue){
 }
 
 int KDTreeGetDim(KDTreeNode* node){
-	int a = node->dim;
-	return a;
+	return node->dim;
 }
 
 int KDTreeGetVal(KDTreeNode* node){
-	int a = node->val;
-	return a;
+	return node->val;
 }
 
 int SplitDecide(method splitm,int i,SPKDArray* arr){
@@ -177,11 +169,11 @@ int SplitDecide(method splitm,int i,SPKDArray* arr){
 	case MAX_SPREAD:
 		return maxSpred(arr);
 	case RANDOM:
-		return (rand()%Getrows(arr));
+		return (rand()%SPKDArrayGetrows(arr));
 	case INCREMENTAL:
-		return (i%Getrows(arr));
+		return (i%SPKDArrayGetrows(arr));
 	default:
-		return (i%Getrows(arr)); //default returns INCREMENTAL
+		return maxSpred(arr); //default returns MAX_SPREAD
 	}
 }
 

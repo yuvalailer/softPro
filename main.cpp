@@ -12,11 +12,7 @@ extern "C"{
 #include "KDTree.h"
 }
 
-
 using namespace sp;
-
-//TODO add SPLOGGER & store mssges
-
 
 
 
@@ -25,19 +21,18 @@ int main(int argc,char* argv[]){
 	SPConfig config;
 	char configpath[1024] = ""; // asked moab can assume that not more than 1024 char
 	if(argc > 1){ // if inserted command line arguments
-		if ((argc == 3)&&(!(strcmp(argv[1],"-c")))){ // check if a path was inserted in the correct format
+		if ((argc == 3)&&(!(strcmp(argv[1],"-c")))){ // checks if a path was inserted in the correct format
 			strcpy(configpath,argv[2]);
 		}else{
-			printf("Invalid command line : use -c <config_filename>\n"); //TODO understand in what to change <config_filename>
+			printf("Invalid command line : use -c <config_filename>\n");
 			return 0;
 		}
 	}
 	if (!strcmp(configpath,"")){ //if no path was inserted
 		strcpy(configpath,"spcbir.config");
 	}
-
 	SP_CONFIG_MSG msg;
-	config = spConfigCreate(configpath,&msg); //TODO check what msg pointer do we need to insert
+	config = spConfigCreate(configpath,&msg);
 	if (config == NULL){ // if there was an error
 		if (msg == SP_CONFIG_CANNOT_OPEN_FILE){
 			if(!strcmp(configpath,"spcbir.config")){
@@ -49,56 +44,49 @@ int main(int argc,char* argv[]){
 			}
 		}
 	}
-
 	// finished creating configuration file
 
 	spLoggerCreate(spConfigGetLoggerFilename(config),spConfigGetLoggerLevel(config));
-
-	//finished creating SPLogger filename
+	//finished creating SPLogger
 
 	ImageProc proc = ImageProc(config);
-
+	spLoggerPrintInfo("Creating imageproc success");
 	// finished creating image processing instance
 
 	int i,j,k;
 	int n=0;
-
 	int numofimages = spConfigGetNumOfImages(config,&msg);
-	spLoggerPrintMsg(spConfigMsgToString(msg));
-
 	int* tempdir = (int*)malloc(sizeof(int)*numofimages);
 	if(tempdir == NULL){spLoggerPrintError("tempdir is null!",__FILE__,__func__,__LINE__);}
-	else{spLoggerPrintInfo("tempdir is succes!!");}
-
-	char* temppath = (char*)malloc(sizeof(char)*1024); //moab said can assume 1024 at most in kabala time
-	if(temppath == NULL){spLoggerPrintError("temppath is null!",__FILE__,__func__,__LINE__);return 0;}
-	else{spLoggerPrintInfo("temppath is succes!!");}
-
+	else{spLoggerPrintDebug("tempdir allocation is success!!",__FILE__,__func__,__LINE__);}
+	char temppath[1024];
 	int tempnumOfFeatsextracted;
-
 	SPPoint** directory = (SPPoint**)malloc(sizeof(SPPoint*)*numofimages); // allocating matrix of feats per image
 	if(directory == NULL){spLoggerPrintError("directory is null!",__FILE__,__func__,__LINE__);return 0;}
-	else{spLoggerPrintInfo("directory is succes!!");}
-
+	else{spLoggerPrintDebug("directory allocation is success!!",__FILE__,__func__,__LINE__);}
 	SPPoint* finaldir;
 
 	if (spConfigGetExtractionMode(config)){ // if we are in extraction mode
-
 		FILE* fw;
-
 		for (i = 0; i < numofimages; i++) { //for each image in image directory
-			msg = spConfigGetImagePath (temppath,config,i); //TODO mssg to where
+			msg = spConfigGetImagePath (temppath,config,i);
+			if(msg != SP_CONFIG_SUCCESS){spLoggerPrintError(spConfigMsgToString(msg),__FILE__,__func__,__LINE__);return 0;}
+			else{spLoggerPrintDebug(spConfigMsgToString(msg),__FILE__,__func__,__LINE__);}
 			directory[i] = proc.getImageFeatures(temppath,i,&tempnumOfFeatsextracted);
+			if(directory[i]==NULL){spLoggerPrintError("error extracting image features",__FILE__,__func__,__LINE__);return 0;}
+			else{spLoggerPrintDebug("extracted features from image successfully",__FILE__,__func__,__LINE__);}
 			n+=tempnumOfFeatsextracted;
 			tempdir[i] = tempnumOfFeatsextracted;
 			msg = spConfigGetImagePathfeats(temppath,config,i); //get the file to write to
+			if(msg != SP_CONFIG_SUCCESS){spLoggerPrintError(spConfigMsgToString(msg),__FILE__,__func__,__LINE__);return 0;}
+			else{spLoggerPrintDebug("successfully extracted image path to write to",__FILE__,__func__,__LINE__);}
 			fw = fopen(temppath,"w");//open file for writing
 			writefeats(fw,directory[i],tempnumOfFeatsextracted);
 		}
-
 		fclose(fw);
-
 		finaldir = (SPPoint*)malloc(sizeof(SPPoint)*n); //making final dir
+		if (finaldir == NULL){spLoggerPrintError("error initializing finaldir in extraction mode",__FILE__,__func__,__LINE__);return 0;}
+		else{spLoggerPrintDebug("initialized finaldir successfully",__FILE__,__func__,__LINE__);}
 		k=0;
 		for (i = 0; i < numofimages; ++i){
 			for (j = 0; j < tempdir[i]; ++j) {
@@ -106,19 +94,25 @@ int main(int argc,char* argv[]){
 				k++;
 			}
 		}
-		free(directory);
+		DirectoryDestroy(directory,tempdir,numofimages);
 	}
 	else{ // non - extraction mode
-		FILE* fr;
 
+		FILE* fr;
 		for (i = 0; i < numofimages; i++){
 			msg = spConfigGetImagePathfeats(temppath,config,i); //get path to feats file to read from
+			if (msg !=SP_CONFIG_SUCCESS){spLoggerPrintError("error extracting feats path from config",__FILE__,__func__,__LINE__);return 0;}
+			else{spLoggerPrintDebug("successfully extracted feats path from config",__FILE__,__func__,__LINE__);}
 			fr = fopen(temppath,"r");
+			if(fr ==NULL){spLoggerPrintError("error opening .feats file to extract",__FILE__,__func__,__LINE__);return 0;}
+			else{spLoggerPrintDebug("opend .feats file successfully",__FILE__,__func__,__LINE__);}
 			directory[i] = getfeats(fr,(tempdir+i));
 			n+=tempdir[i];
 		}
 		fclose(fr);
 		finaldir = (SPPoint*)malloc(sizeof(SPPoint)*n); //making final dir
+		if (finaldir == NULL){spLoggerPrintError("error initializing finaldir in extraction mode",__FILE__,__func__,__LINE__);return 0;}
+		else{spLoggerPrintDebug("initialized finaldir successfully",__FILE__,__func__,__LINE__);}
 		k=0;
 		for (i = 0; i < numofimages; ++i){
 			for (j = 0; j < tempdir[i]; ++j) {
@@ -130,22 +124,21 @@ int main(int argc,char* argv[]){
 	}
 
 	//after extraction / non - extraction and we have our finaldir containing all the feats(SPPoints)!
+	spLoggerPrintInfo("success after extraction / non - extraction phase");
 
 	bool out = false;
 	int numofsimilarimages = spConfigGetNumSimilarImages(config);
-
-	KDTreeNode* head = InitTree(finaldir,n,config); //initialization of KDTree complexity: O(d X nlogn)
-
-	SPPointArrayDestroy(finaldir,n); //free finaldir after creating tree
-
+	KDTreeNode* head = InitTree(finaldir,n,config);
+	if(head ==NULL){spLoggerPrintError("failure building tree",__FILE__,__func__,__LINE__);return 0;}
+	else{spLoggerPrintDebug("tree build complete successfully",__FILE__,__func__,__LINE__);}
+	/*initialization of KDTree & free of finaldir complexity: O(d X nlogn)*/
 	while(!out){
 		printf("Please enter an image path:\n");
 		fflush(stdout);
-		char* quarypath = (char*)malloc(sizeof(char)*1024); //moab said can assume quary path is at most 1024
+		char quarypath[1024]; //= (char*)malloc(sizeof(char)*1024); //moab said can assume quary path is at most 1024
 		scanf("%s",quarypath);
 		if(!strcmp(quarypath,"<>")){ //if chose to exit the program
 			printf("Exiting…\n");
-			free(quarypath);
 			out = true;
 			break;
 		}
@@ -155,15 +148,10 @@ int main(int argc,char* argv[]){
 			hits[i] = -1;
 		}
 		//an array to keep track of how many times an image feature was selected to be k-nearest feature
-
 		int* winners = (int*)malloc(sizeof(int)*numofsimilarimages);
-
 		//an array contains indexes of winners ordered by numbered of hits example: winner[0] - the index of the most closest image
-
 		SPPoint* quaryfeatures = proc.getImageFeatures(quarypath,numofimages,&tempnumOfFeatsextracted);
-
 		SPBPQueue tempbpq;
-
 		for (i = 0; i < tempnumOfFeatsextracted; ++i) { //count hits per image
 			tempbpq = KDTreeSearch(head,quaryfeatures[i],numofsimilarimages);
 			while(!spBPQueueIsEmpty(tempbpq)){
@@ -173,12 +161,11 @@ int main(int argc,char* argv[]){
 			}
 			spBPQueueDestroy(tempbpq);
 		}
-
 		calculatewinners(winners,hits,numofimages,numofsimilarimages);
-
 		free(quaryfeatures);
 
 		//showing results
+		spLoggerPrintInfo("showing results");
 
 		if(spConfigMinimalGui(config,&msg)){ // if we are in minimal-GUI mode
 			for (i = 0; i <numofsimilarimages ; ++i) {
@@ -187,7 +174,6 @@ int main(int argc,char* argv[]){
 			}
 			free(hits);
 			free(winners);
-			free(quarypath);
 		}
 		else{ // not in minimal-GUI mode
 			printf("Best candidates for - %s - are:\n",quarypath);
@@ -197,13 +183,13 @@ int main(int argc,char* argv[]){
 			}
 			free(hits);
 			free(winners);
-			free(quarypath);
 		}
 	}
-
 	KDTreeDestroy(head);
 	spConfigDestroy(config);
 	free(tempdir);
+	spLoggerDestroy();
+	spLoggerPrintInfo("finished free of all memory successfully");
 	return 1;
 }
 

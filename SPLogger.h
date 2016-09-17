@@ -1,6 +1,10 @@
 #ifndef SPLOGGER_H_
 #define SPLOGGER_H_
 #include <stdio.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 /**
  * SP Logger summary:
  * SP Logger is defined at compilation time and it must be initialized
@@ -234,5 +238,6 @@ SP_LOGGER_MSG returnMaker(const char* msg, const char* file,
  *
  */
 int spLoggerLevelMaker(SP_LOGGER_LEVEL level);
+
 
 #endif

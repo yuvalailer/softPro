@@ -124,22 +124,22 @@ bool allnum(char* s){
 }
 
 bool insertconfig(SPConfig config,char* param,char* val){
-	if(strcmp(param,"spImagesDirectory")==0){
+	if(!strcmp(param,"spImagesDirectory")){
 		strcpy(config->spImagesDirectory,val);
 		return true;
 	}
-	if(strcmp(param,"spImagesPrefix")==0){
+	if(!strcmp(param,"spImagesPrefix")){
 		strcpy(config->spImagesPrefix,val);
 		return true;
 	}
-	if(strcmp(param,"spImagesSuffix")==0){
+	if(!strcmp(param,"spImagesSuffix")){
 		if ((!strcmp(val,".jpg"))&&(!strcmp(val,".png"))&&(!strcmp(val,".bmp"))&&(!strcmp(val,".gif"))){
 			return false;
 		}
 		strcpy(config->spImagesSuffix,val);
 		return true;
 	}
-	if(strcmp(param,"spNumOfImages")==0){
+	if(!strcmp(param,"spNumOfImages")){
 		if(!allnum(val)){//if val is not a string containing only numbers
 			return false;
 		}
@@ -150,7 +150,7 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	if(strcmp(param,"spPCADimension")==0){
+	if(!strcmp(param,"spPCADimension")){
 		if(!allnum(val)){//if val is not a string containing only numbers
 			return false;
 		}
@@ -161,11 +161,11 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	if(strcmp(param,"spPCAFilename")==0){
+	if(!strcmp(param,"spPCAFilename")){
 		strcpy(config->spPCAFilename,val);
 		return true;
 	}
-	if(strcmp(param,"spNumOfFeatures")==0){
+	if(!strcmp(param,"spNumOfFeatures")){
 		if(!allnum(val)){//if val is not a string containing only numbers
 			return false;
 		}
@@ -176,18 +176,18 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	if(strcmp(param,"spExtractionMode")==0){
-		if(strcmp(val,"true")==0){
+	if(!strcmp(param,"spExtractionMode")){
+		if(!strcmp(val,"true")){
 			config->spExtractionMode = true;
 			return true;
 		}
-		else if(strcmp(val,"false")==0){
+		else if(!strcmp(val,"false")){
 			config->spExtractionMode = false;
 			return true;
 		}
 		return false;
 	}
-	if(strcmp(param,"spNumOfSimilarImages")==0){
+	if(!strcmp(param,"spNumOfSimilarImages")){
 		if(!allnum(val)){//if val is not a string containing only numbers
 			return false;
 		}
@@ -198,22 +198,22 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	if(strcmp(param,"spKDTreeSplitMethod")==0){
-		if(strcmp(val,"RANDOM")==0){
+	if(!strcmp(param,"spKDTreeSplitMethod")){
+		if(!strcmp(val,"RANDOM")){
 			config->spKDTreeSplitMethod = RANDOM;
 			return true;
 		}
-		else if(strcmp(val,"MAX_SPREAD")==0){
+		else if(!strcmp(val,"MAX_SPREAD")){
 			config->spKDTreeSplitMethod = MAX_SPREAD;
 			return true;
 		}
-		else if(strcmp(val,"INCREMENTAL")==0){
+		else if(!strcmp(val,"INCREMENTAL")){
 			config->spKDTreeSplitMethod = INCREMENTAL;
 			return true;
 		}
 		return false;
 	}
-	if(strcmp(param,"spKNN")==0){
+	if(!strcmp(param,"spKNN")){
 		if(!allnum(val)){//if val is not a string containing only numbers
 			return false;
 		}
@@ -224,18 +224,18 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	if(strcmp(param,"spMinimalGUI")==0){
-		if(strcmp(val,"true")==0){
+	if(!strcmp(param,"spMinimalGUI")){
+		if(!strcmp(val,"true")){
 			config->spMinimalGUI = true;
 			return true;
 		}
-		else if(strcmp(val,"false")==0){
+		else if(!strcmp(val,"false")){
 			config->spMinimalGUI = false;
 			return true;
 		}
 		return false;
 	}
-	if(strcmp(param,"spLoggerLevel")==0){
+	if(!strcmp(param,"spLoggerLevel")){
 		if(!allnum(val)){//if val is not a string containing only numbers
 			return false;
 		}
@@ -246,7 +246,7 @@ bool insertconfig(SPConfig config,char* param,char* val){
 		}
 		return false;
 	}
-	if(strcmp(param,"spLoggerFilename")==0){
+	if(!strcmp(param,"spLoggerFilename")){
 			strcpy(config->spLoggerFilename,val);
 			return true;
 	}
@@ -378,9 +378,6 @@ SP_CONFIG_MSG spConfigGetImagePath(char* imagePath, const SPConfig config,int in
 }
 
 SP_CONFIG_MSG spConfigGetPCAPath(char* pcaPath, const SPConfig config){
-	//	if(strlen(pcaPath)<(strlen(config->spImagesDirectory)+strlen(config->spPCAFilename))){
-	//		return SP_CONFIG_ALLOC_FAIL;
-	//	} //TODO check if this is necessary at all (strlen checks until '\0' not array size
 	if(pcaPath == NULL || config == NULL){
 		return SP_CONFIG_INVALID_ARGUMENT;
 	} else {

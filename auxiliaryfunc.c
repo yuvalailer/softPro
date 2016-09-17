@@ -145,7 +145,8 @@ char* LoggerMSGtoString(SP_LOGGER_MSG msg){
 	return "GREAT SUCCESS!!";
 }
 
-/*int main(){
+/*
+ * int main(){
 	int a;
 	FILE* fw = fopen("checkingwritefeats.txt","w");
 	double data[3] = {15.5,16.2,17.3};

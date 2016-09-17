@@ -11,11 +11,9 @@
 
 
 struct sp_point_t {
-
 	double* data;
 	int dim;
 	int index;
-
 };
 
 SPPoint spPointCreate(double* data, int dim, int index) {

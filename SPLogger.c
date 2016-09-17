@@ -1,8 +1,6 @@
 
 #include "SPLogger.h"
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
+
 
 //File open mode
 #define SP_LOGGER_OPEN_MODE "w"
@@ -25,7 +23,8 @@ SP_LOGGER_MSG spLoggerCreate(const char* filename, SP_LOGGER_LEVEL level) {
 		return SP_LOGGER_OUT_OF_MEMORY;
 	}
 	logger->level = level; //Set the level of the logger
-	if (filename == NULL) { //In case the filename is not set use stdout
+
+	if (!strcmp(filename,"stdout")) { //In case the filename is not set use stdout
 		logger->outputChannel = stdout;
 		logger->isStdOut = true;
 	} else { //Otherwise open the file in write mode
@@ -63,43 +62,41 @@ SP_LOGGER_MSG returnMaker(const char* msg, const char* file,
 	} else if (msg == NULL || file == NULL || function == NULL || line <= -1) {
 		return SP_LOGGER_INVAlID_ARGUMENT;
 
-	} else if (logger->isStdOut != false) {
-		return SP_LOGGER_WRITE_FAIL;
+	} /*else if (logger->isStdOut != false) {
+		return SP_LOGGER_WRITE_FAIL; //TODO check if needed really
 
-	}
+	}*/
 	return SP_LOGGER_SUCCESS; // all good
 
 
 }
 
-SP_LOGGER_MSG spLoggerPrintError(const char* msg, const char* file,
-		const char* function, const int line) {
-
+SP_LOGGER_MSG spLoggerPrintError(const char* msg, const char* file,const char* function, const int line) {
 	SP_LOGGER_MSG ans = returnMaker(msg, file, function, line);
 	if (ans != SP_LOGGER_SUCCESS) {
 		return ans;
-
-	} else {
+	}
+	else{
 		if (spLoggerLevelMaker(logger->level) <= 4) {
-
-			fprintf(logger->outputChannel,
-					"---ERROR---\n- file: %s\n- function: %s\n- line: %d\n- message: %s\n",
-					file, function, line, msg);
+				fprintf(logger->outputChannel,"---ERROR---\n-"
+						" file: %s\n- function: %s\n- line: %d\n- message: %s\n",file, function, line, msg);
 		}
 		return ans;
-	}}
-SP_LOGGER_MSG spLoggerPrintWarning(const char* msg, const char* file,
-		const char* function, const int line) {
+	}
+}
+
+SP_LOGGER_MSG spLoggerPrintWarning(const char* msg, const char* file,const char* function, const int line) {
 	SP_LOGGER_MSG ans = returnMaker(msg, file, function, line);
 	if (ans != SP_LOGGER_SUCCESS) {
 		return ans;
 
 	} else {
 		if (spLoggerLevelMaker(logger->level) <= 3) {
-
-			fprintf(logger->outputChannel,"---WARNING---\n- file: %s\n- function: %s\n- line: %d\n- message: %s\n",
-					file, function, line, msg);
-		}}
+				fprintf(logger->outputChannel,"---WARNING---\n- file: %s\n- function:"
+						" %s\n- line: %d\n- message: %s\n",
+						file, function, line, msg);
+		}
+	}
 	return ans;
 }
 
@@ -107,53 +104,39 @@ SP_LOGGER_MSG spLoggerPrintInfo(const char* msg) {
 	SP_LOGGER_MSG ans = returnMaker(msg, __FILE__, __func__, __LINE__);
 	if (ans != SP_LOGGER_SUCCESS) {
 		return ans;
-
 	} else {
-
 		if (spLoggerLevelMaker(logger->level) <= 2) {
-
-			fprintf(logger->outputChannel,"---INFO---\n- message: %s\n", msg);
-		}}
-	return ans; //TODO is this the right input for the testing?
+				fprintf(logger->outputChannel,"---INFO---\n- message: %s\n", msg);
+		}
+	}
+	return ans;
 }
 
-SP_LOGGER_MSG spLoggerPrintDebug(const char* msg, const char* file,
-		const char* function, const int line) {
+SP_LOGGER_MSG spLoggerPrintDebug(const char* msg, const char* file,const char* function, const int line) {
 	SP_LOGGER_MSG ans = returnMaker(msg, file, function, line);
 	if (ans != SP_LOGGER_SUCCESS) {
 		return ans;
 	} else {
-
 		if (spLoggerLevelMaker(logger->level) == 1) {
-
-			fprintf(logger->outputChannel,
-					"---DEBUG---\n- file: %s\n- function: %s\n- line: %d\n- message: %s\n",
-					file, function, line, msg);
+				fprintf(logger->outputChannel,
+						"---DEBUG---\n- file: %s\n- function: %s\n- line: %d\n- message: %s\n",
+						file, function, line, msg);
 		}
 	}
 	return ans;
 }
 
 SP_LOGGER_MSG spLoggerPrintMsg(const char* msg) {
-
 	SP_LOGGER_MSG ans = returnMaker(msg, __FILE__, __func__, __LINE__);
 	if (ans != SP_LOGGER_SUCCESS) {
 		return ans;
 	} else {
-
 		if (spLoggerLevelMaker(logger->level) <= 4) {
-
-			fprintf(logger->outputChannel,"%s\n",msg);
-		}}
+				fprintf(logger->outputChannel,"%s\n",msg);
+		}
+	}
 	return ans;
 }
-/**
- * level maker is a simple function, used to determine if
- * a logging level is hair or lower then required.
- *
- * it works by mapping every level to an integer,
- * by numerical order.
- */
 
 
 int spLoggerLevelMaker(SP_LOGGER_LEVEL level){
@@ -161,21 +144,17 @@ int spLoggerLevelMaker(SP_LOGGER_LEVEL level){
 	case SP_LOGGER_DEBUG_INFO_WARNING_ERROR_LEVEL :
 		return 1;
 		break;
-
 	case SP_LOGGER_INFO_WARNING_ERROR_LEVEL :
 		return 2;
 		break;
-
 	case SP_LOGGER_WARNING_ERROR_LEVEL :
-
 		return 3;
 		break;
-
 	case SP_LOGGER_ERROR_LEVEL :
 		return 4;
 		break;
-
 	}
 	return 5; // since all level are enums, their must be an int for it. this is for future maintenance and testing.
 }
+
 

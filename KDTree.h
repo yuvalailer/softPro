@@ -24,7 +24,7 @@
 /*
  * A Kd-tree struct. used for sorting and matching the picturs to one
  another.
- has the next fileds:
+ has the next fields:
  1- Dim = The splitting dimension
  2- Val = The median value of the splitting dimension
  3- Left = Pointer to the left subtree
@@ -39,7 +39,8 @@ typedef struct spKDTreeNode KDTreeNode;
 
 
 /*
- *builds KDTree from SPPoints (feats) array. accoarding to the system configuration.
+ *builds KDTree from SPPoints (feats) array. according to the system configuration.
+ *builds free's at the end not needed arr because we make a copy
  *@param arr - the SPPoint array used to build the KDArray and with that the KDTree
  *@param size - the number of elements in arr
  *@param config - the system configuration file
@@ -72,10 +73,12 @@ KDTreeNode* RecTreeBuild(SPKDArray* array,int i,method splitm);
  * @return the value of the median value with respect to the splitcord in the SPKDArray
  */
 
-int findmedian(SPKDArray* array,int splitcord);
+int FindMedian(SPKDArray* array,int splitcord);
 
 /*
- * frees all allocation of memory
+ * frees all allocation of memory recursivly
+ * at reaching a leaf frees its sppoint also
+ * @param - head- the current node to free
  */
 
 void KDTreeDestroy(KDTreeNode* head);
@@ -92,13 +95,50 @@ void KDTreeDestroy(KDTreeNode* head);
 
 void kNearestNeighbors(KDTreeNode* curr , SPBPQueue bpq, SPPoint P);
 
+/*
+ * envelope function.
+ * the function returns a SPBPQueue containing the indexes of the 'num' closest SPPoints found in the KDTreeNode head.
+ * @param - head - the KDTree head node whice we search
+ * @param - point - the SPPoint we want to find the 'num' closest SPPoints
+ * @param - num - how many closest SPPoints do we want to find + maxsize of SPBPQueue returned
+ * @return - SPBPQueue containing the indexes of the 'num' closest SPPoints found in the KDTreeNode head.
+ */
+
 SPBPQueue KDTreeSearch(KDTreeNode* head,SPPoint point, int num);
+
+/*
+ * prints the Kdtree inserted: nodes + at what level, leafs + level + indexes at in-order
+ * recursive function
+ * @param - curr - the current node visiting to print
+ * @param - level - our current depth in the tree
+ */
 
 void KDTreePrint(KDTreeNode* curr,int level);
 
+/*
+ * getter function to dim field at KDTreeNode
+ * @param - node - the node from which to obtain the field dim
+ * @return - int - the dim of the KDTreeNode node.
+ */
+
 int KDTreeGetDim(KDTreeNode* node);
 
+/*
+ * getter function to val field at KDTreeNode
+ * @param - node - the node from which to obtain the field val
+ * @return - double - the val of the KDTreeNode node.
+ */
+
 int KDTreeGetVal(KDTreeNode* node);
+
+/*
+ * a function which decides at each recursive call of func RecTreeBuild, which coordinate
+ * do we split with the SPKDArray given
+ * @param - splitm - the split method enum of config decided at boot of program
+ * @param - i - in case of INCREMENTAL build, our current split coordinate
+ * @param - arr - the SPKDArray to which in case of MAX_SPREAD mode we get our max spred.
+ * @return - int - our splitting coordinate- in range (0,arr->rows), default: MAX_SPREAD
+ */
 
 int SplitDecide(method splitm,int i,SPKDArray* arr);
 
