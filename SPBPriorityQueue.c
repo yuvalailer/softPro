@@ -18,14 +18,19 @@ SP_BPQUEUE_MSG changeMSG(SP_LIST_MSG msg);
 SP_BPQUEUE_MSG changeMSG(SP_LIST_MSG msg){
 	switch(msg)
 	{
-	case (SP_LIST_SUCCESS): return SP_BPQUEUE_SUCCESS;
-	break;
-	case (SP_LIST_NULL_ARGUMENT): return SP_BPQUEUE_INVALID_ARGUMENT;
-	break;
-	case (SP_LIST_OUT_OF_MEMORY): return SP_BPQUEUE_OUT_OF_MEMORY;
-	break;
-	default : return SP_BPQUEUE_SUCCESS;
+	case (SP_LIST_SUCCESS):
+			return SP_BPQUEUE_SUCCESS;
+			break;
+	case (SP_LIST_NULL_ARGUMENT):
+			return SP_BPQUEUE_INVALID_ARGUMENT;
+			break;
+	case (SP_LIST_OUT_OF_MEMORY):
+			return SP_BPQUEUE_OUT_OF_MEMORY;
+			break;
+	default :
+		return SP_BPQUEUE_SUCCESS;
 	}
+	return SP_BPQUEUE_SUCCESS;
 }
 
 SPBPQueue spBPQueueCreate(int maxSize){
@@ -87,7 +92,7 @@ SP_BPQUEUE_MSG spBPQueueEnqueue(SPBPQueue source, SPListElement element){
 	if ((index == -1.0)||(value == -1)){
 		return SP_BPQUEUE_INVALID_ARGUMENT;
 	}
-	SP_LIST_MSG  msg;
+	SP_LIST_MSG  msg = SP_LIST_NULL_ARGUMENT;
 	bool check = false;
 	bool toobig = false;
 	if (spBPQueueIsEmpty(source)){ //if queue is empty insert first
@@ -148,8 +153,8 @@ SPListElement spBPQueuePeek(SPBPQueue source){
 	if(spBPQueueSize(source)== 0){ // if queue is empty return NULL
 		return NULL;
 	}
-	return spListElementCopy(spListGetFirst(source->list));
-	//return (spListGetFirst(source->list));
+	//	return spListElementCopy(spListGetFirst(source->list)); //TODO change back to normal?
+	return (spListGetFirst(source->list));
 }
 
 SPListElement spBPQueuePeekLast(SPBPQueue source){
@@ -157,8 +162,8 @@ SPListElement spBPQueuePeekLast(SPBPQueue source){
 	if((spBPQueueSize(source)== 0)){ // if queue is empty return NULL
 		return NULL;
 	}
-	return spListElementCopy(spListGetLast(source->list));
-	//return (spListGetLast(source->list));
+	//	return spListElementCopy(spListGetLast(source->list)); //TODO  return back to normal?
+	return (spListGetLast(source->list));
 }
 
 double spBPQueueMinValue(SPBPQueue source){

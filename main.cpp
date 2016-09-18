@@ -162,7 +162,7 @@ int main(int argc,char* argv[]){
 			spBPQueueDestroy(tempbpq);
 		}
 		calculatewinners(winners,hits,numofimages,numofsimilarimages);
-		free(quaryfeatures);
+		SPPointArrayDestroy(quaryfeatures,tempnumOfFeatsextracted);
 
 		//showing results
 		spLoggerPrintInfo("showing results");

@@ -47,10 +47,14 @@ int FindMedian(SPKDArray* array,int splitcord){
 }
 
 KDTreeNode* RecTreeBuild(SPKDArray* array,int i,method splitm){
+
 	KDTreeNode* ans = (KDTreeNode*)malloc(sizeof(KDTreeNode));
+
 	if(ans == NULL){
+		spLoggerPrintError("could not malloc leaf!",__FILE__,__func__,__LINE__);
 		return NULL;
 	}
+
 	if((SPKDArrayGetcol(array) == 1)){
 		ans->dim = INVALID;
 		ans->val = INVALID;
@@ -59,14 +63,20 @@ KDTreeNode* RecTreeBuild(SPKDArray* array,int i,method splitm){
 		ans->right = NULL;
 		return ans;
 	}
+
 	int splitcord = SplitDecide(splitm,i,array); // O(d)
+
 	ans->dim = splitcord;
 	ans->val = FindMedian(array,splitcord);
+
 	KDArrayTuple* splitarray = Split(array,splitcord);
+
 	ans->left = RecTreeBuild(KDArrayTupleGetleft(splitarray),splitcord+1,splitm);
 	ans->right = RecTreeBuild(KDArrayTupleGetright(splitarray),splitcord+1,splitm);
 	ans->data = NULL;
+
 	KDArrayTupleDestroy(splitarray);
+
 	return ans;
 }
 
@@ -101,13 +111,13 @@ void kNearestNeighbors(KDTreeNode* curr , SPBPQueue bpq, SPPoint querypoint){
 
 	if(data[curr->dim] <= KDTreeGetVal(curr)){
 		kNearestNeighbors(curr->left,bpq,querypoint);
-		if(!(spBPQueueIsFull(bpq)) || abs((curr->val) - data[curr->dim]) < spBPQueueGetMaxSize(bpq)){
+		if(!(spBPQueueIsFull(bpq)) || (((curr->val) - data[curr->dim])*((curr->val) - data[curr->dim])) < (spListElementGetValue(spBPQueuePeekLast(bpq))) ){
 			kNearestNeighbors(curr->right,bpq,querypoint);
 		}
 	}
 	else{
 		kNearestNeighbors(curr->right,bpq,querypoint);
-		if(!(spBPQueueIsFull(bpq)) || abs((curr->val) - data[curr->dim]) < spBPQueueGetMaxSize(bpq)){
+		if(!(spBPQueueIsFull(bpq)) || (((curr->val) - data[curr->dim])*((curr->val) - data[curr->dim])) < (spListElementGetValue(spBPQueuePeekLast(bpq))) ){
 			kNearestNeighbors(curr->left,bpq,querypoint);
 		}
 	}
@@ -122,13 +132,12 @@ SPBPQueue KDTreeSearch(KDTreeNode* head,SPPoint point, int size){
 
 
 void KDTreeDestroy(KDTreeNode* head){
-	if(head->val == INVALID){
+	if(head->data != NULL){
 		spPointDestroy(head->data);
 		free(head->left);
 		free(head->right);
 		free(head);
-	}
-	else{
+	} else {
 		if(head->left != NULL){KDTreeDestroy(head->left);}
 		if(head->right != NULL){KDTreeDestroy(head->right);}
 		free(head->data);
